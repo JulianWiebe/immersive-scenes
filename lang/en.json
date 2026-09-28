@@ -1,5 +1,42 @@
 {
   "IMMERSIVE_SCENES": {
-    "Title": "Immersive Scenes"
+    "Title": "Immersive Scenes",
+    "CopyOf": "{name} (Copy)",
+    "Look": {
+      "Default": "Default"
+    },
+    "Errors": {
+      "NoPermission": "You do not have permission to change the Immersive Scenes library."
+    },
+    "Settings": {
+      "StageAspect": {
+        "Name": "Stage aspect ratio",
+        "Hint": "Shape of the stage frame that immersive scenes are composed in. It is centred on whatever battlemap is currently viewed."
+      },
+      "AllowPlayerLooks": {
+        "Name": "Players can change looks",
+        "Hint": "Players may switch the look (outfit, armor, …) of characters they own. A GM must be online to apply the change."
+      },
+      "AllowPlayerBorders": {
+        "Name": "Players can change borders",
+        "Hint": "Players may change the portrait border style and colors of characters they own."
+      },
+      "FrameOnStart": {
+        "Name": "Frame the stage on broadcast",
+        "Hint": "When a broadcast starts, every client's camera glides to show the whole stage. Everyone can pan and zoom freely afterwards."
+      },
+      "ReduceMotion": {
+        "Name": "Reduce motion",
+        "Hint": "Skip transitions and animated borders on this client. Also applies automatically in photosensitive mode or when your system prefers reduced motion."
+      },
+      "BackgroundVolume": {
+        "Name": "Background video volume",
+        "Hint": "Volume multiplier for video backgrounds on this client."
+      },
+      "AutoOpenDock": {
+        "Name": "Open the Live Dock on load",
+        "Hint": "GM only: open the Live Dock automatically when the world loads."
+      }
+    }
   }
 }
