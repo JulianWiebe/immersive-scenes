@@ -8,6 +8,8 @@ There is no extra Foundry scene and no screen-covering overlay. The battlemap yo
 - When the scene ends, the map returns exactly as it was.
 - The Scene document is never modified.
 
+> **Early preview (0.x).** The feature set is complete, but it has not been tested in a live world yet. Expect rough edges.
+
 ## Features
 
 ### Scenes and cinematic display
