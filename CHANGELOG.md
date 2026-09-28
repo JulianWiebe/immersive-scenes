@@ -10,3 +10,5 @@
 - Player requests via `CONFIG.queries` for look and border changes, validated by the GM.
 - GM Live Dock (scene picker with transition override, display mode switch, background sequence steps, cast rows with look strips and quick actions, camera shot cuts, slideshow controls; detachable window). Also opened from a Token controls button.
 - On-canvas editing for GMs: drag cast members, Shift+wheel to scale, right-click for a look palette; other clients see drag previews live.
+- Animated portrait borders rendered by a custom shader: solid, double, gradient, spinning, pulse glow, rainbow and flame, in circle, rounded or square shapes. Frozen under reduced motion or photosensitive mode; static fallback if shaders are unavailable.
+- Player border designer and a Token HUD look switcher for characters linked to the token's actor.

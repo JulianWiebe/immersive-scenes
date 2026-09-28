@@ -7,6 +7,7 @@ import CharacterEditor from "./apps/character-editor.mjs";
 import { requestCharacterAction } from "./queries.mjs";
 import { openDock, toggleDock } from "./apps/live-dock.mjs";
 import CanvasEditing from "./canvas/canvas-editing.mjs";
+import { openBorderEditor } from "./apps/border-editor.mjs";
 
 /** Render an application singleton by id, creating it if needed. */
 function renderApp(id, create) {
@@ -67,6 +68,9 @@ export function createApi() {
 
     /** Change a character's look (players: requires ownership and a GM online). */
     setLook: (characterId, lookId) => requestCharacterAction(characterId, "setLook", { lookId }),
+
+    /** Open the border designer for a character. */
+    openBorderEditor,
 
     /** Change a character's border (players: requires ownership and a GM online). */
     setBorder: (characterId, border) => requestCharacterAction(characterId, "setBorder", { border })

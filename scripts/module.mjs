@@ -9,6 +9,7 @@ import { createApi } from "./api.mjs";
 import { registerSidebarTab } from "./apps/sidebar-tab.mjs";
 import { registerQueries } from "./queries.mjs";
 import { registerIntegrations } from "./integrations.mjs";
+import { registerTokenHud } from "./token-hud.mjs";
 import CanvasEditing from "./canvas/canvas-editing.mjs";
 import { openDock } from "./apps/live-dock.mjs";
 import { getSetting } from "./settings.mjs";
@@ -32,6 +33,7 @@ Hooks.once("init", () => {
   registerSidebarTab();
   registerQueries();
   registerIntegrations();
+  registerTokenHud();
   foundry.applications.handlebars.loadTemplates([
     template("sidebar/folder.hbs"),
     template("sidebar/card.hbs")
