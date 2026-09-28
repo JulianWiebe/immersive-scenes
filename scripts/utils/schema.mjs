@@ -237,6 +237,7 @@ export function normalizeLive(raw = {}) {
     mode: MODES.includes(raw.mode) ? raw.mode : null,
     shot,
     deck,
+    transition: raw.transition && typeof raw.transition === "object" ? normalizeTransition(raw.transition) : null,
     revision: Math.max(0, Math.round(num(raw.revision, 0))),
     updatedBy: nullableStr(raw.updatedBy)
   };

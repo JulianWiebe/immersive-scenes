@@ -5,6 +5,7 @@ import ImmersiveStageLayer from "./canvas/stage-layer.mjs";
 import ImmersiveOverlayLayer from "./canvas/overlay-layer.mjs";
 import StageDirector from "./canvas/director.mjs";
 import StageRenderer from "./canvas/stage-renderer.mjs";
+import LiveController from "./live/live-controller.mjs";
 import { createApi } from "./api.mjs";
 
 Hooks.once("init", () => {
@@ -27,6 +28,7 @@ Hooks.once("init", () => {
 
 Hooks.once("ready", () => {
   StageDirector.init();
+  LiveController.init();
 });
 
-export { LibraryStore, StageDirector, StageRenderer };
+export { LibraryStore, LiveController, StageDirector, StageRenderer };

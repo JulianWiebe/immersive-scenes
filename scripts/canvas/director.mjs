@@ -145,7 +145,7 @@ export default class StageDirector {
     }
     else if ( !next.active && prev.active ) camera = "restore";
 
-    await this.refresh({ camera });
+    await this.refresh({ camera, transition: next.transition ?? undefined });
 
     // Theater camera cut
     if ( next.active && next.shot && (next.shot.nonce !== prev.shot?.nonce) ) this.#cutToShot(next);
