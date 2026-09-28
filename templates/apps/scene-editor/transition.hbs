@@ -1,0 +1,25 @@
+<section class="tab {{tab.cssClass}}" data-tab="transition" data-group="primary">
+  <fieldset>
+    <legend>{{localize "IMMERSIVE_SCENES.SceneEditor.SceneTransition"}}</legend>
+    <div class="form-group">
+      <label>{{localize "IMMERSIVE_SCENES.Fields.Type"}}</label>
+      <div class="form-fields"><select name="transition.type">{{selectOptions transitionTypes selected=scene.transition.type}}</select></div>
+    </div>
+    <div class="form-group">
+      <label>{{localize "IMMERSIVE_SCENES.Fields.DurationMs"}}</label>
+      <div class="form-fields"><input type="number" name="transition.duration" value="{{scene.transition.duration}}" min="0" max="20000" step="100"></div>
+    </div>
+    <p class="hint">{{localize "IMMERSIVE_SCENES.SceneEditor.TransitionHint"}}</p>
+  </fieldset>
+  <fieldset>
+    <legend>{{localize "IMMERSIVE_SCENES.SceneEditor.CastEntrance"}}</legend>
+    <div class="form-group">
+      <label>{{localize "IMMERSIVE_SCENES.Fields.Type"}}</label>
+      <div class="form-fields"><select name="entrance.type">{{selectOptions entranceOptions selected=scene.entrance.type}}</select></div>
+    </div>
+    <div class="form-group">
+      <label>{{localize "IMMERSIVE_SCENES.Fields.DurationMs"}}</label>
+      <div class="form-fields"><input type="number" name="entrance.duration" value="{{scene.entrance.duration}}" min="0" max="10000" step="50"></div>
+    </div>
+  </fieldset>
+</section>

@@ -1,0 +1,30 @@
+<section class="tab {{tab.cssClass}}" data-tab="camera" data-group="primary">
+  <p class="hint">{{localize "IMMERSIVE_SCENES.SceneEditor.CameraHint"}}</p>
+  <ol class="row-list shots">
+    {{#each shots}}
+    <li class="row-item" data-index="{{index}}" data-shot-id="{{id}}">
+      <input type="hidden" name="shots.{{index}}.id" value="{{id}}">
+      <div class="row-fields">
+        <div class="field-line">
+          <input type="text" name="shots.{{index}}.name" value="{{name}}">
+          <select name="shots.{{index}}.easing">{{selectOptions @root.easingOptions selected=easing}}</select>
+        </div>
+        <div class="field-line">
+          <label class="inline">X <input type="number" name="shots.{{index}}.x" value="{{x}}" step="0.01"></label>
+          <label class="inline">Y <input type="number" name="shots.{{index}}.y" value="{{y}}" step="0.01"></label>
+          <label class="inline">{{localize "IMMERSIVE_SCENES.Fields.Zoom"}} <input type="number" name="shots.{{index}}.zoom" value="{{zoom}}" min="0.05" max="4" step="0.01"></label>
+          <label class="inline">{{localize "IMMERSIVE_SCENES.Fields.DurationMs"}} <input type="number" name="shots.{{index}}.duration" value="{{duration}}" min="0" max="20000" step="100"></label>
+        </div>
+      </div>
+      <div class="row-controls">
+        <button type="button" class="icon fa-solid fa-video" data-action="showShot" data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.SceneEditor.CutToShot"}}"></button>
+        <button type="button" class="icon fa-solid fa-crosshairs" data-action="captureShot" data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.SceneEditor.CaptureView"}}"></button>
+        <button type="button" class="icon fa-solid fa-trash" data-action="removeShot" data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Delete"}}"></button>
+      </div>
+    </li>
+    {{else}}
+    <li class="empty hint">{{localize "IMMERSIVE_SCENES.SceneEditor.NoShots"}}</li>
+    {{/each}}
+  </ol>
+  <button type="button" data-action="addShot"><i class="fa-solid fa-plus" inert></i> {{localize "IMMERSIVE_SCENES.SceneEditor.AddShot"}}</button>
+</section>

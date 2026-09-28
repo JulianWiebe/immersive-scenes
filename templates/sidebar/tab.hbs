@@ -1,0 +1,115 @@
+<div class="is-root">
+  {{!-- Live status --}}
+  <header class="is-status">
+    {{#if preview}}
+    <div class="status-row preview">
+      <i class="fa-solid fa-eye" inert></i>
+      <span class="label">{{localize "IMMERSIVE_SCENES.Status.Previewing"}}</span>
+      <span class="value">{{preview.name}}</span>
+      <button type="button" class="icon fa-solid fa-xmark" data-action="stopPreview"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.EndPreview"}}"></button>
+    </div>
+    {{/if}}
+    {{#if live}}
+    <div class="status-row live">
+      <span class="live-dot"></span>
+      <span class="label">{{localize "IMMERSIVE_SCENES.Status.Live"}}</span>
+      <span class="value">{{live.name}}{{#if (gt live.steps 1)}} <small>{{live.step}}/{{live.steps}}</small>{{/if}}</span>
+      {{#if canControl}}
+      <button type="button" class="icon fa-solid fa-stop" data-action="stopLive"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Stop"}}"></button>
+      {{/if}}
+    </div>
+    {{else}}
+    <div class="status-row idle">
+      <i class="fa-solid fa-masks-theater" inert></i>
+      <span class="label">{{localize "IMMERSIVE_SCENES.Status.Idle"}}</span>
+    </div>
+    {{/if}}
+    {{#if canControl}}
+    <button type="button" class="open-dock" data-action="openDock">
+      <i class="fa-solid fa-sliders" inert></i> {{localize "IMMERSIVE_SCENES.Actions.OpenDock"}}
+    </button>
+    {{/if}}
+  </header>
+
+  {{#if library}}
+  <nav class="is-tabs">
+    {{#each library.tabs}}
+    <button type="button" class="{{#if active}}active{{/if}}" data-action="switchTab" data-tab="{{id}}">
+      <i class="{{icon}}" inert></i> {{label}}
+    </button>
+    {{/each}}
+  </nav>
+
+  <div class="is-toolbar">
+    <div class="action-buttons flexrow">
+      <button type="button" data-action="createEntry"><i class="fa-solid fa-plus" inert></i> {{library.createLabel}}</button>
+      <button type="button" data-action="createFolder"><i class="fa-solid fa-folder-plus" inert></i> {{localize "IMMERSIVE_SCENES.Actions.CreateFolder"}}</button>
+    </div>
+    <search class="flexrow">
+      <input type="search" name="search" value="{{library.query}}" autocomplete="off"
+             placeholder="{{localize "IMMERSIVE_SCENES.Library.Search"}}">
+      {{#if library.supportsFavorites}}
+      <button type="button" class="inline-control icon fa-solid fa-star {{#if library.favorites}}active{{/if}}"
+              data-action="toggleFavorites" data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Library.FavoritesOnly"}}"></button>
+      {{/if}}
+    </search>
+    {{#if library.tags.length}}
+    <div class="tag-filter">
+      {{#each library.tags}}
+      <button type="button" class="tag {{#if active}}active{{/if}}" data-action="toggleTag" data-tag="{{tag}}">{{tag}}</button>
+      {{/each}}
+    </div>
+    {{/if}}
+  </div>
+
+  <div class="library-content kind-{{library.kind}}">
+    {{#if library.empty}}
+    <p class="empty hint">{{localize (concat "IMMERSIVE_SCENES.Library.Empty." library.kind)}}</p>
+    {{/if}}
+    {{#each library.folders}}
+    {{> "modules/immersive-scenes/templates/sidebar/folder.hbs"}}
+    {{/each}}
+    <ol class="card-grid">
+      {{#each library.items}}
+      {{> "modules/immersive-scenes/templates/sidebar/card.hbs"}}
+      {{/each}}
+    </ol>
+  </div>
+  {{/if}}
+
+  {{#if myCharacters.length}}
+  <div class="player-content">
+    <h4 class="divider">{{localize "IMMERSIVE_SCENES.Player.MyCharacters"}}</h4>
+    {{#each myCharacters}}
+    <section class="my-character {{#if onStage}}on-stage{{/if}}" data-character-id="{{id}}">
+      <header>
+        <span class="name">{{name}}</span>
+        {{#if onStage}}<span class="badge"><span class="live-dot"></span> {{localize "IMMERSIVE_SCENES.Player.OnStage"}}</span>{{/if}}
+        {{#if canBorder}}
+        <button type="button" class="icon fa-solid fa-palette" data-action="editBorder"
+                data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Player.EditBorder"}}"></button>
+        {{/if}}
+      </header>
+      <ol class="look-strip">
+        {{#each looks}}
+        <li class="look {{#if active}}active{{/if}}">
+          <button type="button" data-action="setLook" data-look-id="{{id}}" {{#unless ../canLook}}disabled{{/unless}}
+                  data-tooltip="{{name}}" aria-label="{{name}}">
+            {{#if isVideo}}<video src="{{thumb}}" muted loop autoplay playsinline></video>
+            {{else if thumb}}<img src="{{thumb}}" alt="">
+            {{else}}<i class="fa-solid fa-user" inert></i>{{/if}}
+          </button>
+        </li>
+        {{/each}}
+      </ol>
+    </section>
+    {{/each}}
+  </div>
+  {{else}}
+  {{#unless isGM}}
+  <p class="empty hint">{{localize "IMMERSIVE_SCENES.Player.NoCharacters"}}</p>
+  {{/unless}}
+  {{/if}}
+</div>

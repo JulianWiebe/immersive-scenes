@@ -1,0 +1,35 @@
+<li class="is-card {{kind}} {{#if live}}live{{/if}} {{#if playing}}live{{/if}}" data-kind="{{kind}}" data-id="{{id}}"
+    data-name="{{name}}" data-tags="{{searchTags}}" data-favorite="{{favorite}}" draggable="true">
+  <div class="thumb {{#if round}}round{{/if}}">
+    {{#if isVideo}}<video src="{{thumb}}" muted loop autoplay playsinline></video>
+    {{else if thumb}}<img src="{{thumb}}" alt="" loading="lazy">
+    {{else}}<i class="placeholder fa-solid {{#if round}}fa-user{{else}}fa-image{{/if}}" inert></i>{{/if}}
+    {{#if live}}<span class="live-badge"><span class="live-dot"></span></span>{{/if}}
+    {{#if favorite}}<i class="fav fa-solid fa-star" inert></i>{{/if}}
+    {{#if modeIcon}}<i class="mode {{modeIcon}}" data-tooltip="{{modeLabel}}"></i>{{/if}}
+    <div class="hover-actions">
+      {{#if (eq kind "scenes")}}
+      <button type="button" class="icon fa-solid fa-tower-broadcast" data-action="broadcast"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Broadcast"}}"></button>
+      <button type="button" class="icon fa-solid fa-eye" data-action="preview"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Preview"}}"></button>
+      {{/if}}
+      {{#if (eq kind "decks")}}
+      <button type="button" class="icon fa-solid fa-play" data-action="playDeck"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Play"}}"></button>
+      {{/if}}
+      <button type="button" class="icon fa-solid fa-pen" data-action="edit"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Edit"}}"></button>
+    </div>
+  </div>
+  <div class="card-name">
+    <span class="name">{{name}}</span>
+    <span class="meta">
+      {{#if steps}}<span data-tooltip="{{localize "IMMERSIVE_SCENES.Library.Steps"}}"><i class="fa-solid fa-images" inert></i> {{steps}}</span>{{/if}}
+      {{#if castCount}}<span data-tooltip="{{localize "IMMERSIVE_SCENES.Library.Cast"}}"><i class="fa-solid fa-users" inert></i> {{castCount}}</span>{{/if}}
+      {{#if looks}}<span data-tooltip="{{localize "IMMERSIVE_SCENES.Library.Looks"}}"><i class="fa-solid fa-shirt" inert></i> {{looks}}</span>{{/if}}
+      {{#if linked}}<i class="fa-solid fa-link" data-tooltip="{{localize "IMMERSIVE_SCENES.Library.Linked"}}"></i>{{/if}}
+      {{#if slides}}<span><i class="fa-solid fa-film" inert></i> {{slides}}</span>{{/if}}
+    </span>
+  </div>
+</li>

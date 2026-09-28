@@ -1,0 +1,46 @@
+<section class="tab {{tab.cssClass}}" data-tab="border" data-group="primary">
+  <div class="border-designer">
+    <div class="border-preview" data-style="{{character.border.style}}" data-shape="{{character.border.shape}}"
+         style="--c1: {{character.border.colors.[0]}}; --c2: {{character.border.colors.[1]}}; --c3: {{character.border.colors.[2]}}; --bw: {{character.border.width}}; --speed: {{character.border.speed}}">
+      <div class="ring"></div>
+      <div class="portrait">{{#if borderPreview}}<img src="{{borderPreview}}" alt="">{{else}}<i class="fa-solid fa-user" inert></i>{{/if}}</div>
+    </div>
+    <div class="border-fields">
+      <div class="form-group">
+        <label>{{localize "IMMERSIVE_SCENES.Fields.Style"}}</label>
+        <div class="form-fields"><select name="border.style">{{selectOptions borderStyles selected=character.border.style}}</select></div>
+      </div>
+      <div class="form-group">
+        <label>{{localize "IMMERSIVE_SCENES.Fields.Shape"}}</label>
+        <div class="form-fields"><select name="border.shape">{{selectOptions borderShapes selected=character.border.shape}}</select></div>
+      </div>
+      <div class="form-group">
+        <label>{{localize "IMMERSIVE_SCENES.Fields.Colors"}}</label>
+        <div class="form-fields">
+          <color-picker name="border.colors.0" value="{{character.border.colors.[0]}}"></color-picker>
+          <color-picker name="border.colors.1" value="{{character.border.colors.[1]}}"></color-picker>
+          <color-picker name="border.colors.2" value="{{character.border.colors.[2]}}"></color-picker>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>{{localize "IMMERSIVE_SCENES.Fields.Width"}}</label>
+        <div class="form-fields"><range-picker name="border.width" value="{{character.border.width}}" min="0.01" max="0.25" step="0.01"></range-picker></div>
+      </div>
+      <div class="form-group">
+        <label>{{localize "IMMERSIVE_SCENES.Fields.Speed"}}</label>
+        <div class="form-fields"><range-picker name="border.speed" value="{{character.border.speed}}" min="0" max="5" step="0.1"></range-picker></div>
+      </div>
+    </div>
+  </div>
+  <fieldset>
+    <legend>{{localize "IMMERSIVE_SCENES.CharacterEditor.Nameplate"}}</legend>
+    <div class="form-group">
+      <label>{{localize "IMMERSIVE_SCENES.Fields.ShowName"}}</label>
+      <div class="form-fields"><input type="checkbox" name="nameplate.show" {{checked character.nameplate.show}}></div>
+    </div>
+    <div class="form-group">
+      <label>{{localize "IMMERSIVE_SCENES.Fields.Color"}}</label>
+      <div class="form-fields"><color-picker name="nameplate.color" value="{{character.nameplate.color}}"></color-picker></div>
+    </div>
+  </fieldset>
+</section>

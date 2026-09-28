@@ -6,7 +6,12 @@
       "Default": "Default"
     },
     "Errors": {
-      "NoPermission": "You do not have permission to change the Immersive Scenes library."
+      "NoPermission": "You do not have permission to change the Immersive Scenes library.",
+      "NoGM": "No Gamemaster is online to apply this change.",
+      "NotAllowed": "You are not allowed to change this character.",
+      "RequestFailed": "The change could not be applied.",
+      "UnknownCharacter": "This character no longer exists.",
+      "UnknownLook": "This look no longer exists."
     },
     "Settings": {
       "StageAspect": {
@@ -39,7 +44,234 @@
       }
     },
     "Warnings": {
-      "NoCanvas": "An immersive scene is live, but you are not viewing any scene, so there is no canvas to draw it on. View any scene to see it."
+      "NoCanvas": "An immersive scene is live, but you are not viewing any scene, so there is no canvas to draw it on. View any scene to see it.",
+      "CompendiumActor": "Import the actor into the world before using it as an immersive character.",
+      "ShowSceneFirst": "Preview or broadcast this scene first, then frame the shot with your camera."
+    },
+    "Actions": {
+      "AddToLive": "Add to live scene",
+      "Broadcast": "Broadcast",
+      "CreateFolder": "Create folder",
+      "CreateSubfolder": "Create subfolder",
+      "Delete": "Delete",
+      "Duplicate": "Duplicate",
+      "Edit": "Edit",
+      "EndPreview": "End preview",
+      "OpenDock": "Open Live Dock",
+      "Play": "Play",
+      "Preview": "Preview on my canvas",
+      "PreviewOnCanvas": "Preview on my canvas",
+      "Remove": "Remove",
+      "RemoveFromFolder": "Remove from folder",
+      "Rename": "Rename",
+      "Save": "Save",
+      "Stop": "Stop broadcast",
+      "ToggleFavorite": "Toggle favorite"
+    },
+    "Status": {
+      "Idle": "Nothing is live",
+      "Live": "Live",
+      "Previewing": "Preview"
+    },
+    "Dialogs": {
+      "ConfirmDelete": "Delete <strong>{name}</strong>? This cannot be undone."
+    },
+    "Mode": {
+      "hero": "Hero",
+      "token": "Token",
+      "cast": "Cast-Only"
+    },
+    "Fit": {
+      "cover": "Cover",
+      "contain": "Contain",
+      "stretch": "Stretch"
+    },
+    "Layout": {
+      "row": "Row",
+      "column": "Column",
+      "grid": "Grid",
+      "free": "Freeform",
+      "theater": "Theater"
+    },
+    "LayoutHint": {
+      "row": "Everybody stands in one line.",
+      "column": "Everybody stands in one column at the chosen side.",
+      "grid": "Rows and columns, shrunk to fit their cells.",
+      "free": "Drag cast members anywhere on the stage.",
+      "theater": "Freeform with depth: the further up the stage, the smaller and further back. Combine with camera shots."
+    },
+    "Anchor": {
+      "bottom": "Bottom",
+      "top": "Top",
+      "center": "Center",
+      "left": "Left",
+      "right": "Right"
+    },
+    "Entrance": {
+      "fade": "Fade",
+      "slide": "Slide in",
+      "rise": "Rise",
+      "zoom": "Zoom",
+      "none": "None"
+    },
+    "Easing": {
+      "easeInOutCosine": "Smooth",
+      "easeOutCircle": "Decelerate",
+      "easeInCircle": "Accelerate"
+    },
+    "Transition": {
+      "None": "None (cut)"
+    },
+    "Border": {
+      "none": "None",
+      "solid": "Solid",
+      "double": "Double",
+      "gradient": "Gradient",
+      "spin": "Spinning",
+      "pulse": "Pulse",
+      "rainbow": "Rainbow",
+      "flame": "Flame"
+    },
+    "Shape": {
+      "circle": "Circle",
+      "rounded": "Rounded",
+      "square": "Square"
+    },
+    "Fields": {
+      "Anchor": "Anchor",
+      "CastStyle": "Cast style",
+      "Color": "Color",
+      "Colors": "Colors",
+      "Columns": "Columns",
+      "Depth": "Depth",
+      "DurationMs": "Duration (ms)",
+      "Fit": "Fit",
+      "Folder": "Folder",
+      "Grid": "Grid",
+      "HeroSize": "Hero size",
+      "Hidden": "Hidden",
+      "Label": "Label (overrides name)",
+      "Layout": "Layout",
+      "Look": "Look",
+      "Loop": "Loop",
+      "Margin": "Margin",
+      "Mirror": "Mirror",
+      "Mode": "Display mode",
+      "Name": "Name",
+      "NoFolder": "— No folder —",
+      "Notes": "GM notes",
+      "OffsetX": "Offset X",
+      "OffsetY": "Offset Y",
+      "Portrait": "Portrait (Token mode)",
+      "Rows": "Rows",
+      "Scale": "Scale",
+      "Shape": "Shape",
+      "ShowName": "Show nameplate",
+      "Spacing": "Spacing",
+      "Speed": "Animation speed",
+      "Sprite": "Full-body sprite (Hero mode)",
+      "Style": "Style",
+      "Tags": "Tags",
+      "Thumbnail": "Thumbnail",
+      "TokenSize": "Portrait size",
+      "Type": "Type",
+      "Volume": "Volume",
+      "Width": "Width",
+      "Z": "Order",
+      "Zoom": "Zoom"
+    },
+    "Library": {
+      "Tabs": {
+        "scenes": "Scenes",
+        "characters": "Characters",
+        "decks": "Slideshows"
+      },
+      "Create": {
+        "scenes": "Scene",
+        "characters": "Character",
+        "decks": "Slideshow"
+      },
+      "New": {
+        "scenes": "New Scene",
+        "characters": "New Character",
+        "decks": "New Slideshow"
+      },
+      "Empty": {
+        "scenes": "No scenes yet. Create one, or drop an image here.",
+        "characters": "No characters yet. Create one, or drop an Actor here.",
+        "decks": "No slideshows yet."
+      },
+      "Search": "Search by name or tag",
+      "FavoritesOnly": "Favorites only",
+      "Steps": "Background steps",
+      "Cast": "Cast",
+      "Looks": "Looks",
+      "Linked": "Linked to an actor"
+    },
+    "Player": {
+      "MyCharacters": "My characters",
+      "OnStage": "On stage",
+      "EditBorder": "Border",
+      "NoCharacters": "You don't own any immersive characters yet."
+    },
+    "SceneEditor": {
+      "Title": "Immersive Scene",
+      "Tabs": {
+        "general": "General",
+        "backgrounds": "Backgrounds",
+        "cast": "Cast",
+        "layout": "Layout",
+        "camera": "Camera",
+        "transition": "Transitions"
+      },
+      "ModeHint": "Hero: full-body sprites on a backdrop. Token: bordered portraits on a backdrop. Cast-Only: no backdrop; the cast appears over the battlemap, which stays visible and usable.",
+      "ThumbHint": "Optional. Defaults to the first background.",
+      "BackgroundsHint": "Add several backgrounds to create a sequence. Step through them live from the dock.",
+      "NoBackgrounds": "No background: a solid color covers the battlemap.",
+      "AddBackground": "Add background",
+      "ShowStep": "Show this step",
+      "CastHint": "Add characters from the list, or drop characters from the library tab or actors from the Actors directory.",
+      "NoCast": "Nobody on stage yet.",
+      "AddCast": "Add to cast",
+      "CurrentLook": "(Character's current look)",
+      "MissingCharacter": "Missing character",
+      "GridHint": "0 = automatic",
+      "DepthHint": "How much smaller characters get towards the back of the stage.",
+      "FreezeLayout": "Switch to freeform, keeping positions",
+      "CameraHint": "Camera shots frame part of the stage. Cutting to a shot moves everyone's camera; players can pan away afterwards.",
+      "NoShots": "No camera shots yet.",
+      "AddShot": "Add shot from current view",
+      "CaptureView": "Update from current view",
+      "CutToShot": "Cut to shot",
+      "Shot": "Shot",
+      "SceneTransition": "Scene transition",
+      "TransitionHint": "Used when this scene starts, ends, changes display mode, or changes background.",
+      "CastEntrance": "Cast entrance"
+    },
+    "CharacterEditor": {
+      "Title": "Immersive Character",
+      "Tabs": {
+        "general": "General",
+        "looks": "Looks",
+        "border": "Border"
+      },
+      "LinkedActor": "Linked actor",
+      "DropActor": "Drop an actor here to link it. Its owners can then change this character's look.",
+      "ActorMissing": "The linked actor no longer exists.",
+      "OpenActor": "Open actor sheet",
+      "Unlink": "Unlink",
+      "Owners": "Players",
+      "OwnersHint": "These players can change this character's look and border, in addition to owners of the linked actor.",
+      "NoPlayers": "There are no players in this world.",
+      "LooksHint": "Each look can have a full-body sprite for Hero mode and a portrait for Token mode. If one is missing, the other is used.",
+      "NoLooks": "No looks yet.",
+      "AddLook": "Add look",
+      "ImportLooks": "Import from folder",
+      "NothingToImport": "No new images found in that folder.",
+      "Imported": "Imported {count} looks.",
+      "SetDefault": "Default look",
+      "SetCurrent": "Wear this look now",
+      "Nameplate": "Nameplate"
     }
   }
 }

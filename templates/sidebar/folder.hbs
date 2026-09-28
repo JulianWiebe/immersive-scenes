@@ -1,0 +1,18 @@
+<div class="lib-folder {{#if expanded}}expanded{{/if}}" data-folder-id="{{folder.id}}" style="--depth: {{depth}}">
+  <header data-action="toggleFolder" data-folder-id="{{folder.id}}">
+    <i class="fa-solid fa-folder-open open-icon" inert></i>
+    <i class="fa-solid fa-folder closed-icon" inert></i>
+    <span class="name">{{folder.name}}</span>
+    <span class="count">{{count}}</span>
+  </header>
+  <div class="folder-content">
+    {{#each children}}
+    {{> "modules/immersive-scenes/templates/sidebar/folder.hbs"}}
+    {{/each}}
+    <ol class="card-grid">
+      {{#each items}}
+      {{> "modules/immersive-scenes/templates/sidebar/card.hbs"}}
+      {{/each}}
+    </ol>
+  </div>
+</div>

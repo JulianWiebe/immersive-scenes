@@ -1,0 +1,45 @@
+<section class="tab {{tab.cssClass}} cast-drop" data-tab="cast" data-group="primary">
+  <p class="hint">{{localize "IMMERSIVE_SCENES.SceneEditor.CastHint"}}</p>
+  <ol class="row-list cast">
+    {{#each cast}}
+    <li class="row-item {{#if hidden}}is-hidden{{/if}}" data-index="{{index}}" data-entry-id="{{id}}">
+      <input type="hidden" name="cast.{{index}}.id" value="{{id}}">
+      <input type="hidden" name="cast.{{index}}.characterId" value="{{characterId}}">
+      <div class="row-thumb round">
+        {{#if isVideo}}<video src="{{thumb}}" muted loop autoplay playsinline></video>
+        {{else if thumb}}<img src="{{thumb}}" alt="">{{else}}<i class="fa-solid fa-user" inert></i>{{/if}}
+      </div>
+      <div class="row-fields">
+        <div class="field-line">
+          <strong class="entry-name">{{name}}</strong>
+          <select name="cast.{{index}}.lookId" data-tooltip="{{localize "IMMERSIVE_SCENES.Fields.Look"}}">{{selectOptions lookOptions selected=lookId}}</select>
+        </div>
+        <div class="field-line">
+          <input type="text" name="cast.{{index}}.label" value="{{label}}" placeholder="{{localize "IMMERSIVE_SCENES.Fields.Label"}}">
+          <label class="inline">{{localize "IMMERSIVE_SCENES.Fields.Scale"}} <input type="number" name="cast.{{index}}.scale" value="{{scale}}" min="0.05" max="10" step="0.05"></label>
+          <label class="inline">{{localize "IMMERSIVE_SCENES.Fields.Z"}} <input type="number" name="cast.{{index}}.z" value="{{z}}" step="1" placeholder="auto"></label>
+        </div>
+        <div class="field-line">
+          {{#if @root.freeform}}
+          <label class="inline">X <input type="number" name="cast.{{index}}.x" value="{{x}}" min="-0.5" max="1.5" step="0.01"></label>
+          <label class="inline">Y <input type="number" name="cast.{{index}}.y" value="{{y}}" min="-0.5" max="1.5" step="0.01"></label>
+          {{/if}}
+          <label class="inline checkbox"><input type="checkbox" name="cast.{{index}}.mirror" {{checked mirror}}> {{localize "IMMERSIVE_SCENES.Fields.Mirror"}}</label>
+          <label class="inline checkbox"><input type="checkbox" name="cast.{{index}}.hidden" {{checked hidden}}> {{localize "IMMERSIVE_SCENES.Fields.Hidden"}}</label>
+        </div>
+      </div>
+      <div class="row-controls">
+        <button type="button" class="icon fa-solid fa-arrow-up" data-action="moveCast" data-delta="-1" {{disabled first}}></button>
+        <button type="button" class="icon fa-solid fa-arrow-down" data-action="moveCast" data-delta="1" {{disabled last}}></button>
+        <button type="button" class="icon fa-solid fa-trash" data-action="removeCast" data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Remove"}}"></button>
+      </div>
+    </li>
+    {{else}}
+    <li class="empty hint">{{localize "IMMERSIVE_SCENES.SceneEditor.NoCast"}}</li>
+    {{/each}}
+  </ol>
+  <div class="add-row">
+    <select name="addCharacter" data-no-submit>{{selectOptions addableCharacters}}</select>
+    <button type="button" data-action="addCast"><i class="fa-solid fa-user-plus" inert></i> {{localize "IMMERSIVE_SCENES.SceneEditor.AddCast"}}</button>
+  </div>
+</section>

@@ -1,0 +1,50 @@
+<section class="tab {{tab.cssClass}}" data-tab="looks" data-group="primary">
+  <p class="hint">{{localize "IMMERSIVE_SCENES.CharacterEditor.LooksHint"}}</p>
+  <ol class="look-grid">
+    {{#each looks}}
+    <li class="look-card {{#if isCurrent}}current{{/if}}" data-index="{{index}}" data-look-id="{{id}}">
+      <input type="hidden" name="looks.{{index}}.id" value="{{id}}">
+      <div class="look-preview">
+        <div class="sprite">
+          {{#if spriteIsVideo}}<video src="{{previewSprite}}" muted loop autoplay playsinline></video>
+          {{else if previewSprite}}<img src="{{previewSprite}}" alt="">{{else}}<i class="fa-solid fa-person" inert></i>{{/if}}
+        </div>
+        <div class="portrait">
+          {{#if portraitIsVideo}}<video src="{{previewPortrait}}" muted loop autoplay playsinline></video>
+          {{else if previewPortrait}}<img src="{{previewPortrait}}" alt="">{{else}}<i class="fa-solid fa-user" inert></i>{{/if}}
+        </div>
+        <div class="badges">
+          <button type="button" class="icon fa-solid fa-star {{#if isDefault}}active{{/if}}" data-action="setDefault"
+                  data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.CharacterEditor.SetDefault"}}"></button>
+          <button type="button" class="icon fa-solid fa-circle-check {{#if isCurrent}}active{{/if}}" data-action="setCurrent"
+                  data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.CharacterEditor.SetCurrent"}}"></button>
+        </div>
+      </div>
+      <input type="text" name="looks.{{index}}.name" value="{{name}}" class="look-name">
+      <label class="stacked">{{localize "IMMERSIVE_SCENES.Fields.Sprite"}}
+        <file-picker name="looks.{{index}}.sprite" type="imagevideo" value="{{sprite}}"></file-picker></label>
+      <label class="stacked">{{localize "IMMERSIVE_SCENES.Fields.Portrait"}}
+        <file-picker name="looks.{{index}}.portrait" type="imagevideo" value="{{portrait}}"></file-picker></label>
+      <div class="field-line">
+        <label class="inline">{{localize "IMMERSIVE_SCENES.Fields.Scale"}} <input type="number" name="looks.{{index}}.scale" value="{{scale}}" min="0.05" max="10" step="0.05"></label>
+        <label class="inline checkbox"><input type="checkbox" name="looks.{{index}}.mirror" {{checked mirror}}> {{localize "IMMERSIVE_SCENES.Fields.Mirror"}}</label>
+      </div>
+      <div class="field-line">
+        <label class="inline">{{localize "IMMERSIVE_SCENES.Fields.OffsetX"}} <input type="number" name="looks.{{index}}.offsetX" value="{{offsetX}}" min="-1" max="1" step="0.01"></label>
+        <label class="inline">{{localize "IMMERSIVE_SCENES.Fields.OffsetY"}} <input type="number" name="looks.{{index}}.offsetY" value="{{offsetY}}" min="-1" max="1" step="0.01"></label>
+      </div>
+      <div class="look-controls">
+        <button type="button" class="icon fa-solid fa-arrow-left" data-action="moveLook" data-delta="-1" {{disabled first}}></button>
+        <button type="button" class="icon fa-solid fa-arrow-right" data-action="moveLook" data-delta="1" {{disabled last}}></button>
+        <button type="button" class="icon fa-solid fa-trash" data-action="removeLook" data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Delete"}}"></button>
+      </div>
+    </li>
+    {{else}}
+    <li class="empty hint">{{localize "IMMERSIVE_SCENES.CharacterEditor.NoLooks"}}</li>
+    {{/each}}
+  </ol>
+  <div class="action-buttons flexrow">
+    <button type="button" data-action="addLook"><i class="fa-solid fa-plus" inert></i> {{localize "IMMERSIVE_SCENES.CharacterEditor.AddLook"}}</button>
+    <button type="button" data-action="importLooks"><i class="fa-solid fa-folder-open" inert></i> {{localize "IMMERSIVE_SCENES.CharacterEditor.ImportLooks"}}</button>
+  </div>
+</section>
