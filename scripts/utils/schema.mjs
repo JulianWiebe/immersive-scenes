@@ -164,6 +164,7 @@ export function normalizeScene(raw = {}) {
     sort: num(raw.sort, 0),
     thumb: str(raw.thumb),
     mode: oneOf(raw.mode, MODES, "hero"),
+    castStyle: oneOf(raw.castStyle, ["hero", "token"], "hero"),
     backgrounds,
     layout: normalizeLayout(raw.layout ?? {}),
     cast: uniqueIds((Array.isArray(raw.cast) ? raw.cast : []).map(normalizeCastEntry).filter(e => e.characterId)),

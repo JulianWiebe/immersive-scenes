@@ -37,6 +37,9 @@
         "Name": "Open the Live Dock on load",
         "Hint": "GM only: open the Live Dock automatically when the world loads."
       }
+    },
+    "Warnings": {
+      "NoCanvas": "An immersive scene is live, but you are not viewing any scene, so there is no canvas to draw it on. View any scene to see it."
     }
   }
 }

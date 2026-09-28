@@ -63,3 +63,13 @@ test("diffViews detects start, stop, scene switch and look swaps", () => {
   const stepped = buildView({ scene, characters: { aria }, step: 1 });
   assert.equal(diffViews(a, stepped).backgroundChanged, true);
 });
+
+test("cast mode uses the scene's cast style", () => {
+  const castScene = { ...scene, mode: "cast", castStyle: "token" };
+  const view = buildView({ scene: castScene, characters: { aria } });
+  assert.equal(view.mode, "cast");
+  assert.equal(view.style, "token");
+  assert.equal(view.items[0].src, "casual-p.webp");
+  const hero = buildView({ scene: { ...castScene, castStyle: "hero" }, characters: { aria } });
+  assert.equal(diffViews(view, hero).modeChanged, true);
+});

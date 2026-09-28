@@ -45,6 +45,8 @@ export function lookImage(look, mode, fallback = "") {
 export function buildView({ scene, characters, step = 0, mode = null, aspect = 16 / 9, fallbackImage = () => "" }) {
   if ( !scene ) return null;
   const displayMode = mode ?? scene.mode;
+  // Cast-Only mode draws either full-body sprites or portraits, as chosen by the scene
+  const style = displayMode === "cast" ? scene.castStyle : displayMode;
   const backgrounds = scene.backgrounds;
   const stepIndex = backgrounds.length ? Math.min(Math.max(0, step), backgrounds.length - 1) : 0;
   const background = backgrounds[stepIndex] ?? null;
@@ -52,7 +54,7 @@ export function buildView({ scene, characters, step = 0, mode = null, aspect = 1
   const entries = scene.cast.filter(e => characters[e.characterId]);
   const looks = new Map(entries.map(e => [e.id, resolveLook(characters[e.characterId], e.lookId)]));
   const placements = computeLayout(scene.layout, entries, {
-    mode: displayMode,
+    mode: style,
     aspect,
     lookScale: e => looks.get(e.id)?.scale ?? 1
   });
@@ -67,7 +69,7 @@ export function buildView({ scene, characters, step = 0, mode = null, aspect = 1
       id: entry.id,
       characterId: character.id,
       lookId: look?.id ?? null,
-      src: lookImage(look, displayMode, fallbackImage(character)),
+      src: lookImage(look, style, fallbackImage(character)),
       x: placement.x + ((look?.offsetX ?? 0) * placement.size),
       y: placement.y + ((look?.offsetY ?? 0) * placement.size),
       size: placement.size,
@@ -84,6 +86,7 @@ export function buildView({ scene, characters, step = 0, mode = null, aspect = 1
   return {
     sceneId: scene.id,
     mode: displayMode,
+    style,
     layoutType: scene.layout.type,
     step: stepIndex,
     stepCount: backgrounds.length,

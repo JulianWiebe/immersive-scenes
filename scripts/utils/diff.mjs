@@ -26,7 +26,7 @@ export function diffViews(prev, next) {
   if ( prev.sceneId !== next.sceneId ) return { ...result, kind: "scene", removed: [...prev.items], added: [...next.items] };
 
   result.kind = "update";
-  result.modeChanged = prev.mode !== next.mode;
+  result.modeChanged = (prev.mode !== next.mode) || (prev.style !== next.style);
   result.backgroundChanged = !jsonEquals(prev.background, next.background);
 
   const before = new Map(prev.items.map(i => [i.id, i]));
