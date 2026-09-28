@@ -1,7 +1,15 @@
 <section class="tab {{tab.cssClass}}" data-tab="layout" data-group="primary">
-  <div class="form-group">
+  <div class="form-group stacked">
     <label>{{localize "IMMERSIVE_SCENES.Fields.Layout"}}</label>
-    <div class="form-fields"><select name="layout.type">{{selectOptions layoutOptions selected=scene.layout.type}}</select></div>
+    <div class="choice-cards compact">
+      {{#each layoutChoices}}
+      <label class="choice-card {{#if checked}}checked{{/if}}">
+        <input type="radio" name="layout.type" value="{{id}}" {{checked checked}}>
+        <i class="{{icon}}" inert></i>
+        <strong>{{label}}</strong>
+      </label>
+      {{/each}}
+    </div>
     <p class="hint">{{localize (concat "IMMERSIVE_SCENES.LayoutHint." scene.layout.type)}}</p>
   </div>
   {{#unless freeform}}

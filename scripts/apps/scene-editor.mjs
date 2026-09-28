@@ -13,11 +13,20 @@ import { viewToShot } from "../utils/frame.mjs";
 import { resolveLook, lookImage } from "../utils/resolve.mjs";
 import { randomId } from "../utils/ids.mjs";
 import { freezeLayout } from "../data/scene-ops.mjs";
-import { t, getDragData, indexedToArray, isVideoPath, pickFile } from "./helpers.mjs";
+import { MODE_ICONS } from "./library-shared.mjs";
+import { t, getDragData, indexedToArray, isVideoPath, pickFile, sceneThumb } from "./helpers.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 const EASINGS = ["easeInOutCosine", "easeOutCircle", "easeInCircle"];
+
+const LAYOUT_ICONS = {
+  row: "fa-solid fa-ellipsis",
+  column: "fa-solid fa-ellipsis-vertical",
+  grid: "fa-solid fa-table-cells",
+  free: "fa-solid fa-hand",
+  theater: "fa-solid fa-masks-theater"
+};
 
 export default class SceneEditor extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor({ sceneId, ...options } = {}) {
@@ -26,15 +35,16 @@ export default class SceneEditor extends HandlebarsApplicationMixin(ApplicationV
   }
 
   static DEFAULT_OPTIONS = {
-    classes: ["immersive-scenes", "scene-editor"],
+    classes: ["immersive-scenes", "scene-editor", "themed", "theme-dark"],
     tag: "form",
     window: { icon: "fa-solid fa-masks-theater", resizable: true },
-    position: { width: 660, height: 740 },
+    position: { width: 700, height: 780 },
     form: { handler: SceneEditor.#onSubmit, submitOnChange: true, closeOnSubmit: false },
     actions: {
       preview: SceneEditor.#onPreview,
       endPreview: SceneEditor.#onEndPreview,
       broadcast: SceneEditor.#onBroadcast,
+      stopLive: SceneEditor.#onStopLive,
       addBackground: SceneEditor.#onAddBackground,
       removeBackground: SceneEditor.#onRemoveBackground,
       moveBackground: SceneEditor.#onMoveBackground,
@@ -52,14 +62,14 @@ export default class SceneEditor extends HandlebarsApplicationMixin(ApplicationV
   };
 
   static PARTS = {
+    banner: { template: template("apps/scene-editor/banner.hbs") },
     tabs: { template: "templates/generic/tab-navigation.hbs" },
     general: { template: template("apps/scene-editor/general.hbs") },
     backgrounds: { template: template("apps/scene-editor/backgrounds.hbs"), scrollable: [""] },
     cast: { template: template("apps/scene-editor/cast.hbs"), scrollable: [""] },
     layout: { template: template("apps/scene-editor/layout.hbs") },
     camera: { template: template("apps/scene-editor/camera.hbs"), scrollable: [""] },
-    transition: { template: template("apps/scene-editor/transition.hbs") },
-    footer: { template: template("apps/scene-editor/footer.hbs") }
+    transition: { template: template("apps/scene-editor/transition.hbs") }
   };
 
   static TABS = {
@@ -121,10 +131,14 @@ export default class SceneEditor extends HandlebarsApplicationMixin(ApplicationV
       isPreview,
       canControl: LiveController.canControl,
       folderOptions: { "": t("Fields.NoFolder"), ...Object.fromEntries(folders.map(f => [f.id, f.name])) },
-      modeOptions: Object.fromEntries(["hero", "token", "cast"].map(m => [m, t(`Mode.${m}`)])),
+      modeChoices: ["hero", "token", "cast"].map(m => ({
+        id: m, label: t(`Mode.${m}`), hint: t(`SceneEditor.ModeHints.${m}`), icon: MODE_ICONS[m], checked: m === scene.mode
+      })),
       castStyleOptions: { hero: t("Mode.hero"), token: t("Mode.token") },
       fitOptions: Object.fromEntries(["cover", "contain", "stretch"].map(f => [f, t(`Fit.${f}`)])),
-      layoutOptions: Object.fromEntries(["row", "column", "grid", "free", "theater"].map(l => [l, t(`Layout.${l}`)])),
+      layoutChoices: ["row", "column", "grid", "free", "theater"].map(l => ({
+        id: l, label: t(`Layout.${l}`), icon: LAYOUT_ICONS[l], checked: l === scene.layout.type
+      })),
       anchorOptions: Object.fromEntries(["bottom", "top", "center", "left", "right"].map(a => [a, t(`Anchor.${a}`)])),
       entranceOptions: Object.fromEntries(["fade", "slide", "rise", "zoom", "none"].map(e => [e, t(`Entrance.${e}`)])),
       easingOptions: Object.fromEntries(EASINGS.map(e => [e, t(`Easing.${e}`)])),
@@ -151,9 +165,23 @@ export default class SceneEditor extends HandlebarsApplicationMixin(ApplicationV
       }),
       addableCharacters: Object.fromEntries(LibraryStore.list("characters").map(c => [c.id, c.name])),
       shots: scene.shots.map((s, i) => ({ ...s, index: i })),
-      thumbIsVideo: isVideoPath(scene.thumb)
+      thumbIsVideo: isVideoPath(scene.thumb),
+      banner: this.#prepareBanner(scene, activeStep)
     });
     return context;
+  }
+
+  #prepareBanner(scene, activeStep) {
+    const image = scene.backgrounds[Math.max(0, activeStep)]?.src || sceneThumb(scene);
+    return {
+      image,
+      isVideo: isVideoPath(image),
+      modeIcon: MODE_ICONS[scene.mode],
+      modeLabel: t(`Mode.${scene.mode}`),
+      backgrounds: scene.backgrounds.length,
+      cast: scene.cast.length,
+      shots: scene.shots.length
+    };
   }
 
   async _preparePartContext(partId, context, options) {
@@ -263,6 +291,10 @@ export default class SceneEditor extends HandlebarsApplicationMixin(ApplicationV
   static async #onBroadcast() {
     if ( StageDirector.preview?.sceneId === this.sceneId ) await StageDirector.stopPreview();
     return LiveController.broadcast(this.sceneId);
+  }
+
+  static #onStopLive() {
+    return LiveController.stop();
   }
 
   static async #onAddBackground() {

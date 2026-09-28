@@ -1,0 +1,34 @@
+<header class="editor-banner">
+  <div class="banner-art">
+    {{#if banner.isVideo}}<video src="{{banner.image}}" muted loop autoplay playsinline></video>
+    {{else if banner.image}}<img src="{{banner.image}}" alt="">{{/if}}
+  </div>
+  <div class="banner-body">
+    <span class="banner-kicker">
+      <i class="fa-solid fa-masks-theater" inert></i> {{localize "IMMERSIVE_SCENES.SceneEditor.Kicker"}}
+      {{#if isLive}}<span class="badge live"><span class="live-dot"></span> {{localize "IMMERSIVE_SCENES.Status.Live"}}</span>{{/if}}
+      {{#if isPreview}}<span class="badge"><i class="fa-solid fa-eye" inert></i> {{localize "IMMERSIVE_SCENES.Status.Previewing"}}</span>{{/if}}
+    </span>
+    <h2 class="banner-title">{{scene.name}}</h2>
+    <span class="banner-stats">
+      <span><i class="{{banner.modeIcon}}" inert></i> {{banner.modeLabel}}</span>
+      <span><i class="fa-solid fa-image" inert></i> {{banner.backgrounds}}</span>
+      <span><i class="fa-solid fa-users" inert></i> {{banner.cast}}</span>
+      {{#if banner.shots}}<span><i class="fa-solid fa-video" inert></i> {{banner.shots}}</span>{{/if}}
+    </span>
+  </div>
+  <div class="banner-actions">
+    {{#if isPreview}}
+    <button type="button" class="is-btn" data-action="endPreview"><i class="fa-solid fa-eye-slash" inert></i> {{localize "IMMERSIVE_SCENES.Actions.EndPreview"}}</button>
+    {{else}}
+    <button type="button" class="is-btn" data-action="preview"><i class="fa-solid fa-eye" inert></i> {{localize "IMMERSIVE_SCENES.Library.Inspector.Preview"}}</button>
+    {{/if}}
+    {{#if canControl}}
+    {{#if isLive}}
+    <button type="button" class="is-btn danger" data-action="stopLive"><i class="fa-solid fa-stop" inert></i> {{localize "IMMERSIVE_SCENES.Actions.Stop"}}</button>
+    {{else}}
+    <button type="button" class="is-btn primary" data-action="broadcast"><i class="fa-solid fa-tower-broadcast" inert></i> {{localize "IMMERSIVE_SCENES.Actions.Broadcast"}}</button>
+    {{/if}}
+    {{/if}}
+  </div>
+</header>

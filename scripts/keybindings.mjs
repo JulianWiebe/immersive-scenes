@@ -8,6 +8,7 @@ import LiveController from "./live/live-controller.mjs";
 import StageDirector from "./canvas/director.mjs";
 import CanvasEditing from "./canvas/canvas-editing.mjs";
 import { toggleDock } from "./apps/live-dock.mjs";
+import { toggleLibrary } from "./apps/library.mjs";
 import { isCharacterOwner } from "./data/permissions.mjs";
 import { resolveLook } from "./utils/resolve.mjs";
 import { requestCharacterAction } from "./queries.mjs";
@@ -27,6 +28,7 @@ export function registerKeybindings() {
   };
 
   register("toggleDock", { editable: [{ key: "KeyL", modifiers: ["Shift"] }], restricted: true, onDown: gm(() => toggleDock()) });
+  register("toggleLibrary", { restricted: true, onDown: gm(() => toggleLibrary()) });
   register("stopBroadcast", { restricted: true, onDown: gm(() => LiveController.stop()) });
   register("nextStep", { restricted: true, onDown: gm(() => LiveController.nextStep()) });
   register("prevStep", { restricted: true, onDown: gm(() => LiveController.prevStep()) });

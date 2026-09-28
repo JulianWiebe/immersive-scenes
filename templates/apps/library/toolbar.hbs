@@ -1,0 +1,48 @@
+<header class="lib-toolbar">
+  <div class="toolbar-row">
+    <ol class="crumbs">
+      {{#each crumbs}}
+      <li class="{{#if current}}current{{/if}}">
+        {{#if current}}
+        <span><i class="{{icon}}" inert></i> {{label}}</span>
+        {{else}}
+        <button type="button" data-action="openFolder" data-kind="{{kind}}" data-folder-id="{{folderId}}"
+                data-drop-kind="{{kind}}" data-drop-folder="{{folderId}}"><i class="{{icon}}" inert></i> {{label}}</button>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ol>
+  </div>
+  <div class="toolbar-row">
+    <label class="search">
+      <i class="fa-solid fa-magnifying-glass" inert></i>
+      <input type="search" name="search" value="{{query}}" autocomplete="off" placeholder="{{localize "IMMERSIVE_SCENES.Library.Search"}}">
+    </label>
+    <div class="toolbar-tools">
+      <label class="sort" data-tooltip="{{localize "IMMERSIVE_SCENES.Library.SortBy"}}">
+        <i class="fa-solid fa-arrow-down-wide-short" inert></i>
+        <select name="sort">{{selectOptions sortOptions selected=sort}}</select>
+      </label>
+      <div class="segmented">
+        <button type="button" class="icon fa-solid fa-grip {{#if layoutGrid}}active{{/if}}" data-action="setLayout" data-layout="grid"
+                data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Library.GridView"}}"></button>
+        <button type="button" class="icon fa-solid fa-list {{#unless layoutGrid}}active{{/unless}}" data-action="setLayout" data-layout="list"
+                data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Library.ListView"}}"></button>
+      </div>
+      {{#if canFolder}}
+      <button type="button" class="is-btn icon icon-only fa-solid fa-folder-plus" data-action="createFolder"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.CreateFolder"}}"></button>
+      {{/if}}
+    </div>
+  </div>
+  {{#if tags.length}}
+  <div class="toolbar-row tag-row">
+    {{#each tags}}
+    <button type="button" class="is-pill {{#if active}}active{{/if}}" data-action="toggleTag" data-tag="{{tag}}">{{tag}}</button>
+    {{/each}}
+    {{#if filtering}}
+    <button type="button" class="is-link" data-action="clearFilters"><i class="fa-solid fa-xmark" inert></i> {{localize "IMMERSIVE_SCENES.Library.ClearFilters"}}</button>
+    {{/if}}
+  </div>
+  {{/if}}
+</header>

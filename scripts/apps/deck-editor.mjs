@@ -17,7 +17,7 @@ export default class DeckEditor extends HandlebarsApplicationMixin(ApplicationV2
   }
 
   static DEFAULT_OPTIONS = {
-    classes: ["immersive-scenes", "deck-editor"],
+    classes: ["immersive-scenes", "deck-editor", "themed", "theme-dark"],
     tag: "form",
     window: { icon: "fa-solid fa-film", resizable: true },
     position: { width: 560, height: 640 },

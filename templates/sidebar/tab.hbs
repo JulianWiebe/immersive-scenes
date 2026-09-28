@@ -1,6 +1,28 @@
 <div class="is-root">
   {{!-- Live status --}}
   <header class="is-status">
+    {{#if live}}
+    <div class="live-card">
+      <div class="banner-art">
+        {{#if live.isVideo}}<video src="{{live.image}}" muted loop autoplay playsinline></video>
+        {{else if live.image}}<img src="{{live.image}}" alt="">{{/if}}
+      </div>
+      <div class="live-body">
+        <span class="badge live"><span class="live-dot"></span> {{localize "IMMERSIVE_SCENES.Status.Live"}}</span>
+        <strong class="title">{{live.name}}</strong>
+        <span class="sub">{{live.mode}}{{#if (gt live.steps 1)}} · {{live.step}}/{{live.steps}}{{/if}}</span>
+      </div>
+      {{#if canControl}}
+      <button type="button" class="round-btn danger icon fa-solid fa-stop" data-action="stopLive"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Stop"}}"></button>
+      {{/if}}
+    </div>
+    {{else}}
+    <div class="idle-card">
+      <i class="fa-solid fa-masks-theater" inert></i>
+      <span>{{localize "IMMERSIVE_SCENES.Status.Idle"}}</span>
+    </div>
+    {{/if}}
     {{#if preview}}
     <div class="status-row preview">
       <i class="fa-solid fa-eye" inert></i>
@@ -10,26 +32,15 @@
               data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.EndPreview"}}"></button>
     </div>
     {{/if}}
-    {{#if live}}
-    <div class="status-row live">
-      <span class="live-dot"></span>
-      <span class="label">{{localize "IMMERSIVE_SCENES.Status.Live"}}</span>
-      <span class="value">{{live.name}}{{#if (gt live.steps 1)}} <small>{{live.step}}/{{live.steps}}</small>{{/if}}</span>
-      {{#if canControl}}
-      <button type="button" class="icon fa-solid fa-stop" data-action="stopLive"
-              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Stop"}}"></button>
-      {{/if}}
-    </div>
-    {{else}}
-    <div class="status-row idle">
-      <i class="fa-solid fa-masks-theater" inert></i>
-      <span class="label">{{localize "IMMERSIVE_SCENES.Status.Idle"}}</span>
-    </div>
-    {{/if}}
     {{#if canControl}}
-    <button type="button" class="open-dock" data-action="openDock">
-      <i class="fa-solid fa-sliders" inert></i> {{localize "IMMERSIVE_SCENES.Actions.OpenDock"}}
-    </button>
+    <div class="launch-row">
+      <button type="button" class="is-btn accent" data-action="openLibrary">
+        <i class="fa-solid fa-book-open" inert></i> {{localize "IMMERSIVE_SCENES.Actions.OpenLibrary"}}
+      </button>
+      <button type="button" class="is-btn" data-action="openDock">
+        <i class="fa-solid fa-sliders" inert></i> {{localize "IMMERSIVE_SCENES.Dock.Title"}}
+      </button>
+    </div>
     {{/if}}
   </header>
 
@@ -43,13 +54,19 @@
   </nav>
 
   <div class="is-toolbar">
-    <div class="action-buttons flexrow">
-      <button type="button" data-action="createEntry"><i class="fa-solid fa-plus" inert></i> {{library.createLabel}}</button>
-      <button type="button" data-action="createFolder"><i class="fa-solid fa-folder-plus" inert></i> {{localize "IMMERSIVE_SCENES.Actions.CreateFolder"}}</button>
+    <div class="create-row">
+      <button type="button" class="is-btn primary" data-action="createEntry">
+        <i class="fa-solid fa-plus" inert></i> {{library.createLabel}}
+      </button>
+      <button type="button" class="is-btn icon icon-only fa-solid fa-folder-plus" data-action="createFolder"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.CreateFolder"}}"></button>
     </div>
     <search class="flexrow">
-      <input type="search" name="search" value="{{library.query}}" autocomplete="off"
-             placeholder="{{localize "IMMERSIVE_SCENES.Library.Search"}}">
+      <label class="search">
+        <i class="fa-solid fa-magnifying-glass" inert></i>
+        <input type="search" name="search" value="{{library.query}}" autocomplete="off"
+               placeholder="{{localize "IMMERSIVE_SCENES.Library.Search"}}">
+      </label>
       {{#if library.supportsFavorites}}
       <button type="button" class="inline-control icon fa-solid fa-star {{#if library.favorites}}active{{/if}}"
               data-action="toggleFavorites" data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Library.FavoritesOnly"}}"></button>
@@ -81,7 +98,7 @@
 
   {{#if myCharacters.length}}
   <div class="player-content">
-    <h4 class="divider">{{localize "IMMERSIVE_SCENES.Player.MyCharacters"}}</h4>
+    <h4 class="section-heading">{{localize "IMMERSIVE_SCENES.Player.MyCharacters"}}</h4>
     {{#each myCharacters}}
     <section class="my-character {{#if onStage}}on-stage{{/if}}" data-character-id="{{id}}">
       <header>

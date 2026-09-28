@@ -11,19 +11,14 @@ import { buildTree, matchesFilter, collectTags } from "../utils/tree.mjs";
 import { resolveLook, lookImage } from "../utils/resolve.mjs";
 import { requestCharacterAction } from "../queries.mjs";
 import {
-  t, promptText, confirmDelete, getUiState, setUiState, sceneThumb, isVideoPath, getDragData
-} from "./helpers.mjs";
+  KINDS, openEditor, decorateRecord, createFolder, createRecord, createRecordContextMenu, createFolderContextMenu,
+  handleLibraryDrop, activateCardDrag
+} from "./library-shared.mjs";
+import { openLibrary } from "./library.mjs";
+import { t, getUiState, setUiState, sceneThumb, isVideoPath, getDragData } from "./helpers.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { AbstractSidebarTab } = foundry.applications.sidebar;
-
-const KINDS = {
-  scenes: { collection: "scenes", folderType: "scene", icon: "fa-solid fa-image" },
-  characters: { collection: "characters", folderType: "character", icon: "fa-solid fa-user" },
-  decks: { collection: "decks", folderType: "deck", icon: "fa-solid fa-film" }
-};
-
-const MODE_ICONS = { token: "fa-solid fa-circle-user", hero: "fa-solid fa-person", cast: "fa-solid fa-layer-group" };
 
 export default class ImmersiveSidebarTab extends HandlebarsApplicationMixin(AbstractSidebarTab) {
   constructor(options) {
@@ -49,6 +44,7 @@ export default class ImmersiveSidebarTab extends HandlebarsApplicationMixin(Abst
       stopLive: ImmersiveSidebarTab.#onStopLive,
       stopPreview: ImmersiveSidebarTab.#onStopPreview,
       openDock: ImmersiveSidebarTab.#onOpenDock,
+      openLibrary: ImmersiveSidebarTab.#onOpenLibrary,
       playDeck: ImmersiveSidebarTab.#onPlayDeck,
       setLook: ImmersiveSidebarTab.#onSetLook,
       editBorder: ImmersiveSidebarTab.#onEditBorder
@@ -86,7 +82,12 @@ export default class ImmersiveSidebarTab extends HandlebarsApplicationMixin(Abst
     Object.assign(context, {
       isGM: game.user.isGM,
       canControl: LiveController.canControl,
-      live: liveScene ? { name: liveScene.name, id: liveScene.id, step: live.step + 1, steps: liveScene.backgrounds.length } : null,
+      live: liveScene ? {
+        name: liveScene.name, id: liveScene.id, step: live.step + 1, steps: liveScene.backgrounds.length,
+        image: liveScene.backgrounds[live.step]?.src || sceneThumb(liveScene),
+        isVideo: isVideoPath(liveScene.backgrounds[live.step]?.src || sceneThumb(liveScene)),
+        mode: t(`Mode.${live.mode ?? liveScene.mode}`)
+      } : null,
       preview: preview ? { name: LibraryStore.getScene(preview.sceneId)?.name ?? "?" } : null
     });
     if ( context.canControl ) this.#prepareLibrary(context, live);
@@ -100,7 +101,7 @@ export default class ImmersiveSidebarTab extends HandlebarsApplicationMixin(Abst
     const records = LibraryStore.list(collection);
     const folders = LibraryStore.list("folders").filter(f => f.type === folderType);
     const expanded = new Set(getUiState(`sidebar.expanded.${kind}`, []));
-    const decorate = record => this.#decorate(kind, record, live);
+    const decorate = record => decorateRecord(kind, record, live);
     const decorateNode = node => ({
       ...node,
       expanded: expanded.has(node.folder.id),
@@ -114,59 +115,14 @@ export default class ImmersiveSidebarTab extends HandlebarsApplicationMixin(Abst
       tabs: Object.entries(KINDS).map(([id, k]) => ({
         id, icon: k.icon, label: t(`Library.Tabs.${id}`), active: id === kind
       })),
-      createLabel: t(`Library.Create.${kind}`),
+      createLabel: t(`Library.New.${kind}`),
       folders: tree.children.map(decorateNode),
       items: tree.items.map(decorate),
       empty: !records.length,
       tags: tags.map(tag => ({ tag, active: this.#filter.tags.includes(tag) })),
       favorites: this.#filter.favorites,
       query: this.#filter.query,
-      supportsFavorites: kind === "scenes"
-    };
-  }
-
-  #decorate(kind, record, live) {
-    const base = {
-      id: record.id,
-      kind,
-      name: record.name,
-      tags: record.tags ?? [],
-      searchTags: (record.tags ?? []).join(",").toLowerCase(),
-      favorite: !!record.favorite
-    };
-    if ( kind === "scenes" ) {
-      const thumb = sceneThumb(record);
-      return {
-        ...base,
-        thumb,
-        isVideo: isVideoPath(thumb),
-        modeIcon: MODE_ICONS[record.mode],
-        modeLabel: t(`Mode.${record.mode}`),
-        live: live.active && live.sceneId === record.id,
-        steps: record.backgrounds.length > 1 ? record.backgrounds.length : 0,
-        castCount: record.cast.length
-      };
-    }
-    if ( kind === "characters" ) {
-      const look = resolveLook(record);
-      const thumb = lookImage(look, "token") || actorImage(record);
-      return {
-        ...base,
-        thumb,
-        isVideo: isVideoPath(thumb),
-        looks: record.looks.length,
-        linked: !!record.actorUuid,
-        round: true
-      };
-    }
-    const first = LibraryStore.getScene(record.items[0]?.sceneId);
-    const thumb = first ? sceneThumb(first) : "";
-    return {
-      ...base,
-      thumb,
-      isVideo: isVideoPath(thumb),
-      slides: record.items.length,
-      playing: live.deck?.id === record.id
+      supportsFavorites: true
     };
   }
 
@@ -259,54 +215,8 @@ export default class ImmersiveSidebarTab extends HandlebarsApplicationMixin(Abst
   /* -------------------------------------------- */
 
   #createContextMenus() {
-    const ContextMenu = foundry.applications.ux.ContextMenu.implementation;
-    const record = li => ({ kind: li.dataset.kind, id: li.dataset.id });
-    const scene = li => li.dataset.kind === "scenes";
-    const menu = [
-      { label: "IMMERSIVE_SCENES.Actions.Broadcast", icon: "fa-solid fa-tower-broadcast", visible: scene,
-        onClick: (e, li) => LiveController.broadcast(li.dataset.id) },
-      { label: "IMMERSIVE_SCENES.Actions.Preview", icon: "fa-solid fa-eye", visible: scene,
-        onClick: (e, li) => StageDirector.startPreview(li.dataset.id) },
-      { label: "IMMERSIVE_SCENES.Actions.Edit", icon: "fa-solid fa-pen-to-square",
-        onClick: (e, li) => openEditor(record(li)) },
-      { label: "IMMERSIVE_SCENES.Actions.ToggleFavorite", icon: "fa-solid fa-star", visible: scene,
-        onClick: (e, li) => {
-          const s = LibraryStore.getScene(li.dataset.id);
-          return LibraryStore.update("scenes", s.id, { favorite: !s.favorite });
-        } },
-      { label: "IMMERSIVE_SCENES.Actions.AddToLive", icon: "fa-solid fa-user-plus",
-        visible: li => li.dataset.kind === "characters" && StageDirector.live.active,
-        onClick: (e, li) => LibraryStore.addToCast(StageDirector.live.sceneId, li.dataset.id) },
-      { label: "IMMERSIVE_SCENES.Actions.Duplicate", icon: "fa-solid fa-copy",
-        onClick: (e, li) => LibraryStore.duplicate(KINDS[li.dataset.kind].collection, li.dataset.id) },
-      { label: "IMMERSIVE_SCENES.Actions.RemoveFromFolder", icon: "fa-solid fa-folder-minus",
-        visible: li => !!li.closest(".lib-folder"),
-        onClick: (e, li) => LibraryStore.update(KINDS[li.dataset.kind].collection, li.dataset.id, { folder: null }) },
-      { label: "IMMERSIVE_SCENES.Actions.Delete", icon: "fa-solid fa-trash",
-        onClick: async (e, li) => {
-          const { collection } = KINDS[li.dataset.kind];
-          const r = LibraryStore.collection(collection)[li.dataset.id];
-          if ( r && await confirmDelete(r.name) ) await LibraryStore.delete(collection, r.id);
-        } }
-    ];
-    new ContextMenu(this.element, ".is-card", menu, { jQuery: false, fixed: true });
-
-    const folderMenu = [
-      { label: "IMMERSIVE_SCENES.Actions.Rename", icon: "fa-solid fa-i-cursor",
-        onClick: async (e, header) => {
-          const folder = LibraryStore.getFolder(header.dataset.folderId);
-          const name = await promptText({ title: t("Actions.Rename"), label: t("Fields.Name"), value: folder.name });
-          if ( name ) await LibraryStore.update("folders", folder.id, { name });
-        } },
-      { label: "IMMERSIVE_SCENES.Actions.CreateSubfolder", icon: "fa-solid fa-folder-plus",
-        onClick: (e, header) => this.#createFolder(header.dataset.folderId) },
-      { label: "IMMERSIVE_SCENES.Actions.Delete", icon: "fa-solid fa-trash",
-        onClick: async (e, header) => {
-          const folder = LibraryStore.getFolder(header.dataset.folderId);
-          if ( folder && await confirmDelete(folder.name) ) await LibraryStore.delete("folders", folder.id);
-        } }
-    ];
-    new ContextMenu(this.element, ".lib-folder > header", folderMenu, { jQuery: false, fixed: true });
+    createRecordContextMenu(this.element, ".is-card");
+    createFolderContextMenu(this.element, ".lib-folder > header", folderId => this.#setExpanded(folderId, true));
   }
 
   /* -------------------------------------------- */
@@ -314,12 +224,7 @@ export default class ImmersiveSidebarTab extends HandlebarsApplicationMixin(Abst
   /* -------------------------------------------- */
 
   #activateDragDrop(html) {
-    for ( const card of html.querySelectorAll(".is-card[draggable=true]") ) {
-      card.addEventListener("dragstart", event => {
-        const data = { type: `${MODULE_ID}.${card.dataset.kind}`, id: card.dataset.id };
-        event.dataTransfer.setData("text/plain", JSON.stringify(data));
-      });
-    }
+    activateCardDrag(html, ".is-card[draggable=true]");
     const content = html.querySelector(".library-content");
     if ( !content ) return;
     content.addEventListener("dragover", event => event.preventDefault());
@@ -331,30 +236,7 @@ export default class ImmersiveSidebarTab extends HandlebarsApplicationMixin(Abst
     const data = getDragData(event);
     if ( !data ) return;
     const folderId = event.target.closest(".lib-folder")?.dataset.folderId ?? null;
-
-    // Library entries dropped on folders are moved there
-    const [ns, kind] = String(data.type ?? "").split(".");
-    if ( ns === MODULE_ID && KINDS[kind] ) {
-      if ( kind !== this.kind ) return;
-      return LibraryStore.update(KINDS[kind].collection, data.id, { folder: folderId });
-    }
-
-    // Actors become characters
-    if ( data.type === "Actor" ) {
-      const actor = await fromUuid(data.uuid);
-      if ( !actor ) return;
-      if ( actor.pack ) return ui.notifications.warn("IMMERSIVE_SCENES.Warnings.CompendiumActor", { localize: true });
-      const character = await LibraryStore.createCharacterFromActor(actor);
-      if ( folderId && this.kind === "characters" ) await LibraryStore.update("characters", character.id, { folder: folderId });
-      return;
-    }
-
-    // Tiles or images (e.g. from the file browser) become scenes
-    const src = data.texture?.src ?? data.src ?? null;
-    if ( src && this.kind === "scenes" ) {
-      const name = decodeURIComponent(src.split("/").pop().replace(/\.[^.]+$/, ""));
-      await LibraryStore.create("scenes", { name, folder: folderId, backgrounds: [{ src }] });
-    }
+    await handleLibraryDrop(data, { kind: this.kind, folderId });
   }
 
   /* -------------------------------------------- */
@@ -369,21 +251,12 @@ export default class ImmersiveSidebarTab extends HandlebarsApplicationMixin(Abst
 
   static async #onCreateEntry() {
     const kind = this.kind;
-    const record = await LibraryStore.create(KINDS[kind].collection, {
-      name: t(`Library.New.${kind}`)
-    });
+    const record = await createRecord(kind);
     openEditor({ kind, id: record.id });
   }
 
   static async #onCreateFolder() {
-    return this.#createFolder(null);
-  }
-
-  async #createFolder(parent) {
-    const name = await promptText({ title: t("Actions.CreateFolder"), label: t("Fields.Name") });
-    if ( !name ) return;
-    await LibraryStore.create("folders", { name, parent, type: KINDS[this.kind].folderType });
-    if ( parent ) await this.#setExpanded(parent, true);
+    return createFolder(this.kind, null);
   }
 
   static async #onToggleFolder(event, target) {
@@ -444,6 +317,10 @@ export default class ImmersiveSidebarTab extends HandlebarsApplicationMixin(Abst
     return game.modules.get(MODULE_ID).api.openDock?.();
   }
 
+  static #onOpenLibrary() {
+    return openLibrary();
+  }
+
   static #onPlayDeck(event, target) {
     const id = target.closest("[data-id]").dataset.id;
     return game.modules.get(MODULE_ID).api.playDeck?.(id);
@@ -458,19 +335,6 @@ export default class ImmersiveSidebarTab extends HandlebarsApplicationMixin(Abst
     const characterId = target.closest("[data-character-id]").dataset.characterId;
     return game.modules.get(MODULE_ID).api.openBorderEditor?.(characterId);
   }
-}
-
-/** Open the editor for a library record. */
-export function openEditor({ kind, id }) {
-  const api = game.modules.get(MODULE_ID).api;
-  if ( kind === "scenes" ) return api.editScene(id);
-  if ( kind === "characters" ) return api.editCharacter(id);
-  if ( kind === "decks" ) return api.editDeck?.(id);
-}
-
-function actorImage(character) {
-  if ( !character.actorUuid ) return "";
-  return fromUuidSync(character.actorUuid, { strict: false })?.img ?? "";
 }
 
 /**

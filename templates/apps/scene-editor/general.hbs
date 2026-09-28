@@ -11,10 +11,18 @@
     <label>{{localize "IMMERSIVE_SCENES.Fields.Folder"}}</label>
     <div class="form-fields"><select name="folder">{{selectOptions folderOptions selected=scene.folder}}</select></div>
   </div>
-  <div class="form-group">
+  <div class="form-group stacked">
     <label>{{localize "IMMERSIVE_SCENES.Fields.Mode"}}</label>
-    <div class="form-fields"><select name="mode">{{selectOptions modeOptions selected=scene.mode}}</select></div>
-    <p class="hint">{{localize "IMMERSIVE_SCENES.SceneEditor.ModeHint"}}</p>
+    <div class="choice-cards">
+      {{#each modeChoices}}
+      <label class="choice-card {{#if checked}}checked{{/if}}">
+        <input type="radio" name="mode" value="{{id}}" {{checked checked}}>
+        <i class="{{icon}}" inert></i>
+        <strong>{{label}}</strong>
+        <span>{{hint}}</span>
+      </label>
+      {{/each}}
+    </div>
   </div>
   {{#if isCastMode}}
   <div class="form-group">

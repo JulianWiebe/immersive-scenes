@@ -20,10 +20,10 @@ export default class CharacterEditor extends HandlebarsApplicationMixin(Applicat
   }
 
   static DEFAULT_OPTIONS = {
-    classes: ["immersive-scenes", "character-editor"],
+    classes: ["immersive-scenes", "character-editor", "themed", "theme-dark"],
     tag: "form",
     window: { icon: "fa-solid fa-user-pen", resizable: true },
-    position: { width: 640, height: 720 },
+    position: { width: 680, height: 760 },
     form: { handler: CharacterEditor.#onSubmit, submitOnChange: true, closeOnSubmit: false },
     actions: {
       addLook: CharacterEditor.#onAddLook,
@@ -38,6 +38,7 @@ export default class CharacterEditor extends HandlebarsApplicationMixin(Applicat
   };
 
   static PARTS = {
+    banner: { template: template("apps/character-editor/banner.hbs") },
     tabs: { template: "templates/generic/tab-navigation.hbs" },
     general: { template: template("apps/character-editor/general.hbs") },
     looks: { template: template("apps/character-editor/looks.hbs"), scrollable: [""] },
@@ -99,8 +100,15 @@ export default class CharacterEditor extends HandlebarsApplicationMixin(Applicat
       })),
       borderStyles: Object.fromEntries(BORDER_STYLES.map(s => [s, t(`Border.${s}`)])),
       borderShapes: Object.fromEntries(["circle", "rounded", "square"].map(s => [s, t(`Shape.${s}`)])),
-      borderPreview: current ? lookImage(current, "token") : ""
+      borderPreview: current ? lookImage(current, "token") : "",
+      banner: {
+        sprite: current ? lookImage(current, "hero") : (actor?.img ?? ""),
+        lookName: current?.name ?? "",
+        looks: character.looks.length,
+        border: t(`Border.${character.border.style}`)
+      }
     });
+    context.banner.spriteIsVideo = isVideoPath(context.banner.sprite);
     return context;
   }
 

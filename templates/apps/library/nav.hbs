@@ -1,0 +1,64 @@
+<nav class="lib-nav">
+  <div class="nav-scroll">
+    {{#each sections}}
+    <section class="nav-section">
+      <h3 class="nav-heading">{{label}}</h3>
+      <ul class="nav-list">
+        {{#each views}}
+        <li>
+          <button type="button" class="nav-item {{#if active}}active{{/if}}" data-action="showKind" data-kind="{{../kind}}"
+                  data-view="{{view}}" {{#if (eq view "all")}}data-drop-kind="{{../kind}}" data-drop-folder=""{{/if}}>
+            <i class="{{icon}}" inert></i><span class="label">{{label}}</span><span class="count">{{count}}</span>
+          </button>
+        </li>
+        {{/each}}
+        {{#each folders}}
+        <li>
+          <button type="button" class="nav-item folder {{#if active}}active{{/if}}" style="--depth: {{depth}}"
+                  data-action="openFolder" data-kind="{{../kind}}" data-folder-id="{{id}}" data-context="folder"
+                  data-drop-kind="{{../kind}}" data-drop-folder="{{id}}">
+            <i class="fa-solid {{#if active}}fa-folder-open{{else}}fa-folder{{/if}}" {{#if color}}style="color: {{color}}"{{/if}} inert></i>
+            <span class="label">{{name}}</span><span class="count">{{count}}</span>
+          </button>
+        </li>
+        {{/each}}
+      </ul>
+    </section>
+    {{/each}}
+
+    <section class="nav-section">
+      <h3 class="nav-heading">
+        {{localize "IMMERSIVE_SCENES.Library.Tabs.decks"}}
+        <button type="button" class="nav-add icon fa-solid fa-plus" data-action="create" data-kind="decks"
+                data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Library.New.decks"}}"></button>
+      </h3>
+      <ul class="nav-list">
+        {{#each decks}}
+        <li>
+          <button type="button" class="nav-item deck {{#if active}}active{{/if}}" data-action="select" data-kind="decks"
+                  data-id="{{id}}" data-drop-deck="{{id}}">
+            <i class="fa-solid {{#if playing}}fa-circle-play{{else}}fa-film{{/if}}" inert></i>
+            <span class="label">{{name}}<small>{{localize "IMMERSIVE_SCENES.Library.SlideCount" count=slides}}</small></span>
+            {{#if playing}}<span class="live-dot"></span>{{/if}}
+          </button>
+        </li>
+        {{else}}
+        <li class="nav-empty">{{localize "IMMERSIVE_SCENES.Library.NoDecks"}}</li>
+        {{/each}}
+      </ul>
+    </section>
+  </div>
+
+  <footer class="nav-footer">
+    {{#if liveScene}}
+    <div class="nav-live" data-tooltip="{{localize "IMMERSIVE_SCENES.Status.Live"}}">
+      <span class="live-dot"></span><span class="label">{{liveScene.name}}</span>
+      <button type="button" class="icon fa-solid fa-stop" data-action="stopLive"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Stop"}}"></button>
+    </div>
+    {{/if}}
+    <button type="button" class="is-btn ghost" data-action="openDock">
+      <i class="fa-solid fa-sliders" inert></i> {{localize "IMMERSIVE_SCENES.Actions.OpenDock"}}
+    </button>
+  </footer>
+</nav>

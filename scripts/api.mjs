@@ -6,6 +6,7 @@ import SceneEditor from "./apps/scene-editor.mjs";
 import CharacterEditor from "./apps/character-editor.mjs";
 import { requestCharacterAction } from "./queries.mjs";
 import { openDock, toggleDock } from "./apps/live-dock.mjs";
+import { openLibrary, toggleLibrary } from "./apps/library.mjs";
 import CanvasEditing from "./canvas/canvas-editing.mjs";
 import { openBorderEditor } from "./apps/border-editor.mjs";
 import DeckEditor from "./apps/deck-editor.mjs";
@@ -51,6 +52,12 @@ export function createApi() {
 
     /** End the local preview. */
     stopPreview: () => StageDirector.stopPreview(),
+
+    /** Open or focus the library window (GM). */
+    openLibrary,
+
+    /** Open or close the library window (GM). */
+    toggleLibrary,
 
     /** Open or focus the GM Live Dock. */
     openDock,

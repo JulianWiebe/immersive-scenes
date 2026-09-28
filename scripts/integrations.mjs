@@ -5,6 +5,7 @@ import { SIDEBAR_TAB } from "./constants.mjs";
 import LibraryStore from "./data/library-store.mjs";
 import LiveController from "./live/live-controller.mjs";
 import { toggleDock } from "./apps/live-dock.mjs";
+import { toggleLibrary } from "./apps/library.mjs";
 
 export function registerIntegrations() {
   Hooks.on("getSceneControlButtons", controls => {
@@ -16,9 +17,17 @@ export function registerIntegrations() {
         name: "immersiveDock",
         order,
         title: "IMMERSIVE_SCENES.Dock.Title",
-        icon: "fa-solid fa-masks-theater",
+        icon: "fa-solid fa-sliders",
         button: true,
         onChange: () => toggleDock()
+      };
+      tools.immersiveLibrary = {
+        name: "immersiveLibrary",
+        order: order + 1,
+        title: "IMMERSIVE_SCENES.Actions.OpenLibrary",
+        icon: "fa-solid fa-masks-theater",
+        button: true,
+        onChange: () => toggleLibrary()
       };
     }
     else {

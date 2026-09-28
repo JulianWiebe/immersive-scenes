@@ -1,0 +1,40 @@
+<section class="lib-grid-part">
+  <div class="grid-scroll">
+    <ol class="lib-grid kind-{{kind}} {{#if layoutGrid}}as-grid{{else}}as-list{{/if}}">
+      {{#if up}}
+      <li class="lib-tile up" data-action="openFolder" data-folder-id="{{up.folderId}}" data-drop-folder="{{up.folderId}}">
+        <div class="tile-art"><i class="fa-solid fa-arrow-turn-up" inert></i></div>
+        <div class="card-body"><span class="card-name">..</span></div>
+      </li>
+      {{/if}}
+      {{#each folderTiles}}
+      <li class="lib-tile folder" data-action="openFolder" data-folder-id="{{id}}" data-drop-folder="{{id}}" data-context="folder">
+        <div class="tile-art" {{#if color}}style="--folder-color: {{color}}"{{/if}}>
+          {{#if previews.length}}
+          <div class="tile-stack">
+            {{#each previews}}<img src="{{this}}" alt="" loading="lazy">{{/each}}
+          </div>
+          {{/if}}
+          <i class="fa-solid fa-folder" inert></i>
+        </div>
+        <div class="card-body">
+          <span class="card-name">{{name}}</span>
+          <span class="card-meta">{{localize "IMMERSIVE_SCENES.Library.EntryCount" count=count}}</span>
+        </div>
+      </li>
+      {{/each}}
+      {{#each cards}}
+      {{> "modules/immersive-scenes/templates/apps/library/card.hbs"}}
+      {{/each}}
+    </ol>
+    {{#if empty}}
+    <div class="lib-empty">
+      <i class="fa-solid fa-masks-theater" inert></i>
+      <p>{{emptyText}}</p>
+    </div>
+    {{/if}}
+  </div>
+  <button type="button" class="is-btn primary create-fab" data-action="create">
+    <i class="{{createIcon}}" inert></i> {{createLabel}}
+  </button>
+</section>

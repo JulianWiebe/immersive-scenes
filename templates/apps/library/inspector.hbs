@@ -1,0 +1,234 @@
+<aside class="lib-inspector">
+  {{#with inspector}}
+  {{#if empty}}
+  <div class="inspector-empty">
+    <i class="fa-solid fa-hand-pointer" inert></i>
+    <p>{{hint}}</p>
+  </div>
+  {{else}}
+  <header class="inspector-head" data-kind="{{kind}}" data-id="{{id}}">
+    <i class="fa-solid fa-circle-info" inert></i>
+    <h2 class="inspector-title">{{name}}</h2>
+    <button type="button" class="icon fa-star {{#if favorite}}fa-solid on{{else}}fa-regular{{/if}}" data-action="favorite"
+            data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.ToggleFavorite"}}"></button>
+    <button type="button" class="icon fa-solid fa-xmark" data-action="deselect"
+            data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Library.Inspector.Close"}}"></button>
+  </header>
+
+  <div class="inspector-scroll">
+  {{#if (eq kind "scenes")}}
+    <figure class="inspector-art" style="--bg: {{color}}">
+      {{#if isVideo}}<video src="{{image}}" muted loop autoplay playsinline></video>
+      {{else if image}}<img src="{{image}}" alt="">
+      {{else}}<i class="placeholder fa-solid fa-image" inert></i>{{/if}}
+      <figcaption>
+        {{#if isLive}}<span class="badge live"><span class="live-dot"></span> {{localize "IMMERSIVE_SCENES.Status.Live"}}</span>{{/if}}
+        {{#if isPreview}}<span class="badge"><i class="fa-solid fa-eye" inert></i> {{localize "IMMERSIVE_SCENES.Status.Previewing"}}</span>{{/if}}
+        <span class="spacer"></span>
+        <span class="badge"><i class="{{modeIcon}}" inert></i> {{modeLabel}}</span>
+        {{#if stepLabel}}<span class="badge"><i class="fa-solid fa-layer-group" inert></i> {{stepLabel}}</span>{{/if}}
+      </figcaption>
+    </figure>
+
+    {{#if steps}}
+    <ol class="step-strip">
+      {{#each steps}}
+      <li class="{{#if active}}active{{/if}}">
+        <button type="button" data-action="setStep" data-index="{{index}}" data-tooltip="{{name}}">
+          {{#if isVideo}}<video src="{{src}}" muted playsinline></video>{{else if src}}<img src="{{src}}" alt="">{{/if}}
+          <span class="number">{{number}}</span>
+        </button>
+      </li>
+      {{/each}}
+    </ol>
+    {{/if}}
+
+    <div class="inspector-actions">
+      {{#if isLive}}
+      <button type="button" class="is-btn danger wide" data-action="stopLive"><i class="fa-solid fa-stop" inert></i> {{localize "IMMERSIVE_SCENES.Actions.Stop"}}</button>
+      {{else}}
+      <button type="button" class="is-btn primary wide" data-action="broadcast"><i class="fa-solid fa-tower-broadcast" inert></i> {{localize "IMMERSIVE_SCENES.Actions.Broadcast"}}</button>
+      {{/if}}
+      <div class="action-row">
+        {{#if isPreview}}
+        <button type="button" class="is-btn" data-action="endPreview"><i class="fa-solid fa-eye-slash" inert></i> {{localize "IMMERSIVE_SCENES.Actions.EndPreview"}}</button>
+        {{else}}
+        <button type="button" class="is-btn" data-action="preview"><i class="fa-solid fa-eye" inert></i> {{localize "IMMERSIVE_SCENES.Library.Inspector.Preview"}}</button>
+        {{/if}}
+        <button type="button" class="is-btn" data-action="edit"><i class="fa-solid fa-pen" inert></i> {{localize "IMMERSIVE_SCENES.Actions.Edit"}}</button>
+      </div>
+      <button type="button" class="is-btn ghost" data-action="addBackground"><i class="fa-solid fa-layer-group" inert></i> {{sequenceLabel}}</button>
+    </div>
+
+    <section class="inspector-section">
+      <h4 class="section-heading">{{localize "IMMERSIVE_SCENES.Fields.Mode"}}</h4>
+      <div class="segmented wide">
+        {{#each modes}}
+        <button type="button" class="{{#if active}}active{{/if}}" data-action="setMode" data-mode="{{id}}"><i class="{{icon}}" inert></i> {{label}}</button>
+        {{/each}}
+      </div>
+    </section>
+
+    <section class="inspector-section">
+      <h4 class="section-heading">{{localize "IMMERSIVE_SCENES.Library.Cast"}} <span class="aside">{{castCount}}</span></h4>
+      <div class="cast-zone {{#unless cast.length}}empty{{/unless}}">
+        {{#each cast}}
+        <div class="cast-chip {{#if hidden}}is-hidden{{/if}}" data-entry-id="{{entryId}}" data-tooltip="{{name}}{{#if lookName}} · {{lookName}}{{/if}}">
+          <span class="avatar">
+            {{#if isVideo}}<video src="{{thumb}}" muted loop autoplay playsinline></video>
+            {{else if thumb}}<img src="{{thumb}}" alt="">{{else}}<i class="fa-solid fa-user" inert></i>{{/if}}
+          </span>
+          <span class="chip-name">{{name}}</span>
+          <button type="button" class="chip-remove icon fa-solid fa-xmark" data-action="removeCast"
+                  aria-label="{{localize "IMMERSIVE_SCENES.Actions.Remove"}}"></button>
+        </div>
+        {{else}}
+        <p class="zone-hint"><i class="fa-solid fa-user-plus" inert></i> {{localize "IMMERSIVE_SCENES.Library.Inspector.CastHint"}}</p>
+        {{/each}}
+        <button type="button" class="add-chip icon fa-solid {{#if castPicker}}fa-xmark{{else}}fa-plus{{/if}}" data-action="toggleCastPicker"
+                data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.SceneEditor.AddCast"}}"></button>
+      </div>
+      {{#if castPicker}}
+      <div class="cast-picker">
+        {{#each addable}}
+        <button type="button" data-action="addCast" data-character-id="{{id}}">
+          <span class="avatar">{{#if isVideo}}<video src="{{thumb}}" muted playsinline></video>{{else if thumb}}<img src="{{thumb}}" alt="">{{else}}<i class="fa-solid fa-user" inert></i>{{/if}}</span>
+          <span>{{name}}</span>
+        </button>
+        {{else}}
+        <p class="hint">{{localize "IMMERSIVE_SCENES.Library.Inspector.NoMoreCharacters"}}</p>
+        {{/each}}
+      </div>
+      {{/if}}
+    </section>
+
+    <section class="inspector-section">
+      <h4 class="section-heading">{{localize "IMMERSIVE_SCENES.Library.Inspector.Details"}}</h4>
+      <dl class="facts">
+        {{#if folderName}}<dt>{{localize "IMMERSIVE_SCENES.Fields.Folder"}}</dt><dd>{{folderName}}</dd>{{/if}}
+        <dt>{{localize "IMMERSIVE_SCENES.Fields.Layout"}}</dt><dd>{{layoutLabel}}</dd>
+        <dt>{{localize "IMMERSIVE_SCENES.Library.Inspector.Transition"}}</dt><dd>{{transitionLabel}}</dd>
+        {{#if shots}}<dt>{{localize "IMMERSIVE_SCENES.Library.Inspector.Shots"}}</dt><dd>{{shots}}</dd>{{/if}}
+      </dl>
+      {{#if tags.length}}<div class="tag-list">{{#each tags}}<span class="is-pill small">{{this}}</span>{{/each}}</div>{{/if}}
+      {{#if notes}}<p class="notes">{{notes}}</p>{{/if}}
+    </section>
+  {{/if}}
+
+  {{#if (eq kind "characters")}}
+    <figure class="inspector-art character">
+      {{#if sprite}}
+        {{#if spriteIsVideo}}<video src="{{sprite}}" muted loop autoplay playsinline></video>{{else}}<img src="{{sprite}}" alt="">{{/if}}
+      {{else}}<i class="placeholder fa-solid fa-user" inert></i>{{/if}}
+      <div class="border-preview small" data-style="{{border.style}}" data-shape="{{border.shape}}"
+           style="--c1: {{border.c1}}; --c2: {{border.c2}}; --c3: {{border.c3}}; --bw: {{border.width}}; --speed: {{border.speed}}">
+        <div class="ring"></div>
+        <div class="portrait">{{#if thumb}}{{#if thumbIsVideo}}<video src="{{thumb}}" muted loop autoplay playsinline></video>{{else}}<img src="{{thumb}}" alt="">{{/if}}{{else}}<i class="fa-solid fa-user" inert></i>{{/if}}</div>
+      </div>
+      <figcaption>
+        {{#if onStage}}<span class="badge live"><span class="live-dot"></span> {{localize "IMMERSIVE_SCENES.Player.OnStage"}}</span>{{/if}}
+        <span class="spacer"></span>
+        {{#if lookName}}<span class="badge"><i class="fa-solid fa-shirt" inert></i> {{lookName}}</span>{{/if}}
+      </figcaption>
+    </figure>
+
+    <div class="inspector-actions">
+      <button type="button" class="is-btn primary wide" data-action="edit"><i class="fa-solid fa-pen" inert></i> {{localize "IMMERSIVE_SCENES.Library.Inspector.EditCharacter"}}</button>
+      <div class="action-row">
+        <button type="button" class="is-btn" data-action="editBorder"><i class="fa-solid fa-palette" inert></i> {{localize "IMMERSIVE_SCENES.Player.EditBorder"}}</button>
+        {{#if canAddToLive}}
+        <button type="button" class="is-btn" data-action="addToLive"><i class="fa-solid fa-user-plus" inert></i> {{localize "IMMERSIVE_SCENES.Actions.AddToLive"}}</button>
+        {{/if}}
+      </div>
+    </div>
+
+    <section class="inspector-section">
+      <h4 class="section-heading">{{localize "IMMERSIVE_SCENES.Library.Looks"}} <span class="aside">{{looks.length}}</span></h4>
+      {{#if looks.length}}
+      <ol class="look-strip">
+        {{#each looks}}
+        <li class="look {{#if active}}active{{/if}}">
+          <button type="button" data-action="setLook" data-look-id="{{id}}" data-tooltip="{{name}}" aria-label="{{name}}">
+            {{#if isVideo}}<video src="{{src}}" muted loop autoplay playsinline></video>
+            {{else if src}}<img src="{{src}}" alt="">{{else}}<i class="fa-solid fa-user" inert></i>{{/if}}
+          </button>
+        </li>
+        {{/each}}
+      </ol>
+      {{else}}
+      <p class="hint">{{localize "IMMERSIVE_SCENES.CharacterEditor.NoLooks"}}</p>
+      {{/if}}
+    </section>
+
+    <section class="inspector-section">
+      <h4 class="section-heading">{{localize "IMMERSIVE_SCENES.Library.Inspector.Details"}}</h4>
+      <dl class="facts">
+        <dt>{{localize "IMMERSIVE_SCENES.CharacterEditor.LinkedActor"}}</dt><dd>{{#if actorName}}{{actorName}}{{else}}—{{/if}}</dd>
+        <dt>{{localize "IMMERSIVE_SCENES.Fields.Border"}}</dt><dd>{{border.label}}</dd>
+        <dt>{{localize "IMMERSIVE_SCENES.CharacterEditor.Owners"}}</dt>
+        <dd>{{#each owners}}<span class="owner"><span class="user-dot" style="background: {{color}}"></span> {{name}}</span>{{else}}{{localize "IMMERSIVE_SCENES.Library.Inspector.GMOnly"}}{{/each}}</dd>
+      </dl>
+      {{#if tags.length}}<div class="tag-list">{{#each tags}}<span class="is-pill small">{{this}}</span>{{/each}}</div>{{/if}}
+    </section>
+
+    {{#if appearsIn.length}}
+    <section class="inspector-section">
+      <h4 class="section-heading">{{localize "IMMERSIVE_SCENES.Library.Inspector.AppearsIn"}}</h4>
+      <ul class="mini-list">
+        {{#each appearsIn}}
+        <li><button type="button" data-action="showScene" data-scene-id="{{id}}">
+          <span class="mini-thumb">{{#if isVideo}}<video src="{{thumb}}" muted playsinline></video>{{else if thumb}}<img src="{{thumb}}" alt="">{{/if}}</span>
+          <span class="label">{{name}}</span>{{#if live}}<span class="live-dot"></span>{{/if}}
+        </button></li>
+        {{/each}}
+      </ul>
+    </section>
+    {{/if}}
+  {{/if}}
+
+  {{#if (eq kind "decks")}}
+    <figure class="inspector-art deck">
+      {{#if isVideo}}<video src="{{image}}" muted loop autoplay playsinline></video>
+      {{else if image}}<img src="{{image}}" alt="">
+      {{else}}<i class="placeholder fa-solid fa-film" inert></i>{{/if}}
+      <figcaption>
+        {{#if running}}<span class="badge live"><span class="live-dot"></span> {{#if playing}}{{localize "IMMERSIVE_SCENES.Library.Inspector.Playing"}}{{else}}{{localize "IMMERSIVE_SCENES.Library.Inspector.Paused"}}{{/if}}</span>{{/if}}
+        <span class="spacer"></span>
+        <span class="badge"><i class="fa-solid fa-images" inert></i> {{slideCount}}</span>
+        <span class="badge"><i class="fa-regular fa-clock" inert></i> {{runtime}}</span>
+        {{#if loop}}<span class="badge"><i class="fa-solid fa-repeat" inert></i></span>{{/if}}
+      </figcaption>
+    </figure>
+
+    <div class="inspector-actions">
+      {{#if playing}}
+      <button type="button" class="is-btn primary wide" data-action="pauseDeck"><i class="fa-solid fa-pause" inert></i> {{localize "IMMERSIVE_SCENES.Library.Inspector.Pause"}}</button>
+      {{else}}
+      <button type="button" class="is-btn primary wide" data-action="playDeck" {{#unless slideCount}}disabled{{/unless}}><i class="fa-solid fa-play" inert></i> {{#if running}}{{localize "IMMERSIVE_SCENES.Library.Inspector.Resume"}}{{else}}{{localize "IMMERSIVE_SCENES.Actions.Play"}}{{/if}}</button>
+      {{/if}}
+      <div class="action-row">
+        {{#if running}}
+        <button type="button" class="is-btn" data-action="stopDeck"><i class="fa-solid fa-square" inert></i> {{localize "IMMERSIVE_SCENES.Library.Inspector.StopSlideshow"}}</button>
+        {{/if}}
+        <button type="button" class="is-btn" data-action="edit"><i class="fa-solid fa-pen" inert></i> {{localize "IMMERSIVE_SCENES.Actions.Edit"}}</button>
+      </div>
+    </div>
+
+    <section class="inspector-section">
+      <h4 class="section-heading">{{localize "IMMERSIVE_SCENES.Library.Inspector.Slides"}}</h4>
+      <ol class="mini-list numbered">
+        {{#each slides}}
+        <li class="{{#if active}}active{{/if}}"><button type="button" data-action="showScene" data-scene-id="{{sceneId}}">
+          <span class="mini-thumb">{{#if isVideo}}<video src="{{src}}" muted playsinline></video>{{else if src}}<img src="{{src}}" alt="">{{/if}}<span class="number">{{number}}</span></span>
+          <span class="label">{{name}}</span><span class="aside">{{duration}}s</span>
+        </button></li>
+        {{else}}
+        <li class="hint">{{localize "IMMERSIVE_SCENES.Library.DeckEmpty"}}</li>
+        {{/each}}
+      </ol>
+    </section>
+  {{/if}}
+  </div>
+  {{/if}}
+  {{/with}}
+</aside>

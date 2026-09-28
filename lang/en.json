@@ -67,7 +67,8 @@
       "Rename": "Rename",
       "Save": "Save",
       "Stop": "Stop broadcast",
-      "ToggleFavorite": "Toggle favorite"
+      "ToggleFavorite": "Toggle favorite",
+      "OpenLibrary": "Open Library"
     },
     "Status": {
       "Idle": "Nothing is live",
@@ -180,18 +181,14 @@
       "Width": "Width",
       "Z": "Order",
       "Zoom": "Zoom",
-      "Letterbox": "Letterbox"
+      "Letterbox": "Letterbox",
+      "Border": "Border"
     },
     "Library": {
       "Tabs": {
         "scenes": "Scenes",
         "characters": "Characters",
         "decks": "Slideshows"
-      },
-      "Create": {
-        "scenes": "Scene",
-        "characters": "Character",
-        "decks": "Slideshow"
       },
       "New": {
         "scenes": "New Scene",
@@ -208,7 +205,55 @@
       "Steps": "Background steps",
       "Cast": "Cast",
       "Looks": "Looks",
-      "Linked": "Linked to an actor"
+      "Linked": "Linked to an actor",
+      "All": {
+        "scenes": "All Scenes",
+        "characters": "All Characters",
+        "decks": "All Slideshows"
+      },
+      "Favorites": "Favorites",
+      "SlideCount": "{count} slides",
+      "EntryCount": "{count} entries",
+      "NoDecks": "No slideshows yet. Click + to create one.",
+      "DeckEmpty": "No slides yet. Drag scenes onto this slideshow in the list on the left.",
+      "SortBy": "Sort by",
+      "Sort": {
+        "name": "Name (A–Z)",
+        "-name": "Name (Z–A)",
+        "recent": "Recently edited"
+      },
+      "GridView": "Grid view",
+      "ListView": "List view",
+      "ClearFilters": "Clear filters",
+      "NoMatches": "Nothing matches your search.",
+      "AddedToSlideshow": "Added {scene} to {deck}.",
+      "Inspector": {
+        "Select": {
+          "scenes": "Select a scene to see its backgrounds, cast and details.",
+          "characters": "Select a character to see their looks and border.",
+          "decks": "Select a slideshow to see its slides."
+        },
+        "Close": "Close details",
+        "Preview": "Preview",
+        "AddBackground": "Add background",
+        "TurnIntoSequence": "Turn into sequence",
+        "CharacterCount": "{count} character",
+        "CharactersCount": "{count} characters",
+        "CastHint": "Drag characters here or click + to add",
+        "NoMoreCharacters": "Every character is already in the cast.",
+        "Details": "Details",
+        "Transition": "Transition",
+        "Shots": "Camera shots",
+        "EditCharacter": "Edit character",
+        "GMOnly": "Gamemaster only",
+        "AppearsIn": "Appears in",
+        "Playing": "Playing",
+        "Paused": "Paused",
+        "Pause": "Pause",
+        "Resume": "Resume",
+        "StopSlideshow": "Stop",
+        "Slides": "Slides"
+      }
     },
     "Player": {
       "MyCharacters": "My characters",
@@ -226,7 +271,6 @@
         "camera": "Camera",
         "transition": "Transitions"
       },
-      "ModeHint": "Hero: full-body sprites on a backdrop. Token: bordered portraits on a backdrop. Cast-Only: no backdrop; the cast appears over the battlemap, which stays visible and usable.",
       "ThumbHint": "Optional. Defaults to the first background.",
       "BackgroundsHint": "Add several backgrounds to create a sequence. Step through them live from the dock.",
       "NoBackgrounds": "No background: a solid color covers the battlemap.",
@@ -249,7 +293,13 @@
       "SceneTransition": "Scene transition",
       "TransitionHint": "Used when this scene starts, ends, changes display mode, or changes background.",
       "CastEntrance": "Cast entrance",
-      "LetterboxHint": "Cinematic black bars at the top and bottom of every screen while this scene is shown (fraction of the screen height). 0 = off."
+      "LetterboxHint": "Cinematic black bars at the top and bottom of every screen while this scene is shown (fraction of the screen height). 0 = off.",
+      "Kicker": "Immersive scene",
+      "ModeHints": {
+        "hero": "Full-body sprites on a backdrop, visual-novel style.",
+        "token": "Bordered portraits on a backdrop.",
+        "cast": "No backdrop. The cast appears over the battlemap."
+      }
     },
     "CharacterEditor": {
       "Title": "Immersive Character",
@@ -274,7 +324,8 @@
       "Imported": "Imported {count} looks.",
       "SetDefault": "Default look",
       "SetCurrent": "Wear this look now",
-      "Nameplate": "Nameplate"
+      "Nameplate": "Nameplate",
+      "Kicker": "Character"
     },
     "Palette": {
       "Pinned": "This cast member has a pinned look",
@@ -296,7 +347,9 @@
       "CaptureShot": "Save current view as a shot",
       "FullStage": "Full stage",
       "Slideshow": "Slideshow",
-      "NextShot": "Next shot"
+      "NextShot": "Next shot",
+      "NextScene": "Next scene",
+      "Nothing": "Nothing on stage"
     },
     "Integrations": {
       "MakeCharacter": "Immersive character"
@@ -342,6 +395,10 @@
       "cycleLook": {
         "Name": "Next look",
         "Hint": "Switch your character to their next look (the one on stage, else the one linked to your assigned actor)."
+      },
+      "toggleLibrary": {
+        "Name": "Open or close the library",
+        "Hint": "GM: open or close the Immersive Scenes library window."
       }
     }
   }

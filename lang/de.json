@@ -67,7 +67,8 @@
       "Rename": "Umbenennen",
       "Save": "Speichern",
       "Stop": "Übertragung beenden",
-      "ToggleFavorite": "Favorit umschalten"
+      "ToggleFavorite": "Favorit umschalten",
+      "OpenLibrary": "Bibliothek öffnen"
     },
     "Status": {
       "Idle": "Nichts ist live",
@@ -180,18 +181,14 @@
       "Width": "Breite",
       "Z": "Reihenfolge",
       "Zoom": "Zoom",
-      "Letterbox": "Kinobalken"
+      "Letterbox": "Kinobalken",
+      "Border": "Rahmen"
     },
     "Library": {
       "Tabs": {
         "scenes": "Szenen",
         "characters": "Charaktere",
         "decks": "Diashows"
-      },
-      "Create": {
-        "scenes": "Szene",
-        "characters": "Charakter",
-        "decks": "Diashow"
       },
       "New": {
         "scenes": "Neue Szene",
@@ -208,7 +205,55 @@
       "Steps": "Hintergrund-Schritte",
       "Cast": "Besetzung",
       "Looks": "Looks",
-      "Linked": "Mit einem Akteur verknüpft"
+      "Linked": "Mit einem Akteur verknüpft",
+      "All": {
+        "scenes": "Alle Szenen",
+        "characters": "Alle Charaktere",
+        "decks": "Alle Diashows"
+      },
+      "Favorites": "Favoriten",
+      "SlideCount": "{count} Folien",
+      "EntryCount": "{count} Einträge",
+      "NoDecks": "Noch keine Diashows. Klicke auf +, um eine zu erstellen.",
+      "DeckEmpty": "Noch keine Folien. Ziehe Szenen links in der Liste auf diese Diashow.",
+      "SortBy": "Sortieren nach",
+      "Sort": {
+        "name": "Name (A–Z)",
+        "-name": "Name (Z–A)",
+        "recent": "Zuletzt bearbeitet"
+      },
+      "GridView": "Rasteransicht",
+      "ListView": "Listenansicht",
+      "ClearFilters": "Filter zurücksetzen",
+      "NoMatches": "Keine Treffer.",
+      "AddedToSlideshow": "{scene} zu {deck} hinzugefügt.",
+      "Inspector": {
+        "Select": {
+          "scenes": "Wähle eine Szene, um Hintergründe, Besetzung und Details zu sehen.",
+          "characters": "Wähle einen Charakter, um Looks und Rahmen zu sehen.",
+          "decks": "Wähle eine Diashow, um ihre Folien zu sehen."
+        },
+        "Close": "Details schließen",
+        "Preview": "Vorschau",
+        "AddBackground": "Hintergrund hinzufügen",
+        "TurnIntoSequence": "In Sequenz umwandeln",
+        "CharacterCount": "{count} Charakter",
+        "CharactersCount": "{count} Charaktere",
+        "CastHint": "Charaktere hierher ziehen oder + klicken",
+        "NoMoreCharacters": "Alle Charaktere sind bereits besetzt.",
+        "Details": "Details",
+        "Transition": "Übergang",
+        "Shots": "Kameraeinstellungen",
+        "EditCharacter": "Charakter bearbeiten",
+        "GMOnly": "Nur Spielleitung",
+        "AppearsIn": "Kommt vor in",
+        "Playing": "Läuft",
+        "Paused": "Pausiert",
+        "Pause": "Pause",
+        "Resume": "Fortsetzen",
+        "StopSlideshow": "Beenden",
+        "Slides": "Folien"
+      }
     },
     "Player": {
       "MyCharacters": "Meine Charaktere",
@@ -226,7 +271,6 @@
         "camera": "Kamera",
         "transition": "Übergänge"
       },
-      "ModeHint": "Held: Ganzkörper-Sprites vor einem Hintergrund. Token: gerahmte Porträts vor einem Hintergrund. Nur Besetzung: kein Hintergrund; die Besetzung erscheint über der Battlemap, die sichtbar und benutzbar bleibt.",
       "ThumbHint": "Optional. Standardmäßig der erste Hintergrund.",
       "BackgroundsHint": "Füge mehrere Hintergründe hinzu, um eine Sequenz zu erstellen. Schalte sie live im Dock durch.",
       "NoBackgrounds": "Kein Hintergrund: Eine einfarbige Fläche verdeckt die Battlemap.",
@@ -249,7 +293,13 @@
       "SceneTransition": "Szenenübergang",
       "TransitionHint": "Wird verwendet, wenn diese Szene beginnt, endet, den Darstellungsmodus oder den Hintergrund wechselt.",
       "CastEntrance": "Auftritt der Besetzung",
-      "LetterboxHint": "Schwarze Kinobalken oben und unten auf jedem Bildschirm, solange diese Szene gezeigt wird (Anteil der Bildschirmhöhe). 0 = aus."
+      "LetterboxHint": "Schwarze Kinobalken oben und unten auf jedem Bildschirm, solange diese Szene gezeigt wird (Anteil der Bildschirmhöhe). 0 = aus.",
+      "Kicker": "Immersive Szene",
+      "ModeHints": {
+        "hero": "Ganzkörper-Sprites vor einer Kulisse, im Visual-Novel-Stil.",
+        "token": "Porträts mit Rahmen vor einer Kulisse.",
+        "cast": "Keine Kulisse. Die Besetzung erscheint über der Battlemap."
+      }
     },
     "CharacterEditor": {
       "Title": "Immersiver Charakter",
@@ -274,7 +324,8 @@
       "Imported": "{count} Looks importiert.",
       "SetDefault": "Standard-Look",
       "SetCurrent": "Diesen Look jetzt tragen",
-      "Nameplate": "Namensschild"
+      "Nameplate": "Namensschild",
+      "Kicker": "Charakter"
     },
     "Palette": {
       "Pinned": "Dieses Besetzungsmitglied hat einen festgelegten Look",
@@ -296,7 +347,9 @@
       "CaptureShot": "Aktuelle Ansicht als Einstellung speichern",
       "FullStage": "Ganze Bühne",
       "Slideshow": "Diashow",
-      "NextShot": "Nächste Einstellung"
+      "NextShot": "Nächste Einstellung",
+      "NextScene": "Nächste Szene",
+      "Nothing": "Nichts auf der Bühne"
     },
     "Integrations": {
       "MakeCharacter": "Immersiver Charakter"
@@ -342,6 +395,10 @@
       "cycleLook": {
         "Name": "Nächster Look",
         "Hint": "Deinen Charakter zum nächsten Look wechseln (den auf der Bühne, sonst den mit deinem zugewiesenen Akteur verknüpften)."
+      },
+      "toggleLibrary": {
+        "Name": "Bibliothek öffnen oder schließen",
+        "Hint": "SL: Öffnet oder schließt das Bibliotheksfenster von Immersive Scenes."
       }
     }
   }

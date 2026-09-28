@@ -1,0 +1,21 @@
+<header class="editor-banner character">
+  <div class="banner-art">
+    {{#if banner.spriteIsVideo}}<video src="{{banner.sprite}}" muted loop autoplay playsinline></video>
+    {{else if banner.sprite}}<img src="{{banner.sprite}}" alt="">{{/if}}
+  </div>
+  <div class="border-preview banner-portrait" data-style="{{character.border.style}}" data-shape="{{character.border.shape}}"
+       style="--c1: {{character.border.colors.[0]}}; --c2: {{character.border.colors.[1]}}; --c3: {{character.border.colors.[2]}}; --bw: {{character.border.width}}; --speed: {{character.border.speed}}">
+    <div class="ring"></div>
+    <div class="portrait">{{#if borderPreview}}<img src="{{borderPreview}}" alt="">{{else}}<i class="fa-solid fa-user" inert></i>{{/if}}</div>
+  </div>
+  <div class="banner-body">
+    <span class="banner-kicker"><i class="fa-solid fa-user" inert></i> {{localize "IMMERSIVE_SCENES.CharacterEditor.Kicker"}}</span>
+    <h2 class="banner-title">{{character.name}}</h2>
+    <span class="banner-stats">
+      {{#if banner.lookName}}<span><i class="fa-solid fa-shirt" inert></i> {{banner.lookName}}</span>{{/if}}
+      <span><i class="fa-solid fa-layer-group" inert></i> {{banner.looks}}</span>
+      <span><i class="fa-solid fa-palette" inert></i> {{banner.border}}</span>
+      {{#if actor}}<span><i class="fa-solid fa-link" inert></i> {{actor.name}}</span>{{/if}}
+    </span>
+  </div>
+</header>

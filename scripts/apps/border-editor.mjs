@@ -18,7 +18,7 @@ export default class BorderEditor extends HandlebarsApplicationMixin(Application
   }
 
   static DEFAULT_OPTIONS = {
-    classes: ["immersive-scenes", "border-editor"],
+    classes: ["immersive-scenes", "border-editor", "themed", "theme-dark"],
     tag: "form",
     window: { icon: "fa-solid fa-palette" },
     position: { width: 460 },

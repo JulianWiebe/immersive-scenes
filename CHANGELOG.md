@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Library window: a full-size browser with folder navigation, a thumbnail or list grid, search, tag filters, sorting and an inspector panel for scenes, characters and slideshows. Drag scenes onto a slideshow to add slides.
+- Favorites for characters and slideshows.
+- "Open Library" in the sidebar tab and a Token controls button; a `toggleLibrary` keybinding (unbound by default).
+
+### Changed
+- New dark, gold-accented look for all module windows, the sidebar tab, the Live Dock and the canvas look palette.
+- The scene and character editors have an image banner; the scene editor's Preview and Broadcast buttons moved into it.
+- Display mode and layout are picked from visual cards instead of dropdowns.
+
 ## 0.1.0
 First preview release. Tested in Foundry 14.368 (dnd5e) with GM and player clients. Everything below is new.
 

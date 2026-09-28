@@ -21,7 +21,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 export default class LiveDock extends HandlebarsApplicationMixin(ApplicationV2) {
   static DEFAULT_OPTIONS = {
     id: "immersive-live-dock",
-    classes: ["immersive-scenes", "live-dock"],
+    classes: ["immersive-scenes", "live-dock", "themed", "theme-dark"],
     window: { title: "IMMERSIVE_SCENES.Dock.Title", icon: "fa-solid fa-sliders", resizable: true },
     position: { width: 360, height: 680, top: 80, left: 120 },
     actions: {
@@ -134,7 +134,13 @@ export default class LiveDock extends HandlebarsApplicationMixin(ApplicationV2) 
         playing: target.deck.playing
       };
     }
-    context.thumb = sceneThumb(scene);
+    const image = scene.backgrounds[target.step]?.src || sceneThumb(scene);
+    context.banner = {
+      image,
+      isVideo: isVideoPath(image),
+      modeLabel: t(`Mode.${mode}`),
+      stepLabel: scene.backgrounds.length > 1 ? `${target.step + 1}/${scene.backgrounds.length}` : ""
+    };
     return context;
   }
 

@@ -73,3 +73,56 @@ export function collectTags(records) {
   for ( const r of records ) for ( const t of r.tags ?? [] ) counts.set(t, (counts.get(t) ?? 0) + 1);
   return [...counts.entries()].sort((a, b) => (b[1] - a[1]) || a[0].localeCompare(b[0])).map(([t]) => t);
 }
+
+/**
+ * Sort library records for display.
+ * @param {object[]} records
+ * @param {"name"|"-name"|"recent"} sort
+ * @returns {object[]}   A new array
+ */
+export function sortRecords(records, sort = "name") {
+  const byName = (a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: "base" });
+  const sorted = [...records];
+  if ( sort === "-name" ) return sorted.sort((a, b) => byName(b, a));
+  if ( sort === "recent" ) return sorted.sort((a, b) => ((b.modified ?? 0) - (a.modified ?? 0)) || byName(a, b));
+  return sorted.sort(byName);
+}
+
+/**
+ * The chain of folders from the root down to a folder (inclusive).
+ * @param {Record<string, object>} folders   Folders by id
+ * @param {string|null} folderId
+ * @returns {object[]}
+ */
+export function folderPath(folders, folderId) {
+  const path = [];
+  const seen = new Set();
+  let folder = folderId ? folders[folderId] : null;
+  while ( folder && !seen.has(folder.id) ) {
+    seen.add(folder.id);
+    path.unshift(folder);
+    folder = folder.parent ? folders[folder.parent] : null;
+  }
+  return path;
+}
+
+/**
+ * Ids of a folder and all of its descendants.
+ * @param {object[]} folders
+ * @param {string} folderId
+ * @returns {Set<string>}
+ */
+export function folderDescendants(folders, folderId) {
+  const ids = new Set([folderId]);
+  let grew = true;
+  while ( grew ) {
+    grew = false;
+    for ( const f of folders ) {
+      if ( f.parent && ids.has(f.parent) && !ids.has(f.id) ) {
+        ids.add(f.id);
+        grew = true;
+      }
+    }
+  }
+  return ids;
+}

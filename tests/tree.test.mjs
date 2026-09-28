@@ -1,6 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { buildTree, matchesFilter, collectTags } from "../scripts/utils/tree.mjs";
+import {
+  buildTree, matchesFilter, collectTags, sortRecords, folderPath, folderDescendants
+} from "../scripts/utils/tree.mjs";
 
 const folders = [
   { id: "a", name: "Act I", parent: null, sort: 0 },
@@ -37,4 +39,25 @@ test("matchesFilter by query, tags and favorites", () => {
 
 test("collectTags orders by frequency", () => {
   assert.deepEqual(collectTags(records), ["town", "night", "travel"]);
+});
+
+test("sortRecords by name (natural), reverse name and recency", () => {
+  const list = [
+    { name: "Hill 10", modified: 1 }, { name: "hill 2", modified: 3 }, { name: "Forest", modified: 2 }
+  ];
+  assert.deepEqual(sortRecords(list).map(r => r.name), ["Forest", "hill 2", "Hill 10"]);
+  assert.deepEqual(sortRecords(list, "-name").map(r => r.name), ["Hill 10", "hill 2", "Forest"]);
+  assert.deepEqual(sortRecords(list, "recent").map(r => r.name), ["hill 2", "Forest", "Hill 10"]);
+  assert.equal(list[0].name, "Hill 10", "input is not mutated");
+});
+
+test("folderPath walks up to the root and survives cycles", () => {
+  const byId = Object.fromEntries(folders.map(f => [f.id, f]));
+  assert.deepEqual(folderPath(byId, "b").map(f => f.id), ["a", "b"]);
+  assert.deepEqual(folderPath(byId, null), []);
+  assert.equal(folderPath(byId, "c").length, 2);
+});
+
+test("folderDescendants includes nested folders", () => {
+  assert.deepEqual([...folderDescendants(folders, "a")].sort(), ["a", "b"]);
 });

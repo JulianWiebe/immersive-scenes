@@ -84,7 +84,9 @@ export default class LibraryStore {
 
   /** Create a record. Returns the normalized record. */
   static async create(key, data = {}) {
-    const record = NORMALIZERS[key]({ ...data, id: data.id ?? randomId(), sort: data.sort ?? this.#nextSort(key) });
+    const record = NORMALIZERS[key]({
+      ...data, id: data.id ?? randomId(), sort: data.sort ?? this.#nextSort(key), modified: Date.now()
+    });
     await this.mutate(key, records => {
       records[record.id] = record;
     });
@@ -99,6 +101,7 @@ export default class LibraryStore {
     await this.mutate(key, records => {
       const record = records[id];
       if ( !record ) throw new Error(`${MODULE_ID} | ${key} record ${id} not found`);
+      if ( key !== "folders" ) record.modified = Date.now();
       if ( typeof changes === "function" ) return changes(record);
       for ( const [k, v] of Object.entries(changes) ) {
         const isPlainObject = v && (typeof v === "object") && !Array.isArray(v);
@@ -124,7 +127,7 @@ export default class LibraryStore {
     const copy = clone(source);
     copy.id = randomId();
     copy.name = game.i18n.format("IMMERSIVE_SCENES.CopyOf", { name: source.name });
-    if ( key === "scenes" ) copy.favorite = false;
+    copy.favorite = false;
     return this.create(key, copy);
   }
 

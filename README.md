@@ -36,6 +36,12 @@ There is no extra Foundry scene and no screen-covering overlay. The battlemap yo
 - **Players swap looks in real time.** They can do it from the sidebar tab, the Token HUD, or a keybinding. The request is validated by the GM's client, so a GM must be online.
 
 ### Live show control
+- **Library window** (GM). A full-size browser in the style of a media library:
+  - folder navigation for scenes and characters, plus your slideshows;
+  - a thumbnail grid (or list) with search, tag filters and sorting;
+  - an inspector for the selected entry with Broadcast, Preview, background steps, display mode and a cast drop zone.
+
+  Open it from the sidebar tab ("Open Library") or the masks button in the Token controls.
 - **Live Dock** (GM). From one window you can:
   - switch scenes, with an optional transition override;
   - change the display mode;
@@ -58,9 +64,9 @@ There is no extra Foundry scene and no screen-covering overlay. The battlemap yo
 - **Preview on my canvas.** Compose a scene privately before broadcasting it.
 
 ## Usage
-1. Open the **Immersive Scenes** sidebar tab (the masks icon).
-2. Under **Characters**, create characters, or drop Actors onto the tab. Add looks in the character editor.
-3. Under **Scenes**, create a scene, add backgrounds and cast, then press **Broadcast**. Or use **Preview on my canvas** first.
+1. Open the **Immersive Scenes** sidebar tab (the masks icon), then **Open Library**.
+2. Under **Characters**, click **New Character**, or drop Actors onto the library. Add looks in the character editor.
+3. Under **Scenes**, click **New Scene**, add backgrounds and cast, then press **Broadcast**. Or use **Preview** first.
 4. Open the **Live Dock** (Shift+L, or the masks button in the Token controls) to run the scene.
 
 Players see a **My characters** section in the sidebar tab for their own characters.
@@ -73,7 +79,7 @@ Players see a **My characters** section in the sidebar tab for their own charact
 - **Preview:** `preview(sceneId)` and `stopPreview()`.
 - **Slideshows:** `playDeck(deckId)`, `pauseDeck()`, `resumeDeck()`, `nextSlide()`, `prevSlide()`, `stopDeck()`.
 - **Characters:** `setLook(characterId, lookId)` and `setBorder(characterId, border)`.
-- **Windows:** `openDock()`, `toggleDock()`, `editScene(id)`, `editCharacter(id)`, `editDeck(id)`, `openBorderEditor(id)`.
+- **Windows:** `openLibrary()`, `toggleLibrary()`, `openDock()`, `toggleDock()`, `editScene(id)`, `editCharacter(id)`, `editDeck(id)`, `openBorderEditor(id)`.
 - **Classes:** `LibraryStore`, `LiveController`, `StageDirector` and `StageRenderer`, for scripting.
 
 Hooks:

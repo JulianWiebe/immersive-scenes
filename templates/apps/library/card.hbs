@@ -1,0 +1,51 @@
+<li class="lib-card {{kind}} {{#if selected}}selected{{/if}} {{#if live}}is-live{{/if}}" data-action="select"
+    data-kind="{{kind}}" data-id="{{id}}" draggable="true">
+  <div class="card-art {{#if round}}portrait{{/if}}">
+    {{#if (eq kind "characters")}}
+      {{#if sprite}}
+        {{#if spriteIsVideo}}<video src="{{sprite}}" muted loop autoplay playsinline></video>
+        {{else}}<img src="{{sprite}}" alt="" loading="lazy">{{/if}}
+      {{else}}<i class="placeholder fa-solid fa-user" inert></i>{{/if}}
+    {{else}}
+      {{#if isVideo}}<video src="{{thumb}}" muted loop autoplay playsinline></video>
+      {{else if thumb}}<img src="{{thumb}}" alt="" loading="lazy">
+      {{else}}<i class="placeholder fa-solid {{#if (eq kind "decks")}}fa-film{{else}}fa-image{{/if}}" inert></i>{{/if}}
+    {{/if}}
+    <div class="art-badges top">
+      {{#if live}}<span class="badge live"><span class="live-dot"></span> {{localize "IMMERSIVE_SCENES.Status.Live"}}</span>{{/if}}
+      {{#if onStage}}<span class="badge live"><span class="live-dot"></span> {{localize "IMMERSIVE_SCENES.Player.OnStage"}}</span>{{/if}}
+      <span class="spacer"></span>
+      <button type="button" class="fav-toggle icon fa-star {{#if favorite}}fa-solid on{{else}}fa-regular{{/if}}" data-action="favorite"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.ToggleFavorite"}}"></button>
+    </div>
+    <div class="art-badges bottom">
+      {{#if modeIcon}}<span class="badge" data-tooltip="{{modeLabel}}"><i class="{{modeIcon}}" inert></i></span>{{/if}}
+      {{#if steps}}<span class="badge" data-tooltip="{{localize "IMMERSIVE_SCENES.Library.Steps"}}"><i class="fa-solid fa-layer-group" inert></i> {{steps}}</span>{{/if}}
+      {{#if castCount}}<span class="badge" data-tooltip="{{localize "IMMERSIVE_SCENES.Library.Cast"}}"><i class="fa-solid fa-users" inert></i> {{castCount}}</span>{{/if}}
+      {{#if looks}}<span class="badge" data-tooltip="{{localize "IMMERSIVE_SCENES.Library.Looks"}}"><i class="fa-solid fa-shirt" inert></i> {{looks}}</span>{{/if}}
+      {{#if linked}}<span class="badge" data-tooltip="{{localize "IMMERSIVE_SCENES.Library.Linked"}}"><i class="fa-solid fa-link" inert></i></span>{{/if}}
+      {{#if slides}}<span class="badge"><i class="fa-solid fa-images" inert></i> {{slides}}</span><span class="badge"><i class="fa-regular fa-clock" inert></i> {{runtime}}</span>{{/if}}
+    </div>
+    {{#if (eq kind "scenes")}}
+    <div class="art-actions">
+      <button type="button" class="round-btn gold icon fa-solid fa-tower-broadcast" data-action="broadcast"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Broadcast"}}"></button>
+      <button type="button" class="round-btn icon fa-solid fa-eye" data-action="preview"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Preview"}}"></button>
+    </div>
+    {{/if}}
+  </div>
+  <div class="card-body">
+    <span class="card-name">{{name}}</span>
+    {{#if showFolder}}{{#if folderName}}<span class="card-meta"><i class="fa-solid fa-folder" inert></i> {{folderName}}</span>{{/if}}{{/if}}
+    {{#if shownTags.length}}
+    <span class="card-tags">
+      {{#each shownTags}}<span class="is-pill small">{{this}}</span>{{/each}}
+      {{#if moreTags}}<span class="is-pill small more">+{{moreTags}}</span>{{/if}}
+    </span>
+    {{/if}}
+  </div>
+  <div class="card-row-actions">
+    <button type="button" class="icon fa-solid fa-pen" data-action="edit" data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Edit"}}"></button>
+  </div>
+</li>
