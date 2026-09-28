@@ -27,6 +27,11 @@ There is no extra Foundry scene and no screen-covering overlay. The battlemap yo
 - **Live editing.** Every edit saves instantly, so changing the live scene updates everyone's screen in real time.
 
 ### Living characters
+- **Import actors.** Drop an Actor (or a whole Actor folder) onto the library, or click **Import player characters**. Imported characters stay in sync with their actor:
+  - their name, artwork (the full-body sprite) and token image (the portrait) update when the actor, its prototype token or one of its linked tokens changes;
+  - your own edits stay until the actor changes again.
+
+  Sync can be switched on or off per character in the character editor, with a **Sync now** button.
 - **Character library.** Characters can optionally be linked to an Actor. The actor's owners, and any players you list, may change the character's look and border.
 - **Looks** (outfits, armor, transformations). Each look has a full-body sprite and a portrait, with scale, offset and mirroring. Import a whole folder at once: files named `Aria_battle-armor.webp`, `Aria_battle-armor_portrait.webp` and so on are grouped automatically.
 - **Animated borders** rendered by a shader:

@@ -3,6 +3,8 @@
 ## Unreleased
 
 ### Added
+- Actor sync: imported characters follow their actor's name, artwork and token image, including texture changes of its linked tokens. Toggle per character, with "Sync now".
+- "Import player characters" in the library and the sidebar tab, and dropping an Actor folder imports every actor in it.
 - Library window: a full-size browser with folder navigation, a thumbnail or list grid, search, tag filters, sorting and an inspector panel for scenes, characters and slideshows. Drag scenes onto a slideshow to add slides.
 - Favorites for characters and slideshows.
 - "Open Library" in the sidebar tab and a Token controls button; a `toggleLibrary` keybinding (unbound by default).

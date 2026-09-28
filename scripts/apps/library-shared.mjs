@@ -87,6 +87,7 @@ export function decorateRecord(kind, record, live) {
       spriteIsVideo: isVideoPath(sprite),
       looks: record.looks.length,
       linked: !!record.actorUuid,
+      synced: record.actorSync.enabled,
       onStage: !!liveScene?.cast.some(e => e.characterId === record.id),
       round: true
     };
@@ -219,6 +220,7 @@ export async function handleLibraryDrop(data, { kind, folderId = null }) {
     return null;
   }
 
+  const characterData = folderId && kind === "characters" ? { folder: folderId } : {};
   if ( data.type === "Actor" ) {
     const actor = await fromUuid(data.uuid);
     if ( !actor ) return null;
@@ -226,9 +228,18 @@ export async function handleLibraryDrop(data, { kind, folderId = null }) {
       ui.notifications.warn("IMMERSIVE_SCENES.Warnings.CompendiumActor", { localize: true });
       return null;
     }
-    const character = await LibraryStore.createCharacterFromActor(actor);
-    if ( folderId && kind === "characters" ) await LibraryStore.update("characters", character.id, { folder: folderId });
+    const character = await LibraryStore.createCharacterFromActor(actor, characterData);
     return { kind: "characters", id: character.id };
+  }
+
+  // A folder of actors imports every actor in it and its subfolders
+  if ( data.type === "Folder" ) {
+    const folder = await fromUuid(data.uuid);
+    if ( (folder?.type !== "Actor") || folder.pack ) return null;
+    const actors = [folder, ...folder.getSubfolders(true)].flatMap(f => f.contents);
+    const characters = await LibraryStore.createCharactersFromActors(actors, characterData);
+    ui.notifications.info(t("Library.ImportedActors", { count: characters.length }));
+    return characters.length ? { kind: "characters", id: characters[0].id } : null;
   }
 
   const src = data.texture?.src ?? data.src ?? null;
@@ -238,6 +249,24 @@ export async function handleLibraryDrop(data, { kind, folderId = null }) {
     return { kind: "scenes", id: scene.id };
   }
   return null;
+}
+
+/**
+ * Import every player-owned character actor that is not in the library yet.
+ * @param {string|null} [folderId]   Character folder to put them in
+ * @returns {Promise<object[]>}   The new characters
+ */
+export async function importPlayerCharacters(folderId = null) {
+  const known = new Set(Object.values(LibraryStore.characters).map(c => c.actorUuid).filter(Boolean));
+  const pcOnly = "character" in (CONFIG.Actor.dataModels ?? {});
+  const actors = game.actors.filter(a => a.hasPlayerOwner && (!pcOnly || (a.type === "character")) && !known.has(a.uuid));
+  if ( !actors.length ) {
+    ui.notifications.info(t("Library.NoNewPlayerCharacters"));
+    return [];
+  }
+  const characters = await LibraryStore.createCharactersFromActors(actors, folderId ? { folder: folderId } : {});
+  ui.notifications.info(t("Library.ImportedActors", { count: characters.length }));
+  return characters;
 }
 
 /** Make library cards draggable as `immersive-scenes.<kind>` records. */

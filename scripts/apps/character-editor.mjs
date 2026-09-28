@@ -4,6 +4,7 @@
  */
 import { MODULE_ID, template } from "../constants.mjs";
 import LibraryStore from "../data/library-store.mjs";
+import ActorSync from "../data/actor-sync.mjs";
 import { resolveLook, lookImage } from "../utils/resolve.mjs";
 import { groupLookFiles } from "../utils/filenames.mjs";
 import { randomId } from "../utils/ids.mjs";
@@ -33,6 +34,7 @@ export default class CharacterEditor extends HandlebarsApplicationMixin(Applicat
       setDefault: CharacterEditor.#onSetDefault,
       setCurrent: CharacterEditor.#onSetCurrent,
       unlinkActor: CharacterEditor.#onUnlinkActor,
+      syncActor: CharacterEditor.#onSyncActor,
       openActor: CharacterEditor.#onOpenActor
     }
   };
@@ -171,7 +173,10 @@ export default class CharacterEditor extends HandlebarsApplicationMixin(Applicat
         c.border = { ...c.border, ...data.border, colors };
       }
       if ( data.nameplate ) c.nameplate = { ...c.nameplate, ...data.nameplate };
+      if ( data.actorSync ) c.actorSync.enabled = !!data.actorSync.enabled;
     });
+    // Switching syncing on copies the actor's current name and images right away
+    if ( data.actorSync?.enabled && !character.actorSync.enabled ) await ActorSync.syncCharacter(character.id);
   }
 
   #edit(fn) {
@@ -256,7 +261,13 @@ export default class CharacterEditor extends HandlebarsApplicationMixin(Applicat
   static async #onUnlinkActor() {
     await this.#edit(c => {
       c.actorUuid = null;
+      c.actorSync.enabled = false;
+      for ( const look of c.looks ) look.fromActor = false;
     });
+  }
+
+  static #onSyncActor() {
+    return ActorSync.syncCharacter(this.characterId);
   }
 
   static async #onOpenActor() {

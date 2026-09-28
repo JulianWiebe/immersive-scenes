@@ -253,7 +253,11 @@
         "Resume": "Fortsetzen",
         "StopSlideshow": "Beenden",
         "Slides": "Folien"
-      }
+      },
+      "ImportPlayers": "Spielercharaktere importieren",
+      "ImportedActors": "{count} Charaktere importiert.",
+      "NoNewPlayerCharacters": "Alle Spielercharaktere sind bereits in der Bibliothek.",
+      "Synced": "Mit dem Akteur synchronisiert"
     },
     "Player": {
       "MyCharacters": "Meine Charaktere",
@@ -325,7 +329,11 @@
       "SetDefault": "Standard-Look",
       "SetCurrent": "Diesen Look jetzt tragen",
       "Nameplate": "Namensschild",
-      "Kicker": "Charakter"
+      "Kicker": "Charakter",
+      "SyncActor": "Mit dem Akteur synchron halten",
+      "SyncActorHint": "Name, Artwork und Token-Bild folgen dem Akteur. Änderungen am Akteur, seinem Prototyp-Token oder einem verknüpften Token aktualisieren den Charakter. Eigene Änderungen bleiben, bis sich der Akteur wieder ändert.",
+      "SyncNow": "Jetzt synchronisieren",
+      "FromActor": "Folgt Artwork und Token des Akteurs"
     },
     "Palette": {
       "Pinned": "Dieses Besetzungsmitglied hat einen festgelegten Look",

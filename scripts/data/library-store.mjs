@@ -6,6 +6,7 @@ import { randomId } from "../utils/ids.mjs";
 import {
   normalizeCharacter, normalizeCollection, normalizeDeck, normalizeFolder, normalizeLook, normalizeScene
 } from "../utils/schema.mjs";
+import { applyActorSync, actorSource } from "../utils/actor-sync.mjs";
 
 const NORMALIZERS = {
   scenes: normalizeScene,
@@ -159,19 +160,53 @@ export default class LibraryStore {
   /* -------------------------------------------- */
 
   /** Create a character from an Actor, using its image as the first look. */
-  static async createCharacterFromActor(actor) {
-    const existing = Object.values(this.characters).find(c => c.actorUuid === actor.uuid);
-    if ( existing ) return existing;
-    const img = actor.img && !actor.img.includes("mystery-man") ? actor.img : "";
-    const tokenImg = actor.prototypeToken?.texture?.src ?? "";
-    const look = normalizeLook({ name: game.i18n.localize("IMMERSIVE_SCENES.Look.Default"), sprite: img, portrait: tokenImg || img });
-    return this.create("characters", {
-      name: actor.name,
-      actorUuid: actor.uuid,
-      looks: (img || tokenImg) ? [look] : [],
-      defaultLookId: (img || tokenImg) ? look.id : null
-    });
+  /**
+   * Import an actor as a character that stays in sync with it. An actor that is already in the
+   * library is not imported twice; if its character was not synced, syncing is switched on.
+   * @param {Actor} actor
+   * @param {object} [data]   Extra character data (e.g. a folder)
+   * @returns {Promise<object>}   The character
+   */
+  static async createCharacterFromActor(actor, data = {}) {
+    const [character] = await this.createCharactersFromActors([actor], data);
+    return character;
   }
+
+  /**
+   * Import several actors in a single library write. See {@link createCharacterFromActor}.
+   * @param {Actor[]} actors
+   * @param {object} [data]
+   * @returns {Promise<object[]>}   The characters, in the order of the actors
+   */
+  static async createCharactersFromActors(actors, data = {}) {
+    const createLook = () => normalizeLook({ name: game.i18n.localize("IMMERSIVE_SCENES.Look.Default") });
+    const existing = new Map(Object.values(this.characters).filter(c => c.actorUuid).map(c => [c.actorUuid, c]));
+    const created = new Map();
+    let sort = this.#nextSort("characters");
+    for ( const actor of actors ) {
+      if ( existing.has(actor.uuid) || created.has(actor.uuid) ) continue;
+      const base = normalizeCharacter({
+        ...data, id: randomId(), name: actor.name, actorUuid: actor.uuid, actorSync: { enabled: true },
+        sort: sort++, modified: Date.now()
+      });
+      created.set(actor.uuid, applyActorSync(base, actorSource(actor), { force: true, createLook }) ?? base);
+    }
+    const resync = actors.filter(a => existing.get(a.uuid) && !existing.get(a.uuid).actorSync.enabled);
+    if ( created.size || resync.length ) {
+      await this.mutate("characters", records => {
+        for ( const record of created.values() ) records[record.id] = record;
+        for ( const actor of resync ) {
+          const record = records[existing.get(actor.uuid).id];
+          if ( !record ) continue;
+          record.actorSync.enabled = true;
+          const next = applyActorSync(record, actorSource(actor), { force: true, createLook });
+          if ( next ) records[record.id] = { ...next, modified: Date.now() };
+        }
+      });
+    }
+    return actors.map(a => this.getCharacter((existing.get(a.uuid) ?? created.get(a.uuid))?.id)).filter(Boolean);
+  }
+
 
   /** Add a character to a scene's cast. */
   static async addToCast(sceneId, characterId, data = {}) {

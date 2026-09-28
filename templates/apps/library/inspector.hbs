@@ -163,7 +163,11 @@
     <section class="inspector-section">
       <h4 class="section-heading">{{localize "IMMERSIVE_SCENES.Library.Inspector.Details"}}</h4>
       <dl class="facts">
-        <dt>{{localize "IMMERSIVE_SCENES.CharacterEditor.LinkedActor"}}</dt><dd>{{#if actorName}}{{actorName}}{{else}}—{{/if}}</dd>
+        <dt>{{localize "IMMERSIVE_SCENES.CharacterEditor.LinkedActor"}}</dt>
+        <dd>{{#if actorName}}{{actorName}}
+          {{#if synced}}<span class="synced" data-tooltip="{{localize "IMMERSIVE_SCENES.Library.Synced"}}"><i class="fa-solid fa-arrows-rotate" inert></i></span>
+          <button type="button" class="is-link" data-action="syncActor">{{localize "IMMERSIVE_SCENES.CharacterEditor.SyncNow"}}</button>{{/if}}
+        {{else}}—{{/if}}</dd>
         <dt>{{localize "IMMERSIVE_SCENES.Fields.Border"}}</dt><dd>{{border.label}}</dd>
         <dt>{{localize "IMMERSIVE_SCENES.CharacterEditor.Owners"}}</dt>
         <dd>{{#each owners}}<span class="owner"><span class="user-dot" style="background: {{color}}"></span> {{name}}</span>{{else}}{{localize "IMMERSIVE_SCENES.Library.Inspector.GMOnly"}}{{/each}}</dd>

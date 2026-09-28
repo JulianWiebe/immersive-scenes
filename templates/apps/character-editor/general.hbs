@@ -21,6 +21,14 @@
       <button type="button" class="icon fa-solid fa-id-card" data-action="openActor" data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.CharacterEditor.OpenActor"}}"></button>
       <button type="button" class="icon fa-solid fa-link-slash" data-action="unlinkActor" data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.CharacterEditor.Unlink"}}"></button>
     </div>
+    <div class="form-group sync-toggle">
+      <label class="checkbox"><input type="checkbox" name="actorSync.enabled" {{checked character.actorSync.enabled}}>
+        {{localize "IMMERSIVE_SCENES.CharacterEditor.SyncActor"}}</label>
+      {{#if character.actorSync.enabled}}
+      <button type="button" class="is-btn ghost" data-action="syncActor"><i class="fa-solid fa-arrows-rotate" inert></i> {{localize "IMMERSIVE_SCENES.CharacterEditor.SyncNow"}}</button>
+      {{/if}}
+      <p class="hint">{{localize "IMMERSIVE_SCENES.CharacterEditor.SyncActorHint"}}</p>
+    </div>
     {{else if actorMissing}}
     <p class="hint warning">{{localize "IMMERSIVE_SCENES.CharacterEditor.ActorMissing"}}
       <button type="button" data-action="unlinkActor">{{localize "IMMERSIVE_SCENES.CharacterEditor.Unlink"}}</button></p>

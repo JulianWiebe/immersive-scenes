@@ -12,7 +12,7 @@ import { resolveLook, lookImage } from "../utils/resolve.mjs";
 import { requestCharacterAction } from "../queries.mjs";
 import {
   KINDS, openEditor, decorateRecord, createFolder, createRecord, createRecordContextMenu, createFolderContextMenu,
-  handleLibraryDrop, activateCardDrag
+  handleLibraryDrop, activateCardDrag, importPlayerCharacters
 } from "./library-shared.mjs";
 import { openLibrary } from "./library.mjs";
 import { t, getUiState, setUiState, sceneThumb, isVideoPath, getDragData } from "./helpers.mjs";
@@ -45,6 +45,7 @@ export default class ImmersiveSidebarTab extends HandlebarsApplicationMixin(Abst
       stopPreview: ImmersiveSidebarTab.#onStopPreview,
       openDock: ImmersiveSidebarTab.#onOpenDock,
       openLibrary: ImmersiveSidebarTab.#onOpenLibrary,
+      importPlayers: ImmersiveSidebarTab.#onImportPlayers,
       playDeck: ImmersiveSidebarTab.#onPlayDeck,
       setLook: ImmersiveSidebarTab.#onSetLook,
       editBorder: ImmersiveSidebarTab.#onEditBorder
@@ -315,6 +316,10 @@ export default class ImmersiveSidebarTab extends HandlebarsApplicationMixin(Abst
 
   static #onOpenDock() {
     return game.modules.get(MODULE_ID).api.openDock?.();
+  }
+
+  static #onImportPlayers() {
+    return importPlayerCharacters();
   }
 
   static #onOpenLibrary() {

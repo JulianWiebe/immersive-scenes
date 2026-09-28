@@ -58,6 +58,10 @@
       <button type="button" class="is-btn primary" data-action="createEntry">
         <i class="fa-solid fa-plus" inert></i> {{library.createLabel}}
       </button>
+      {{#if (eq library.kind "characters")}}
+      <button type="button" class="is-btn icon icon-only fa-solid fa-user-group" data-action="importPlayers"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Library.ImportPlayers"}}"></button>
+      {{/if}}
       <button type="button" class="is-btn icon icon-only fa-solid fa-folder-plus" data-action="createFolder"
               data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.CreateFolder"}}"></button>
     </div>

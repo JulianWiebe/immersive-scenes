@@ -29,6 +29,11 @@
         <button type="button" class="icon fa-solid fa-list {{#unless layoutGrid}}active{{/unless}}" data-action="setLayout" data-layout="list"
                 data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Library.ListView"}}"></button>
       </div>
+      {{#if isCharacters}}
+      <button type="button" class="is-btn ghost" data-action="importPlayers">
+        <i class="fa-solid fa-user-group" inert></i> {{localize "IMMERSIVE_SCENES.Library.ImportPlayers"}}
+      </button>
+      {{/if}}
       {{#if canFolder}}
       <button type="button" class="is-btn icon icon-only fa-solid fa-folder-plus" data-action="createFolder"
               data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.CreateFolder"}}"></button>

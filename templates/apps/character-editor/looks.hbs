@@ -13,6 +13,7 @@
           {{#if portraitIsVideo}}<video src="{{previewPortrait}}" muted loop autoplay playsinline></video>
           {{else if previewPortrait}}<img src="{{previewPortrait}}" alt="">{{else}}<i class="fa-solid fa-user" inert></i>{{/if}}
         </div>
+        {{#if fromActor}}<span class="badge synced" data-tooltip="{{localize "IMMERSIVE_SCENES.CharacterEditor.FromActor"}}"><i class="fa-solid fa-arrows-rotate" inert></i></span>{{/if}}
         <div class="badges">
           <button type="button" class="icon fa-solid fa-star {{#if isDefault}}active{{/if}}" data-action="setDefault"
                   data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.CharacterEditor.SetDefault"}}"></button>

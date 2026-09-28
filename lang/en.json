@@ -253,7 +253,11 @@
         "Resume": "Resume",
         "StopSlideshow": "Stop",
         "Slides": "Slides"
-      }
+      },
+      "ImportPlayers": "Import player characters",
+      "ImportedActors": "Imported {count} characters.",
+      "NoNewPlayerCharacters": "All player characters are already in the library.",
+      "Synced": "Kept in sync with the actor"
     },
     "Player": {
       "MyCharacters": "My characters",
@@ -325,7 +329,11 @@
       "SetDefault": "Default look",
       "SetCurrent": "Wear this look now",
       "Nameplate": "Nameplate",
-      "Kicker": "Character"
+      "Kicker": "Character",
+      "SyncActor": "Keep in sync with the actor",
+      "SyncActorHint": "Name, artwork and token image follow the actor. Changing the actor, its prototype token or one of its linked tokens updates the character. Your own edits stay until the actor changes again.",
+      "SyncNow": "Sync now",
+      "FromActor": "Follows the actor's artwork and token"
     },
     "Palette": {
       "Pinned": "This cast member has a pinned look",

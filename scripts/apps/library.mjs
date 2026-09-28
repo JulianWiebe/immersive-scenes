@@ -14,8 +14,9 @@ import { randomId } from "../utils/ids.mjs";
 import {
   KINDS, MODE_ICONS, openEditor, decorateRecord, toggleFavorite, createFolder, createRecord, characterThumb,
   characterSprite, formatDuration, createRecordContextMenu, createFolderContextMenu, handleLibraryDrop,
-  activateCardDrag, activateDropTargets
+  activateCardDrag, activateDropTargets, importPlayerCharacters
 } from "./library-shared.mjs";
+import ActorSync from "../data/actor-sync.mjs";
 import { t, getUiState, setUiState, sceneThumb, isVideoPath, getDragData, pickFile } from "./helpers.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -68,7 +69,9 @@ export default class LibraryWindow extends HandlebarsApplicationMixin(Applicatio
       playDeck: LibraryWindow.#onPlayDeck,
       pauseDeck: LibraryWindow.#onPauseDeck,
       stopDeck: LibraryWindow.#onStopDeck,
-      openDock: LibraryWindow.#onOpenDock
+      openDock: LibraryWindow.#onOpenDock,
+      importPlayers: LibraryWindow.#onImportPlayers,
+      syncActor: LibraryWindow.#onSyncActor
     }
   };
 
@@ -203,7 +206,8 @@ export default class LibraryWindow extends HandlebarsApplicationMixin(Applicatio
       layoutGrid: state.layout === "grid",
       tags: collectTags(records).slice(0, 24).map(tag => ({ tag, active: state.tags.includes(tag) })),
       filtering: this.#filtering && state.view !== "favorites",
-      canFolder: state.view === "all"
+      canFolder: state.view === "all",
+      isCharacters: state.kind === "characters"
     };
   }
 
@@ -356,6 +360,7 @@ export default class LibraryWindow extends HandlebarsApplicationMixin(Applicatio
         return { id: l.id, name: l.name, src, isVideo: isVideoPath(src), active: l.id === current?.id };
       }),
       actorName: actor?.name ?? "",
+      synced: character.actorSync.enabled && !!actor,
       owners: owners.map(u => ({ name: u.name, color: u.color?.css ?? "#888" })),
       tags: character.tags,
       onStage: !!liveScene?.cast.some(e => e.characterId === character.id),
@@ -715,6 +720,19 @@ export default class LibraryWindow extends HandlebarsApplicationMixin(Applicatio
 
   static #onStopDeck() {
     return LiveController.stopDeck();
+  }
+
+  static async #onImportPlayers() {
+    const folder = this.#state.kind === "characters" && this.#state.view === "all" ? this.#state.folderId : null;
+    const [first] = await importPlayerCharacters(folder);
+    if ( !first ) return;
+    if ( this.#state.kind !== "characters" ) await this.#showKind("characters", { folderId: folder });
+    this.#select("characters", first.id);
+  }
+
+  static async #onSyncActor() {
+    const id = this.#selectedId("characters");
+    if ( id ) await ActorSync.syncCharacter(id);
   }
 
   static #onOpenDock() {

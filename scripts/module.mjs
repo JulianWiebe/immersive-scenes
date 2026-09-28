@@ -3,6 +3,7 @@ import LibraryStore from "./data/library-store.mjs";
 import ImmersiveStageLayer from "./canvas/stage-layer.mjs";
 import ImmersiveOverlayLayer from "./canvas/overlay-layer.mjs";
 import StageDirector from "./canvas/director.mjs";
+import ActorSync from "./data/actor-sync.mjs";
 import StageRenderer from "./canvas/stage-renderer.mjs";
 import LiveController from "./live/live-controller.mjs";
 import { createApi } from "./api.mjs";
@@ -47,6 +48,7 @@ Hooks.once("init", () => {
 
 Hooks.once("ready", () => {
   StageDirector.init();
+  ActorSync.init();
   LiveController.init();
   CanvasEditing.init();
   SlideshowDriver.init();

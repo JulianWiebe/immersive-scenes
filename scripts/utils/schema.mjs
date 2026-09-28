@@ -50,7 +50,8 @@ export function normalizeLook(raw = {}) {
     scale: clamp(raw.scale, 0.05, 10, 1),
     offsetX: clamp(raw.offsetX, -1, 1, 0),
     offsetY: clamp(raw.offsetY, -1, 1, 0),
-    mirror: bool(raw.mirror)
+    mirror: bool(raw.mirror),
+    fromActor: bool(raw.fromActor)
   };
 }
 
@@ -79,6 +80,12 @@ export function normalizeCharacter(raw = {}) {
     sort: num(raw.sort, 0),
     modified: num(raw.modified, 0),
     actorUuid: nullableStr(raw.actorUuid),
+    actorSync: {
+      enabled: bool(raw.actorSync?.enabled) && !!nullableStr(raw.actorUuid),
+      name: str(raw.actorSync?.name),
+      img: str(raw.actorSync?.img),
+      token: str(raw.actorSync?.token)
+    },
     ownerIds: strList(raw.ownerIds),
     looks,
     currentLookId: pick(raw.currentLookId),
