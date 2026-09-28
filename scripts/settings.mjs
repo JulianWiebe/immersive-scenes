@@ -9,7 +9,7 @@ export const LIBRARY_KEYS = Object.freeze(["scenes", "characters", "folders", "d
  * @param {object} handlers
  * @param {(key: string) => void} handlers.onLibraryChange
  * @param {() => void} handlers.onLiveChange
- * @param {() => void} handlers.onDisplayChange
+ * @param {(key?: string) => void} handlers.onDisplayChange
  */
 export function registerSettings({ onLibraryChange, onLiveChange, onDisplayChange }) {
   const register = (key, data) => game.settings.register(MODULE_ID, key, data);
@@ -49,7 +49,7 @@ export function registerSettings({ onLibraryChange, onLiveChange, onDisplayChang
     type: String,
     choices: { "16:9": "16:9", "21:9": "21:9", "4:3": "4:3", "3:2": "3:2", "1:1": "1:1" },
     default: "16:9",
-    onChange: () => onDisplayChange()
+    onChange: () => onDisplayChange("stageAspect")
   });
 
   register("allowPlayerLooks", {

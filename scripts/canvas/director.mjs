@@ -43,9 +43,11 @@ export default class StageDirector {
     Hooks.on(`${MODULE_ID}.libraryChanged`, key => {
       if ( ["scenes", "characters"].includes(key) ) this.refresh();
     });
-    Hooks.on(`${MODULE_ID}.displayChanged`, () => {
+    Hooks.on(`${MODULE_ID}.displayChanged`, key => {
       StageRenderer.refreshVolume();
-      this.refresh({ animate: false });
+      // The frame geometry changed: positions and the backdrop must be rebuilt from scratch
+      if ( key === "stageAspect" ) StageRenderer.redraw(this.computeView());
+      else this.refresh({ animate: false });
     });
     Hooks.on("canvasTearDown", () => StageRenderer.onTearDown());
     Hooks.on("canvasReady", () => this.#onCanvasReady());

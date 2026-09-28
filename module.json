@@ -2,7 +2,7 @@
   "id": "immersive-scenes",
   "title": "Immersive Scenes",
   "description": "Cinematic, visual-novel style scenes drawn right into the Foundry canvas: backdrops, cast layouts, characters with multiple looks and animated borders, a GM live dock, slideshows, sequences and theater camera shots.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "authors": [
     {
       "name": "Julian Wiebe",

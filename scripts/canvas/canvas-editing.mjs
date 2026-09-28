@@ -89,8 +89,9 @@ export default class CanvasEditing {
       }
     };
     const onUp = async () => {
-      sprite.off("globalpointermove", onMove);
       window.removeEventListener("pointerup", onUp);
+      if ( sprite.destroyed ) return;
+      sprite.off("globalpointermove", onMove);
       sprite.cursor = "grab";
       sprite.alpha = 1;
       const dx = (sprite.x - origin.x) / frame.width;

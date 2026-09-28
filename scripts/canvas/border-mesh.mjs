@@ -16,9 +16,17 @@ let tickerAttached = null;
 let failed = false;
 let geometry = null;
 
+/** Reduced-motion state, re-evaluated at most once per second (it involves matchMedia). */
+let frozen = false;
+let frozenCheckedAt = 0;
+
 function tick() {
-  const frozen = reducedMotion();
-  const now = frozen ? 0 : performance.now() / 1000;
+  const nowMs = performance.now();
+  if ( nowMs - frozenCheckedAt > 1000 ) {
+    frozen = reducedMotion();
+    frozenCheckedAt = nowMs;
+  }
+  const now = frozen ? 0 : nowMs / 1000;
   for ( const border of meshes ) border.tick(now);
 }
 
@@ -106,11 +114,30 @@ export class BorderMesh extends PIXI.Container {
 export function createBorder() {
   if ( failed ) return new PortraitBorder();
   try {
-    return new BorderMesh();
+    const border = new BorderMesh();
+    if ( !verified && !verifyShader(border.shader) ) throw new Error("Border shader failed to compile or link");
+    verified = true;
+    return border;
   }
   catch(err) {
     failed = true;
     console.warn(`${MODULE_ID} | Animated borders unavailable, using static borders`, err);
     return new PortraitBorder();
   }
+}
+
+let verified = false;
+
+/**
+ * PIXI compiles shaders lazily and only logs failures, so force a compile once and check the link status.
+ * @param {PIXI.Shader} shader
+ * @returns {boolean}
+ */
+function verifyShader(shader) {
+  const renderer = canvas?.app?.renderer;
+  if ( !renderer?.gl ) return true;
+  renderer.shader.bind(shader);
+  const glProgram = shader.program.glPrograms[renderer.CONTEXT_UID];
+  const gl = renderer.gl;
+  return !!glProgram?.program && !!gl.getProgramParameter(glProgram.program, gl.LINK_STATUS);
 }

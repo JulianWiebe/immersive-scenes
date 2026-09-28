@@ -187,6 +187,8 @@ export default class SceneEditor extends HandlebarsApplicationMixin(ApplicationV
 
   async _onRender(context, options) {
     await super._onRender(context, options);
+    // The "add" picker is not part of the scene data: keep it from submitting the form
+    this.element.querySelector("select[name=addCharacter]")?.addEventListener("change", e => e.stopPropagation());
     // Drop characters (from the library tab) or actors onto the cast list
     const zone = this.element.querySelector(".cast-drop");
     if ( zone ) {

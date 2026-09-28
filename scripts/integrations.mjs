@@ -37,7 +37,7 @@ export function registerIntegrations() {
     entries.push({
       label: "IMMERSIVE_SCENES.Integrations.MakeCharacter",
       icon: "fa-solid fa-masks-theater",
-      visible: () => LiveController.canControl,
+      visible: li => LiveController.canControl && game.actors.has(li.dataset.entryId),
       onClick: async (event, li) => {
         const actor = game.actors.get(li.dataset.entryId);
         if ( !actor ) return;

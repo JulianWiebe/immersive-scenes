@@ -27,7 +27,15 @@ export function tween(object, to, { duration = 400, easing = "easeInOutCosine", 
     for ( const a of attributes ) a.parent[a.attribute] = a.to;
     return Promise.resolve(true);
   }
-  return CanvasAnimation().animate(attributes, { context: object, duration, easing, name });
+  return CanvasAnimation().animate(attributes, {
+    context: object,
+    duration,
+    easing,
+    name,
+    ontick: (elapsed, animation) => {
+      if ( object.destroyed ) CanvasAnimation().terminateAnimation(animation.name);
+    }
+  });
 }
 
 /** Stop a named animation. */

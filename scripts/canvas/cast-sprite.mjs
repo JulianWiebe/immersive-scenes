@@ -24,6 +24,7 @@ export default class CastSprite extends PIXI.Container {
     this.style = style;
     this.sortableChildren = true;
     this.#moveName = Symbol(`cast-move-${item.id}`);
+    this.#fxName = Symbol(`cast-fx-${item.id}`);
 
     /** Holds the look faces (the current one last). Mirroring flips this container only. */
     this.faces = this.addChild(new PIXI.Container());
@@ -38,6 +39,12 @@ export default class CastSprite extends PIXI.Container {
 
   /** @type {symbol} */
   #moveName;
+
+  /** Animation name shared by entrance, exit and crossfade, so a newer one terminates the older. */
+  #fxName;
+
+  /** Last nameplate configuration, to rebuild the text only when it changes. */
+  #plateKey = null;
 
   /** Current display height in pixels (hero: sprite height, token: portrait diameter). */
   #size = 0;
@@ -80,7 +87,8 @@ export default class CastSprite extends PIXI.Container {
     this.#layoutFace(face);
     if ( animate && previous.length ) {
       face.container.alpha = 0;
-      await tween(face.container, { alpha: 1 }, { duration: CROSSFADE });
+      await tween(face.container, { alpha: 1 }, { duration: CROSSFADE, name: Symbol("crossfade") });
+      if ( this.destroyed ) return;
     }
     for ( const old of previous ) this.#destroyFace(old);
   }
@@ -99,8 +107,9 @@ export default class CastSprite extends PIXI.Container {
   }
 
   #destroyFace(face) {
+    if ( !this.#faces.includes(face) ) return;
     this.#faces.findSplice(f => f === face);
-    face.container.destroy({ children: true });
+    if ( !face.container.destroyed ) face.container.destroy({ children: true });
     face.release();
   }
 
@@ -192,10 +201,17 @@ export default class CastSprite extends PIXI.Container {
 
   #drawNameplate() {
     const plate = this.nameplate;
-    plate.removeChildren().forEach(c => c.destroy());
-    if ( !this.item.showName || !this.item.name ) return;
     const d = this.#size;
     const fontSize = Math.max(10, Math.round((this.style === "hero" ? 0.045 : 0.13) * d));
+    const key = this.item.showName && this.item.name ? `${this.item.name}|${this.item.nameColor}|${fontSize}` : "";
+    const y = this.style === "hero" ? -fontSize * 1.6 : (d / 2) + (fontSize * 0.9);
+    if ( key === this.#plateKey ) {
+      plate.position.set(0, y);
+      return;
+    }
+    this.#plateKey = key;
+    plate.removeChildren().forEach(c => c.destroy());
+    if ( !key ) return;
     const style = foundry.canvas.containers.PreciseText.getTextStyle({
       fontSize,
       fill: this.item.nameColor,
@@ -211,7 +227,7 @@ export default class CastSprite extends PIXI.Container {
     bg.drawRoundedRect(-(text.width / 2) - padX, -(text.height / 2) - padY, text.width + (padX * 2), text.height + (padY * 2), fontSize * 0.5);
     bg.endFill();
     plate.addChild(bg, text);
-    plate.position.set(0, this.style === "hero" ? -fontSize * 1.6 : (d / 2) + (fontSize * 0.9));
+    plate.position.set(0, y);
   }
 
   /* -------------------------------------------- */
@@ -229,7 +245,7 @@ export default class CastSprite extends PIXI.Container {
     if ( type === "slide" ) this.x += (this.item.x < 0.5 ? -1 : 1) * this.#size * 0.6;
     else if ( type === "rise" ) this.y += this.#size * 0.15;
     else if ( type === "zoom" ) this.scale.set(0.6);
-    await tween(this, target, { duration, easing: "easeOutCircle" });
+    await tween(this, target, { duration, easing: "easeOutCircle", name: this.#fxName });
   }
 
   /**
@@ -243,7 +259,7 @@ export default class CastSprite extends PIXI.Container {
       if ( type === "slide" ) to.x = this.x + ((this.item.x < 0.5 ? -1 : 1) * this.#size * 0.6);
       else if ( type === "rise" ) to.y = this.y + (this.#size * 0.15);
       else if ( type === "zoom" ) Object.assign(to, { "scale.x": 0.6, "scale.y": 0.6 });
-      await tween(this, to, { duration: duration * 0.75, easing: "easeInCircle" });
+      await tween(this, to, { duration: duration * 0.75, easing: "easeInCircle", name: this.#fxName });
     }
     if ( !this.destroyed ) this.destroy({ children: true });
   }
@@ -254,6 +270,8 @@ export default class CastSprite extends PIXI.Container {
   }
 
   destroy(options) {
+    stopTween(this.#fxName);
+    stopTween(this.#moveName);
     for ( const face of [...this.#faces] ) face.release();
     this.#faces = [];
     super.destroy(options);

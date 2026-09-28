@@ -25,7 +25,7 @@ Hooks.once("init", () => {
       Hooks.callAll(`${MODULE_ID}.libraryChanged`, key);
     },
     onLiveChange: () => Hooks.callAll(`${MODULE_ID}.liveChanged`),
-    onDisplayChange: () => Hooks.callAll(`${MODULE_ID}.displayChanged`)
+    onDisplayChange: key => Hooks.callAll(`${MODULE_ID}.displayChanged`, key)
   });
 
   // Canvas layers: world-space stage above the map, screen-space overlay for Cast-Only mode

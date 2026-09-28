@@ -87,6 +87,12 @@ export default class DeckEditor extends HandlebarsApplicationMixin(ApplicationV2
     });
   }
 
+  async _onRender(context, options) {
+    await super._onRender(context, options);
+    // The "add" picker is not part of the deck data: keep it from submitting the form
+    this.element.querySelector("select[name=addScene]")?.addEventListener("change", e => e.stopPropagation());
+  }
+
   _onClose(options) {
     super._onClose(options);
     Hooks.off(`${MODULE_ID}.libraryChanged`, this.#hookId);

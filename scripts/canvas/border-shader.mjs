@@ -7,7 +7,6 @@ export const STYLE_IDS = { none: 0, solid: 1, double: 2, gradient: 3, spin: 4, p
 export const SHAPE_IDS = { circle: 0, rounded: 1, square: 2 };
 
 export const VERTEX = `
-precision highp float;
 attribute vec2 aVertexPosition;
 attribute vec2 aUvs;
 uniform mat3 translationMatrix;
@@ -19,7 +18,6 @@ void main() {
 }`;
 
 export const FRAGMENT = `
-precision highp float;
 varying vec2 vUv;
 uniform vec3 uColor1;
 uniform vec3 uColor2;
@@ -69,7 +67,7 @@ void main() {
   float sd = sdShape(p);
   float w = uWidth;
   // Ring coverage: inside the shape (sd <= 0) and within the border width
-  float ring = smoothstep(uAA, -uAA, sd) * smoothstep(-w - uAA, -w + uAA, sd);
+  float ring = (1.0 - smoothstep(-uAA, uAA, sd)) * smoothstep(-w - uAA, -w + uAA, sd);
   float angle = atan(p.y, p.x) / (2.0 * PI) + 0.5;
   float depth = clamp(-sd / w, 0.0, 1.0); // 0 at outer edge, 1 at inner edge
   vec3 color = uColor1;
@@ -107,7 +105,7 @@ void main() {
     float n2 = noise(vec2(angle * 36.0 + 7.0, uTime * 3.1 - sd * 11.0));
     float heat = n * 0.65 + n2 * 0.35;
     float reach = w * (0.6 + 2.2 * heat);
-    float tongue = step(0.0, sd) * smoothstep(reach, reach * 0.3, sd);
+    float tongue = step(0.0, sd) * (1.0 - smoothstep(reach * 0.3, reach, sd));
     alpha = max(ring, tongue * 0.9);
     float t = clamp(sd / (w * 2.8) + (1.0 - heat) * 0.35, 0.0, 1.0);
     color = sd <= 0.0 ? mix(uColor1, uColor2, heat) : mix(uColor2, uColor3, t);

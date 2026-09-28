@@ -40,11 +40,14 @@ export async function acquireTexture(src, { loop = true, volume = 0 } = {}) {
   const clone = await game.video.cloneTexture(source);
   const video = game.video.getVideoSource(clone);
   video.muted = volume <= 0;
-  game.video.play(video, { loop, volume, offset: 0 });
+  Promise.resolve(game.video.play(video, { loop, volume, offset: 0 })).catch(() => {});
+  let released = false;
   return {
     texture: clone,
     video,
     release: () => {
+      if ( released ) return;
+      released = true;
       try {
         video.pause();
         video.removeAttribute("src");
