@@ -11,6 +11,7 @@ import { registerQueries } from "./queries.mjs";
 import { registerIntegrations } from "./integrations.mjs";
 import { registerTokenHud } from "./token-hud.mjs";
 import CanvasEditing from "./canvas/canvas-editing.mjs";
+import SlideshowDriver from "./live/slideshow-driver.mjs";
 import { openDock } from "./apps/live-dock.mjs";
 import { getSetting } from "./settings.mjs";
 import { MODULE_ID, template } from "./constants.mjs";
@@ -46,6 +47,7 @@ Hooks.once("ready", () => {
   StageDirector.init();
   LiveController.init();
   CanvasEditing.init();
+  SlideshowDriver.init();
   if ( LiveController.canControl && getSetting("autoOpenDock") ) openDock();
 });
 

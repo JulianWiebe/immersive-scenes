@@ -296,6 +296,15 @@
     },
     "Integrations": {
       "MakeCharacter": "Immersive character"
+    },
+    "DeckEditor": {
+      "Title": "Slideshow",
+      "SceneTransitions": "Each scene's own transition",
+      "Step": "Step",
+      "Seconds": "Seconds",
+      "NoSlides": "No slides yet. Add scenes below.",
+      "AddSlide": "Add slide",
+      "Play": "Play slideshow"
     }
   }
 }

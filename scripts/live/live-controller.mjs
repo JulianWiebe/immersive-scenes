@@ -111,6 +111,73 @@ export default class LiveController {
   }
 
   /* -------------------------------------------- */
+  /*  Slideshows                                  */
+  /* -------------------------------------------- */
+
+  /**
+   * Show a slide of a deck (slideshow) and set the deck's playback state.
+   * @param {string} deckId
+   * @param {number} index
+   * @param {object} [options]
+   * @param {boolean} [options.playing=true]
+   */
+  static async showSlide(deckId, index, { playing = true } = {}) {
+    const deck = LibraryStore.getDeck(deckId);
+    const item = deck?.items[index];
+    if ( !item || !LibraryStore.getScene(item.sceneId) ) return this.state;
+    if ( Hooks.call(`${MODULE_ID}.preBroadcast`, LibraryStore.getScene(item.sceneId), { step: item.step, deck }) === false ) {
+      return this.state;
+    }
+    return this.update({
+      active: true,
+      sceneId: item.sceneId,
+      step: item.step,
+      mode: null,
+      shot: null,
+      transition: deck.transition,
+      deck: { id: deckId, index, playing, startedAt: Date.now(), elapsed: 0 }
+    });
+  }
+
+  /** Pause the running slideshow, remembering how far into the slide it was. */
+  static async pauseDeck() {
+    return this.update(state => {
+      if ( !state.deck?.playing ) return null;
+      return { deck: { ...state.deck, playing: false, elapsed: Date.now() - state.deck.startedAt }, transition: null };
+    });
+  }
+
+  /** Resume a paused slideshow. */
+  static async resumeDeck() {
+    return this.update(state => {
+      if ( !state.deck || state.deck.playing ) return null;
+      return { deck: { ...state.deck, playing: true, startedAt: Date.now() - state.deck.elapsed }, transition: null };
+    });
+  }
+
+  /** Stop the slideshow but keep the current scene live. */
+  static async stopDeck() {
+    return this.update(state => (state.deck ? { deck: null, transition: null } : null));
+  }
+
+  /**
+   * Go to another slide relative to the current one.
+   * @param {number} delta
+   */
+  static async stepDeck(delta) {
+    const deckState = this.state.deck;
+    const deck = deckState ? LibraryStore.getDeck(deckState.id) : null;
+    if ( !deck?.items.length ) return this.state;
+    const count = deck.items.length;
+    let index = deckState.index + delta;
+    if ( index >= count || index < 0 ) {
+      if ( !deck.loop ) return delta > 0 ? this.stopDeck() : this.state;
+      index = ((index % count) + count) % count;
+    }
+    return this.showSlide(deck.id, index, { playing: deckState.playing });
+  }
+
+  /* -------------------------------------------- */
   /*  Theater                                     */
   /* -------------------------------------------- */
 

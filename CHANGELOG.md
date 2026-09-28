@@ -12,3 +12,4 @@
 - On-canvas editing for GMs: drag cast members, Shift+wheel to scale, right-click for a look palette; other clients see drag previews live.
 - Animated portrait borders rendered by a custom shader: solid, double, gradient, spinning, pulse glow, rainbow and flame, in circle, rounded or square shapes. Frozen under reduced motion or photosensitive mode; static fallback if shaders are unavailable.
 - Player border designer and a Token HUD look switcher for characters linked to the token's actor.
+- Slideshows: decks of scenes (and background steps) with per-slide durations, looping and an optional transition override. The active GM drives the timer; another GM takes over if they leave. Play, pause, next, previous and stop from the dock, sidebar or API.

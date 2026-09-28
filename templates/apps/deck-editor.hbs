@@ -1,0 +1,60 @@
+<div class="deck-form">
+  <div class="form-group">
+    <label>{{localize "IMMERSIVE_SCENES.Fields.Name"}}</label>
+    <div class="form-fields"><input type="text" name="name" value="{{deck.name}}" required></div>
+  </div>
+  <div class="form-group">
+    <label>{{localize "IMMERSIVE_SCENES.Fields.Folder"}}</label>
+    <div class="form-fields"><select name="folder">{{selectOptions folderOptions selected=deck.folder}}</select></div>
+  </div>
+  <div class="form-group">
+    <label>{{localize "IMMERSIVE_SCENES.Fields.Loop"}}</label>
+    <div class="form-fields"><input type="checkbox" name="loop" {{checked deck.loop}}></div>
+  </div>
+  <div class="form-group">
+    <label>{{localize "IMMERSIVE_SCENES.SceneEditor.SceneTransition"}}</label>
+    <div class="form-fields">
+      <select name="transitionType">{{selectOptions transitionTypes selected=transitionType}}</select>
+      {{#if transitionType}}<input type="number" name="transitionDuration" value="{{transitionDuration}}" min="0" max="20000" step="100" data-tooltip="{{localize "IMMERSIVE_SCENES.Fields.DurationMs"}}">{{/if}}
+    </div>
+  </div>
+
+  <ol class="row-list slides">
+    {{#each items}}
+    <li class="row-item" data-index="{{index}}">
+      <input type="hidden" name="items.{{index}}.id" value="{{id}}">
+      <div class="row-thumb">
+        {{#if isVideo}}<video src="{{thumb}}" muted playsinline></video>
+        {{else if thumb}}<img src="{{thumb}}" alt="">{{else}}<i class="fa-solid fa-image" inert></i>{{/if}}
+        <span class="step-number">{{number}}</span>
+      </div>
+      <div class="row-fields">
+        <select name="items.{{index}}.sceneId">{{selectOptions @root.sceneOptions selected=sceneId}}</select>
+        <div class="field-line">
+          {{#if stepOptions}}
+          <select name="items.{{index}}.step" data-dtype="Number">{{selectOptions stepOptions selected=step}}</select>
+          {{/if}}
+          <label class="inline">{{localize "IMMERSIVE_SCENES.DeckEditor.Seconds"}}
+            <input type="number" name="items.{{index}}.duration" value="{{duration}}" min="1" max="3600" step="1"></label>
+        </div>
+      </div>
+      <div class="row-controls">
+        <button type="button" class="icon fa-solid fa-arrow-up" data-action="moveItem" data-delta="-1" {{disabled first}}></button>
+        <button type="button" class="icon fa-solid fa-arrow-down" data-action="moveItem" data-delta="1" {{disabled last}}></button>
+        <button type="button" class="icon fa-solid fa-trash" data-action="removeItem"></button>
+      </div>
+    </li>
+    {{else}}
+    <li class="empty hint">{{localize "IMMERSIVE_SCENES.DeckEditor.NoSlides"}}</li>
+    {{/each}}
+  </ol>
+  <div class="add-row">
+    <select name="addScene">{{selectOptions sceneOptions}}</select>
+    <button type="button" data-action="addItem"><i class="fa-solid fa-plus" inert></i> {{localize "IMMERSIVE_SCENES.DeckEditor.AddSlide"}}</button>
+  </div>
+  {{#if canControl}}
+  <footer class="form-footer">
+    <button type="button" data-action="play"><i class="fa-solid fa-play" inert></i> {{localize "IMMERSIVE_SCENES.DeckEditor.Play"}}</button>
+  </footer>
+  {{/if}}
+</div>

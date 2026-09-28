@@ -8,6 +8,7 @@ import { requestCharacterAction } from "./queries.mjs";
 import { openDock, toggleDock } from "./apps/live-dock.mjs";
 import CanvasEditing from "./canvas/canvas-editing.mjs";
 import { openBorderEditor } from "./apps/border-editor.mjs";
+import DeckEditor from "./apps/deck-editor.mjs";
 
 /** Render an application singleton by id, creating it if needed. */
 function renderApp(id, create) {
@@ -68,6 +69,17 @@ export function createApi() {
 
     /** Change a character's look (players: requires ownership and a GM online). */
     setLook: (characterId, lookId) => requestCharacterAction(characterId, "setLook", { lookId }),
+
+    /** Open the editor of a slideshow. */
+    editDeck: deckId => renderApp(`immersive-deck-editor-${deckId}`, () => new DeckEditor({ deckId })),
+
+    /** Start a slideshow from its first slide (GM). */
+    playDeck: deckId => LiveController.showSlide(deckId, 0),
+    pauseDeck: () => LiveController.pauseDeck(),
+    resumeDeck: () => LiveController.resumeDeck(),
+    nextSlide: () => LiveController.stepDeck(1),
+    prevSlide: () => LiveController.stepDeck(-1),
+    stopDeck: () => LiveController.stopDeck(),
 
     /** Open the border designer for a character. */
     openBorderEditor,
