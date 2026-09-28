@@ -10,12 +10,10 @@ import StageDirector from "../canvas/director.mjs";
 import StageRenderer from "../canvas/stage-renderer.mjs";
 import Camera from "../canvas/camera.mjs";
 import { viewToShot } from "../utils/frame.mjs";
-import { materialize, computeLayout } from "../utils/layout.mjs";
 import { resolveLook, lookImage } from "../utils/resolve.mjs";
 import { randomId } from "../utils/ids.mjs";
+import { freezeLayout } from "../data/scene-ops.mjs";
 import { t, getDragData, indexedToArray, isVideoPath, pickFile } from "./helpers.mjs";
-import { parseAspect } from "../utils/frame.mjs";
-import { getSetting } from "../settings.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -372,18 +370,4 @@ function moveItem(list, index, delta) {
   if ( (target < 0) || (target >= list.length) ) return;
   const [item] = list.splice(index, 1);
   list.splice(target, 0, item);
-}
-
-/**
- * Convert a slot layout into a freeform one, storing everybody's current position.
- * @param {object} scene      Writable scene record
- * @param {"free"|"theater"} type
- */
-export function freezeLayout(scene, type = "free") {
-  if ( ["free", "theater"].includes(scene.layout.type) ) return;
-  const mode = scene.mode === "cast" ? scene.castStyle : scene.mode;
-  const aspect = parseAspect(getSetting("stageAspect"));
-  const placements = computeLayout(scene.layout, scene.cast, { mode, aspect });
-  scene.cast = materialize(scene.cast, placements);
-  scene.layout.type = type;
 }

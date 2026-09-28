@@ -8,6 +8,9 @@ import { normalizeLive } from "../utils/schema.mjs";
 import LibraryStore from "../data/library-store.mjs";
 import { canWriteLibrary } from "../data/permissions.mjs";
 
+/** Pseudo shot id framing the whole stage. */
+export const STAGE_SHOT = "stage";
+
 export default class LiveController {
   static #queue = Promise.resolve();
 
@@ -111,11 +114,15 @@ export default class LiveController {
   /*  Theater                                     */
   /* -------------------------------------------- */
 
-  /** Cut every client's camera to a shot of the live scene. Players may pan away afterwards. */
+  /**
+   * Cut every client's camera to a shot of the live scene. Players may pan away afterwards.
+   * @param {string} shotId   A shot id, or "stage" for the whole stage
+   */
   static async cutTo(shotId) {
     return this.update(state => {
       const scene = state.active ? LibraryStore.getScene(state.sceneId) : null;
-      if ( !scene?.shots.some(s => s.id === shotId) ) return null;
+      if ( !scene ) return null;
+      if ( (shotId !== STAGE_SHOT) && !scene.shots.some(s => s.id === shotId) ) return null;
       return { shot: { id: shotId, nonce: Date.now() } };
     });
   }

@@ -5,6 +5,8 @@ import LiveController from "./live/live-controller.mjs";
 import SceneEditor from "./apps/scene-editor.mjs";
 import CharacterEditor from "./apps/character-editor.mjs";
 import { requestCharacterAction } from "./queries.mjs";
+import { openDock, toggleDock } from "./apps/live-dock.mjs";
+import CanvasEditing from "./canvas/canvas-editing.mjs";
 
 /** Render an application singleton by id, creating it if needed. */
 function renderApp(id, create) {
@@ -47,6 +49,15 @@ export function createApi() {
 
     /** End the local preview. */
     stopPreview: () => StageDirector.stopPreview(),
+
+    /** Open or focus the GM Live Dock. */
+    openDock,
+
+    /** Open or close the GM Live Dock. */
+    toggleDock,
+
+    /** Toggle GM editing of cast members directly on the canvas. */
+    toggleCanvasEditing: enabled => CanvasEditing.toggle(enabled),
 
     /** Open the editor of a library scene. */
     editScene: sceneId => renderApp(`immersive-scene-editor-${sceneId}`, () => new SceneEditor({ sceneId })),

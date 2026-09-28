@@ -1,0 +1,147 @@
+<div class="dock-root">
+  <header class="dock-header">
+    <div class="picker">
+      <select name="scene">{{selectOptions sceneOptions selected=selected}}</select>
+      <button type="button" class="icon fa-solid fa-tower-broadcast" data-action="broadcastSelected"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Broadcast"}}"></button>
+      <button type="button" class="icon fa-solid fa-eye" data-action="previewSelected"
+              data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Preview"}}"></button>
+    </div>
+    <div class="picker">
+      <select name="transition" data-tooltip="{{localize "IMMERSIVE_SCENES.Dock.NextTransition"}}">{{selectOptions transitionOptions selected=transition}}</select>
+    </div>
+    {{#if isLive}}
+    <div class="status-row live">
+      <span class="live-dot"></span><span class="value">{{scene.name}}</span>
+      <button type="button" class="icon fa-solid fa-pen" data-action="editScene" data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Edit"}}"></button>
+      <button type="button" class="icon fa-solid fa-stop" data-action="stop" data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Stop"}}"></button>
+    </div>
+    {{else if isPreview}}
+    <div class="status-row preview">
+      <i class="fa-solid fa-eye" inert></i><span class="value">{{scene.name}}</span>
+      <button type="button" class="icon fa-solid fa-pen" data-action="editScene" data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Edit"}}"></button>
+      <button type="button" class="icon fa-solid fa-tower-broadcast" data-action="promotePreview" data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Dock.BroadcastPreview"}}"></button>
+      <button type="button" class="icon fa-solid fa-xmark" data-action="endPreview" data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.EndPreview"}}"></button>
+    </div>
+    {{else}}
+    <p class="hint">{{localize "IMMERSIVE_SCENES.Dock.Idle"}}</p>
+    {{/if}}
+  </header>
+
+  <div class="dock-body">
+    {{#if scene}}
+    <section class="dock-section">
+      <h4>{{localize "IMMERSIVE_SCENES.Dock.Mode"}}</h4>
+      <div class="segmented">
+        {{#each modes}}
+        <button type="button" class="{{#if active}}active{{/if}}" data-action="setMode" data-mode="{{id}}">
+          <i class="{{icon}}" inert></i> {{label}}
+        </button>
+        {{/each}}
+      </div>
+    </section>
+
+    {{#if (gt steps.length 1)}}
+    <section class="dock-section">
+      <h4>{{localize "IMMERSIVE_SCENES.Dock.Sequence"}}
+        <span class="controls">
+          <button type="button" class="icon fa-solid fa-backward-step" data-action="stepDelta" data-delta="-1"></button>
+          <button type="button" class="icon fa-solid fa-forward-step" data-action="stepDelta" data-delta="1"></button>
+        </span>
+      </h4>
+      <ol class="step-strip">
+        {{#each steps}}
+        <li class="{{#if active}}active{{/if}}">
+          <button type="button" data-action="setStep" data-index="{{index}}" data-tooltip="{{name}}">
+            {{#if isVideo}}<video src="{{src}}" muted playsinline></video>{{else if src}}<img src="{{src}}" alt="">{{/if}}
+            <span class="number">{{number}}</span>
+          </button>
+        </li>
+        {{/each}}
+      </ol>
+    </section>
+    {{/if}}
+
+    <section class="dock-section">
+      <h4>{{localize "IMMERSIVE_SCENES.Dock.Cast"}}
+        <span class="controls">
+          <button type="button" class="icon fa-solid fa-hand-pointer {{#if editing}}active{{/if}}" data-action="toggleEdit"
+                  data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Dock.EditOnCanvas"}}"></button>
+        </span>
+      </h4>
+      {{#if editing}}<p class="hint">{{localize "IMMERSIVE_SCENES.Dock.EditHint"}}</p>{{/if}}
+      <ol class="dock-cast">
+        {{#each cast}}
+        <li class="{{#if hidden}}is-hidden{{/if}}" data-entry-id="{{id}}">
+          <div class="entry-head">
+            <span class="name">{{name}}{{#if pinned}} <i class="fa-solid fa-thumbtack" data-tooltip="{{localize "IMMERSIVE_SCENES.Palette.Pinned"}}"></i>{{/if}}</span>
+            <button type="button" class="icon fa-solid {{#if hidden}}fa-eye-slash{{else}}fa-eye{{/if}}" data-action="toggleEntry" data-field="hidden"
+                    data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Fields.Hidden"}}"></button>
+            <button type="button" class="icon fa-solid fa-arrows-left-right {{#if mirror}}active{{/if}}" data-action="toggleEntry" data-field="mirror"
+                    data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Fields.Mirror"}}"></button>
+            <button type="button" class="icon fa-solid fa-arrow-up" data-action="restack" data-direction="1"
+                    data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Palette.Forward"}}"></button>
+            <button type="button" class="icon fa-solid fa-arrow-down" data-action="restack" data-direction="-1"
+                    data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Palette.Back"}}"></button>
+            <button type="button" class="icon fa-solid fa-user-minus" data-action="removeEntry"
+                    data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Actions.Remove"}}"></button>
+          </div>
+          {{#if looks.length}}
+          <ol class="look-strip">
+            {{#each looks}}
+            <li class="look {{#if active}}active{{/if}}">
+              <button type="button" data-action="setLook" data-look-id="{{id}}" data-tooltip="{{name}}" aria-label="{{name}}">
+                {{#if isVideo}}<video src="{{src}}" muted loop autoplay playsinline></video>
+                {{else if src}}<img src="{{src}}" alt="">{{else}}<i class="fa-solid fa-user" inert></i>{{/if}}
+              </button>
+            </li>
+            {{/each}}
+          </ol>
+          {{/if}}
+        </li>
+        {{else}}
+        <li class="empty hint">{{localize "IMMERSIVE_SCENES.SceneEditor.NoCast"}}</li>
+        {{/each}}
+      </ol>
+      <div class="add-row">
+        <select name="addCharacter">{{selectOptions addableCharacters}}</select>
+        <button type="button" class="icon fa-solid fa-user-plus" data-action="addCast"
+                data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.SceneEditor.AddCast"}}"></button>
+      </div>
+    </section>
+
+    {{#if showShots}}
+    <section class="dock-section">
+      <h4>{{localize "IMMERSIVE_SCENES.Dock.Camera"}}
+        <span class="controls">
+          <button type="button" class="icon fa-solid fa-crosshairs" data-action="captureShot"
+                  data-tooltip aria-label="{{localize "IMMERSIVE_SCENES.Dock.CaptureShot"}}"></button>
+        </span>
+      </h4>
+      <div class="shot-buttons">
+        <button type="button" data-action="cut" data-shot-id="stage"><i class="fa-solid fa-expand" inert></i> {{localize "IMMERSIVE_SCENES.Dock.FullStage"}}</button>
+        {{#each shots}}
+        <button type="button" data-action="cut" data-shot-id="{{id}}"><i class="fa-solid fa-video" inert></i> {{name}}</button>
+        {{/each}}
+      </div>
+    </section>
+    {{/if}}
+
+    {{#if deck}}
+    <section class="dock-section">
+      <h4>{{localize "IMMERSIVE_SCENES.Dock.Slideshow"}}: {{deck.name}} <small>{{deck.index}}/{{deck.count}}</small></h4>
+      <div class="segmented">
+        <button type="button" data-action="deckPrev"><i class="fa-solid fa-backward-step" inert></i></button>
+        {{#if deck.playing}}
+        <button type="button" data-action="deckPause"><i class="fa-solid fa-pause" inert></i></button>
+        {{else}}
+        <button type="button" data-action="deckPlay"><i class="fa-solid fa-play" inert></i></button>
+        {{/if}}
+        <button type="button" data-action="deckNext"><i class="fa-solid fa-forward-step" inert></i></button>
+        <button type="button" data-action="deckStop"><i class="fa-solid fa-square" inert></i></button>
+      </div>
+    </section>
+    {{/if}}
+    {{/if}}
+  </div>
+</div>

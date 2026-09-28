@@ -160,10 +160,9 @@ export default class StageDirector {
   }
 
   static #cutToShot(live) {
-    const scene = LibraryStore.getScene(live.sceneId);
-    const shot = scene?.shots.find(s => s.id === live.shot.id);
-    if ( !shot || (StageRenderer.view?.mode === "cast") ) return;
-    Camera.showShot(StageRenderer.stageFrame(), shot, { duration: shot.duration, easing: shot.easing });
+    if ( StageRenderer.view?.mode === "cast" ) return;
+    const shot = findShot(live.sceneId, live.shot.id);
+    if ( shot ) Camera.showShot(StageRenderer.stageFrame(), shot, { duration: shot.duration, easing: shot.easing });
   }
 
   /** Warn a GM once when a broadcast runs while no map is viewed (nothing can be drawn). */
@@ -175,6 +174,17 @@ export default class StageDirector {
     }
     return false;
   }
+}
+
+/**
+ * Find a camera shot of a scene. The id "stage" frames the whole stage.
+ * @param {string} sceneId
+ * @param {string} shotId
+ * @returns {object|null}
+ */
+export function findShot(sceneId, shotId) {
+  if ( shotId === "stage" ) return { x: 0.5, y: 0.5, zoom: 1, duration: 1000, easing: "easeInOutCosine" };
+  return LibraryStore.getScene(sceneId)?.shots.find(s => s.id === shotId) ?? null;
 }
 
 function screenAspect() {

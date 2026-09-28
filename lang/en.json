@@ -272,6 +272,30 @@
       "SetDefault": "Default look",
       "SetCurrent": "Wear this look now",
       "Nameplate": "Nameplate"
+    },
+    "Palette": {
+      "Pinned": "This cast member has a pinned look",
+      "Forward": "Bring forward",
+      "Back": "Send back"
+    },
+    "Dock": {
+      "Title": "Live Dock",
+      "NextTransition": "Transition for the next scene change",
+      "SceneTransition": "Transition: scene default",
+      "BroadcastPreview": "Broadcast this preview",
+      "Idle": "Nothing is live. Pick a scene and broadcast it, or preview it on your own canvas first.",
+      "Mode": "Display mode",
+      "Sequence": "Background sequence",
+      "Cast": "Cast",
+      "EditOnCanvas": "Edit on canvas",
+      "EditHint": "Drag cast members on the canvas. Shift+wheel scales them. Right-click opens looks and actions.",
+      "Camera": "Camera",
+      "CaptureShot": "Save current view as a shot",
+      "FullStage": "Full stage",
+      "Slideshow": "Slideshow"
+    },
+    "Integrations": {
+      "MakeCharacter": "Immersive character"
     }
   }
 }

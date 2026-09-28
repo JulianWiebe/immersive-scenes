@@ -8,3 +8,5 @@
 - Sidebar tab (before Settings) with scene, character and slideshow libraries: folders, tags, search, favorites, thumbnails with one-click broadcast and preview, context menus, drag and drop (actors become characters, images become scenes, cards move into folders). Players see their own characters with a look switcher.
 - Scene editor (general, background sequence, cast, layout, camera shots, transitions) and character editor (actor link, owners, looks with folder import, border and nameplate). All edits save instantly and update a running broadcast live.
 - Player requests via `CONFIG.queries` for look and border changes, validated by the GM.
+- GM Live Dock (scene picker with transition override, display mode switch, background sequence steps, cast rows with look strips and quick actions, camera shot cuts, slideshow controls; detachable window). Also opened from a Token controls button.
+- On-canvas editing for GMs: drag cast members, Shift+wheel to scale, right-click for a look palette; other clients see drag previews live.

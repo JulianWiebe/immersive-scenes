@@ -8,6 +8,10 @@ import LiveController from "./live/live-controller.mjs";
 import { createApi } from "./api.mjs";
 import { registerSidebarTab } from "./apps/sidebar-tab.mjs";
 import { registerQueries } from "./queries.mjs";
+import { registerIntegrations } from "./integrations.mjs";
+import CanvasEditing from "./canvas/canvas-editing.mjs";
+import { openDock } from "./apps/live-dock.mjs";
+import { getSetting } from "./settings.mjs";
 import { MODULE_ID, template } from "./constants.mjs";
 
 Hooks.once("init", () => {
@@ -27,6 +31,7 @@ Hooks.once("init", () => {
 
   registerSidebarTab();
   registerQueries();
+  registerIntegrations();
   foundry.applications.handlebars.loadTemplates([
     template("sidebar/folder.hbs"),
     template("sidebar/card.hbs")
@@ -38,6 +43,8 @@ Hooks.once("init", () => {
 Hooks.once("ready", () => {
   StageDirector.init();
   LiveController.init();
+  CanvasEditing.init();
+  if ( LiveController.canControl && getSetting("autoOpenDock") ) openDock();
 });
 
 export { LibraryStore, LiveController, StageDirector, StageRenderer };
