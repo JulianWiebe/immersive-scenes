@@ -1,7 +1,7 @@
 # Changelog
 
 ## 0.1.0
-First preview release (not yet tested in a live world). Everything below is new.
+First preview release. Tested in Foundry 14.368 (dnd5e) with GM and player clients. Everything below is new.
 
 - Project scaffold: manifest, tooling (eslint, static validation, node:test) and CI.
 - Data layer: library settings (scenes, characters, folders, decks, live state), normalizers, LibraryStore, permission checks and pure layout, frame, resolve, diff and filename utilities with tests.

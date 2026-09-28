@@ -50,7 +50,7 @@ export default class SceneMask {
   static restore() {
     const saved = this.#saved;
     this.#saved = null;
-    if ( !saved || !canvas?.ready ) return;
+    if ( !saved || !canvas?.environment ) return;
     canvas.environment.visible = saved.environment ?? true;
     canvas.visibility.renderable = saved.visibility ?? true;
     if ( canvas.controls?.doors ) canvas.controls.doors.renderable = saved.doors ?? true;
@@ -58,11 +58,14 @@ export default class SceneMask {
       const l = layer(name);
       if ( l ) l.visible = visible ?? true;
     }
-    foundry.canvas.interaction.MouseInteractionManager.emulateMoveEvent();
+    if ( canvas.ready ) foundry.canvas.interaction.MouseInteractionManager.emulateMoveEvent();
   }
 
-  /** Forget saved flags after a full canvas redraw (the new canvas starts visible). */
+  /**
+   * Called when the canvas tears down. Groups and layers are persistent objects that survive a redraw,
+   * so their flags must be put back now; otherwise the next hide() would record the hidden state as original.
+   */
   static reset() {
-    this.#saved = null;
+    this.restore();
   }
 }

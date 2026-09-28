@@ -4,7 +4,7 @@
  */
 import { MODULE_ID } from "./constants.mjs";
 import LibraryStore from "./data/library-store.mjs";
-import { canPerform, canWriteLibrary } from "./data/permissions.mjs";
+import { canPerform, canWriteLibrary, isCharacterOwner } from "./data/permissions.mjs";
 import { normalizeBorder } from "./utils/schema.mjs";
 
 export const CHARACTER_ACTION = `${MODULE_ID}.characterAction`;
@@ -24,7 +24,8 @@ export function registerQueries() {
 export async function applyCharacterAction(user, { characterId, action, payload = {} } = {}) {
   const character = LibraryStore.getCharacter(characterId);
   if ( !character ) return { ok: false, error: "IMMERSIVE_SCENES.Errors.UnknownCharacter" };
-  if ( !canPerform(user, character, action) ) return { ok: false, error: "IMMERSIVE_SCENES.Errors.NotAllowed" };
+  if ( !isCharacterOwner(user, character) ) return { ok: false, error: "IMMERSIVE_SCENES.Errors.NotAllowed" };
+  if ( !canPerform(user, character, action) ) return { ok: false, error: "IMMERSIVE_SCENES.Errors.Disabled" };
   switch ( action ) {
     case "setLook": {
       if ( !character.looks.some(l => l.id === payload.lookId) ) return { ok: false, error: "IMMERSIVE_SCENES.Errors.UnknownLook" };

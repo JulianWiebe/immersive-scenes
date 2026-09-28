@@ -13,6 +13,7 @@
     <label>{{localize "IMMERSIVE_SCENES.Fields.Spacing"}}</label>
     <div class="form-fields"><range-picker name="layout.spacing" value="{{scene.layout.spacing}}" min="0.02" max="1" step="0.01"></range-picker></div>
   </div>
+  {{#if (eq scene.layout.type "grid")}}
   <div class="form-group">
     <label>{{localize "IMMERSIVE_SCENES.Fields.Grid"}}</label>
     <div class="form-fields">
@@ -21,6 +22,7 @@
     </div>
     <p class="hint">{{localize "IMMERSIVE_SCENES.SceneEditor.GridHint"}}</p>
   </div>
+  {{/if}}
   <div class="form-group">
     <label>{{localize "IMMERSIVE_SCENES.Fields.Margin"}}</label>
     <div class="form-fields"><range-picker name="layout.margin" value="{{scene.layout.margin}}" min="0" max="0.4" step="0.01"></range-picker></div>

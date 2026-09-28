@@ -2,23 +2,47 @@
   "IMMERSIVE_SCENES": {
     "Title": "Immersive Scenes",
     "CopyOf": "{name} (Kopie)",
-    "Look": { "Default": "Standard" },
+    "Look": {
+      "Default": "Standard"
+    },
     "Errors": {
       "NoPermission": "Du hast keine Berechtigung, die Immersive-Scenes-Bibliothek zu ändern.",
       "NoGM": "Es ist kein Spielleiter online, der diese Änderung übernehmen kann.",
       "NotAllowed": "Du darfst diesen Charakter nicht ändern.",
       "RequestFailed": "Die Änderung konnte nicht übernommen werden.",
       "UnknownCharacter": "Dieser Charakter existiert nicht mehr.",
-      "UnknownLook": "Dieser Look existiert nicht mehr."
+      "UnknownLook": "Dieser Look existiert nicht mehr.",
+      "Disabled": "Der Spielleiter hat diese Art von Änderung für Spieler deaktiviert."
     },
     "Settings": {
-      "StageAspect": { "Name": "Seitenverhältnis der Bühne", "Hint": "Form des Bühnenrahmens, in dem immersive Szenen komponiert werden. Er wird auf der gerade angezeigten Battlemap zentriert." },
-      "AllowPlayerLooks": { "Name": "Spieler können Looks wechseln", "Hint": "Spieler dürfen den Look (Outfit, Rüstung, …) ihrer eigenen Charaktere wechseln. Ein Spielleiter muss online sein, um die Änderung zu übernehmen." },
-      "AllowPlayerBorders": { "Name": "Spieler können Rahmen ändern", "Hint": "Spieler dürfen Stil und Farben des Porträtrahmens ihrer eigenen Charaktere ändern." },
-      "FrameOnStart": { "Name": "Bühne beim Senden einrahmen", "Hint": "Wenn eine Übertragung beginnt, gleitet die Kamera jedes Clients so, dass die ganze Bühne zu sehen ist. Danach kann jeder frei schwenken und zoomen." },
-      "ReduceMotion": { "Name": "Bewegung reduzieren", "Hint": "Übergänge und animierte Rahmen auf diesem Client überspringen. Gilt automatisch auch im Photosensitivitätsmodus oder wenn dein System reduzierte Bewegung bevorzugt." },
-      "BackgroundVolume": { "Name": "Lautstärke von Hintergrundvideos", "Hint": "Lautstärkefaktor für Video-Hintergründe auf diesem Client." },
-      "AutoOpenDock": { "Name": "Live-Dock beim Laden öffnen", "Hint": "Nur SL: Das Live-Dock beim Laden der Welt automatisch öffnen." }
+      "StageAspect": {
+        "Name": "Seitenverhältnis der Bühne",
+        "Hint": "Form des Bühnenrahmens, in dem immersive Szenen komponiert werden. Er wird auf der gerade angezeigten Battlemap zentriert."
+      },
+      "AllowPlayerLooks": {
+        "Name": "Spieler können Looks wechseln",
+        "Hint": "Spieler dürfen den Look (Outfit, Rüstung, …) ihrer eigenen Charaktere wechseln. Ein Spielleiter muss online sein, um die Änderung zu übernehmen."
+      },
+      "AllowPlayerBorders": {
+        "Name": "Spieler können Rahmen ändern",
+        "Hint": "Spieler dürfen Stil und Farben des Porträtrahmens ihrer eigenen Charaktere ändern."
+      },
+      "FrameOnStart": {
+        "Name": "Bühne beim Senden einrahmen",
+        "Hint": "Wenn eine Übertragung beginnt, gleitet die Kamera jedes Clients so, dass die ganze Bühne zu sehen ist. Danach kann jeder frei schwenken und zoomen."
+      },
+      "ReduceMotion": {
+        "Name": "Bewegung reduzieren",
+        "Hint": "Übergänge und animierte Rahmen auf diesem Client überspringen. Gilt automatisch auch im Photosensitivitätsmodus oder wenn dein System reduzierte Bewegung bevorzugt."
+      },
+      "BackgroundVolume": {
+        "Name": "Lautstärke von Hintergrundvideos",
+        "Hint": "Lautstärkefaktor für Video-Hintergründe auf diesem Client."
+      },
+      "AutoOpenDock": {
+        "Name": "Live-Dock beim Laden öffnen",
+        "Hint": "Nur SL: Das Live-Dock beim Laden der Welt automatisch öffnen."
+      }
     },
     "Warnings": {
       "NoCanvas": "Eine immersive Szene läuft, aber du siehst gerade keine Szene, daher gibt es keine Leinwand zum Zeichnen. Öffne eine beliebige Szene, um sie zu sehen.",
@@ -45,11 +69,31 @@
       "Stop": "Übertragung beenden",
       "ToggleFavorite": "Favorit umschalten"
     },
-    "Status": { "Idle": "Nichts ist live", "Live": "Live", "Previewing": "Vorschau" },
-    "Dialogs": { "ConfirmDelete": "<strong>{name}</strong> löschen? Das kann nicht rückgängig gemacht werden." },
-    "Mode": { "hero": "Held", "token": "Token", "cast": "Nur Besetzung" },
-    "Fit": { "cover": "Füllen", "contain": "Einpassen", "stretch": "Strecken" },
-    "Layout": { "row": "Reihe", "column": "Spalte", "grid": "Raster", "free": "Frei", "theater": "Theater" },
+    "Status": {
+      "Idle": "Nichts ist live",
+      "Live": "Live",
+      "Previewing": "Vorschau"
+    },
+    "Dialogs": {
+      "ConfirmDelete": "<strong>{name}</strong> löschen? Das kann nicht rückgängig gemacht werden."
+    },
+    "Mode": {
+      "hero": "Held",
+      "token": "Token",
+      "cast": "Nur Besetzung"
+    },
+    "Fit": {
+      "cover": "Füllen",
+      "contain": "Einpassen",
+      "stretch": "Strecken"
+    },
+    "Layout": {
+      "row": "Reihe",
+      "column": "Spalte",
+      "grid": "Raster",
+      "free": "Frei",
+      "theater": "Theater"
+    },
     "LayoutHint": {
       "row": "Alle stehen in einer Reihe.",
       "column": "Alle stehen in einer Spalte auf der gewählten Seite.",
@@ -57,12 +101,43 @@
       "free": "Besetzung frei auf der Bühne verschieben.",
       "theater": "Frei mit Tiefe: je weiter oben auf der Bühne, desto kleiner und weiter hinten. Kombiniere es mit Kameraeinstellungen."
     },
-    "Anchor": { "bottom": "Unten", "top": "Oben", "center": "Mitte", "left": "Links", "right": "Rechts" },
-    "Entrance": { "fade": "Einblenden", "slide": "Hereingleiten", "rise": "Aufsteigen", "zoom": "Zoomen", "none": "Keine" },
-    "Easing": { "easeInOutCosine": "Weich", "easeOutCircle": "Abbremsen", "easeInCircle": "Beschleunigen" },
-    "Transition": { "None": "Keiner (harter Schnitt)" },
-    "Border": { "none": "Keiner", "solid": "Einfarbig", "double": "Doppelt", "gradient": "Verlauf", "spin": "Rotierend", "pulse": "Pulsierend", "rainbow": "Regenbogen", "flame": "Flammen" },
-    "Shape": { "circle": "Kreis", "rounded": "Abgerundet", "square": "Quadrat" },
+    "Anchor": {
+      "bottom": "Unten",
+      "top": "Oben",
+      "center": "Mitte",
+      "left": "Links",
+      "right": "Rechts"
+    },
+    "Entrance": {
+      "fade": "Einblenden",
+      "slide": "Hereingleiten",
+      "rise": "Aufsteigen",
+      "zoom": "Zoomen",
+      "none": "Keine"
+    },
+    "Easing": {
+      "easeInOutCosine": "Weich",
+      "easeOutCircle": "Abbremsen",
+      "easeInCircle": "Beschleunigen"
+    },
+    "Transition": {
+      "None": "Keiner (harter Schnitt)"
+    },
+    "Border": {
+      "none": "Keiner",
+      "solid": "Einfarbig",
+      "double": "Doppelt",
+      "gradient": "Verlauf",
+      "spin": "Rotierend",
+      "pulse": "Pulsierend",
+      "rainbow": "Regenbogen",
+      "flame": "Flammen"
+    },
+    "Shape": {
+      "circle": "Kreis",
+      "rounded": "Abgerundet",
+      "square": "Quadrat"
+    },
     "Fields": {
       "Anchor": "Ausrichtung",
       "CastStyle": "Darstellung der Besetzung",
@@ -108,9 +183,21 @@
       "Letterbox": "Kinobalken"
     },
     "Library": {
-      "Tabs": { "scenes": "Szenen", "characters": "Charaktere", "decks": "Diashows" },
-      "Create": { "scenes": "Szene", "characters": "Charakter", "decks": "Diashow" },
-      "New": { "scenes": "Neue Szene", "characters": "Neuer Charakter", "decks": "Neue Diashow" },
+      "Tabs": {
+        "scenes": "Szenen",
+        "characters": "Charaktere",
+        "decks": "Diashows"
+      },
+      "Create": {
+        "scenes": "Szene",
+        "characters": "Charakter",
+        "decks": "Diashow"
+      },
+      "New": {
+        "scenes": "Neue Szene",
+        "characters": "Neuer Charakter",
+        "decks": "Neue Diashow"
+      },
       "Empty": {
         "scenes": "Noch keine Szenen. Erstelle eine oder ziehe ein Bild hierher.",
         "characters": "Noch keine Charaktere. Erstelle einen oder ziehe einen Akteur hierher.",
@@ -131,7 +218,14 @@
     },
     "SceneEditor": {
       "Title": "Immersive Szene",
-      "Tabs": { "general": "Allgemein", "backgrounds": "Hintergründe", "cast": "Besetzung", "layout": "Anordnung", "camera": "Kamera", "transition": "Übergänge" },
+      "Tabs": {
+        "general": "Allgemein",
+        "backgrounds": "Hintergründe",
+        "cast": "Besetzung",
+        "layout": "Anordnung",
+        "camera": "Kamera",
+        "transition": "Übergänge"
+      },
       "ModeHint": "Held: Ganzkörper-Sprites vor einem Hintergrund. Token: gerahmte Porträts vor einem Hintergrund. Nur Besetzung: kein Hintergrund; die Besetzung erscheint über der Battlemap, die sichtbar und benutzbar bleibt.",
       "ThumbHint": "Optional. Standardmäßig der erste Hintergrund.",
       "BackgroundsHint": "Füge mehrere Hintergründe hinzu, um eine Sequenz zu erstellen. Schalte sie live im Dock durch.",
@@ -159,7 +253,11 @@
     },
     "CharacterEditor": {
       "Title": "Immersiver Charakter",
-      "Tabs": { "general": "Allgemein", "looks": "Looks", "border": "Rahmen" },
+      "Tabs": {
+        "general": "Allgemein",
+        "looks": "Looks",
+        "border": "Rahmen"
+      },
       "LinkedActor": "Verknüpfter Akteur",
       "DropActor": "Ziehe einen Akteur hierher, um ihn zu verknüpfen. Seine Besitzer können dann den Look dieses Charakters wechseln.",
       "ActorMissing": "Der verknüpfte Akteur existiert nicht mehr.",
@@ -178,7 +276,11 @@
       "SetCurrent": "Diesen Look jetzt tragen",
       "Nameplate": "Namensschild"
     },
-    "Palette": { "Pinned": "Dieses Besetzungsmitglied hat einen festgelegten Look", "Forward": "Nach vorne", "Back": "Nach hinten" },
+    "Palette": {
+      "Pinned": "Dieses Besetzungsmitglied hat einen festgelegten Look",
+      "Forward": "Nach vorne",
+      "Back": "Nach hinten"
+    },
     "Dock": {
       "Title": "Live-Dock",
       "NextTransition": "Übergang für den nächsten Szenenwechsel",
@@ -196,7 +298,9 @@
       "Slideshow": "Diashow",
       "NextShot": "Nächste Einstellung"
     },
-    "Integrations": { "MakeCharacter": "Immersiver Charakter" },
+    "Integrations": {
+      "MakeCharacter": "Immersiver Charakter"
+    },
     "DeckEditor": {
       "Title": "Diashow",
       "SceneTransitions": "Eigener Übergang jeder Szene",
@@ -207,14 +311,38 @@
       "Play": "Diashow abspielen"
     },
     "Keybindings": {
-      "toggleDock": { "Name": "Live-Dock umschalten", "Hint": "SL: Das Immersive-Scenes-Live-Dock öffnen oder schließen." },
-      "stopBroadcast": { "Name": "Übertragung beenden", "Hint": "SL: Die immersive Szene für alle beenden." },
-      "nextStep": { "Name": "Nächster Hintergrund", "Hint": "SL: In der Hintergrund-Sequenz der Live-Szene weiterschalten." },
-      "prevStep": { "Name": "Vorheriger Hintergrund", "Hint": "SL: In der Hintergrund-Sequenz der Live-Szene zurückschalten." },
-      "nextSlide": { "Name": "Nächste Folie", "Hint": "SL: Zur nächsten Folie der laufenden Diashow springen." },
-      "nextShot": { "Name": "Nächste Kameraeinstellung", "Hint": "SL: Die Kamera aller zur nächsten Einstellung der Live-Szene schneiden." },
-      "toggleCanvasEditing": { "Name": "Besetzung auf der Leinwand bearbeiten", "Hint": "SL: Verschieben und Skalieren der Besetzung direkt auf der Leinwand umschalten." },
-      "cycleLook": { "Name": "Nächster Look", "Hint": "Deinen Charakter zum nächsten Look wechseln (den auf der Bühne, sonst den mit deinem zugewiesenen Akteur verknüpften)." }
+      "toggleDock": {
+        "Name": "Live-Dock umschalten",
+        "Hint": "SL: Das Immersive-Scenes-Live-Dock öffnen oder schließen."
+      },
+      "stopBroadcast": {
+        "Name": "Übertragung beenden",
+        "Hint": "SL: Die immersive Szene für alle beenden."
+      },
+      "nextStep": {
+        "Name": "Nächster Hintergrund",
+        "Hint": "SL: In der Hintergrund-Sequenz der Live-Szene weiterschalten."
+      },
+      "prevStep": {
+        "Name": "Vorheriger Hintergrund",
+        "Hint": "SL: In der Hintergrund-Sequenz der Live-Szene zurückschalten."
+      },
+      "nextSlide": {
+        "Name": "Nächste Folie",
+        "Hint": "SL: Zur nächsten Folie der laufenden Diashow springen."
+      },
+      "nextShot": {
+        "Name": "Nächste Kameraeinstellung",
+        "Hint": "SL: Die Kamera aller zur nächsten Einstellung der Live-Szene schneiden."
+      },
+      "toggleCanvasEditing": {
+        "Name": "Besetzung auf der Leinwand bearbeiten",
+        "Hint": "SL: Verschieben und Skalieren der Besetzung direkt auf der Leinwand umschalten."
+      },
+      "cycleLook": {
+        "Name": "Nächster Look",
+        "Hint": "Deinen Charakter zum nächsten Look wechseln (den auf der Bühne, sonst den mit deinem zugewiesenen Akteur verknüpften)."
+      }
     }
   }
 }

@@ -55,7 +55,10 @@ const hexToRgb = hex => {
 export class BorderMesh extends PIXI.Container {
   constructor() {
     super();
+    // translationMatrix must exist up front: PIXI generates (and caches) the uniform upload code from the keys
+    // present on first bind, and verifyShader() binds before the Mesh has set it.
     this.shader = PIXI.Shader.from(VERTEX, FRAGMENT, {
+      translationMatrix: new PIXI.Matrix().toArray(true),
       uColor1: [1, 1, 1], uColor2: [1, 1, 1], uColor3: [1, 1, 1],
       uStyle: 1, uShape: 0, uTime: 0, uWidth: 0.1, uPad: PAD, uAA: 0.01, uAlpha: 1
     });

@@ -195,6 +195,10 @@ export default class CastSprite extends PIXI.Container {
 
   #drawDecorations() {
     const d = this.#size;
+    // Portraits are only clickable inside their shape, so overlapping neighbours stay reachable
+    if ( this.style === "token" ) {
+      this.hitArea = this.item.border.shape === "circle" ? new PIXI.Circle(0, 0, d / 2) : new PIXI.Rectangle(-d / 2, -d / 2, d, d);
+    }
     if ( this.border ) this.border.update(d, this.item.border);
     this.#drawNameplate();
   }
@@ -204,7 +208,8 @@ export default class CastSprite extends PIXI.Container {
     const d = this.#size;
     const fontSize = Math.max(10, Math.round((this.style === "hero" ? 0.045 : 0.13) * d));
     const key = this.item.showName && this.item.name ? `${this.item.name}|${this.item.nameColor}|${fontSize}` : "";
-    const y = this.style === "hero" ? -fontSize * 1.6 : (d / 2) + (fontSize * 0.9);
+    // Hero: just above the feet. Token: overlapping the lower rim of the portrait, so it stays inside the frame.
+    const y = this.style === "hero" ? -fontSize * 1.6 : (d / 2) - (fontSize * 0.35);
     if ( key === this.#plateKey ) {
       plate.position.set(0, y);
       return;

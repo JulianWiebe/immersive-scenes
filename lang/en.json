@@ -11,7 +11,8 @@
       "NotAllowed": "You are not allowed to change this character.",
       "RequestFailed": "The change could not be applied.",
       "UnknownCharacter": "This character no longer exists.",
-      "UnknownLook": "This look no longer exists."
+      "UnknownLook": "This look no longer exists.",
+      "Disabled": "The Gamemaster has turned off this kind of change for players."
     },
     "Settings": {
       "StageAspect": {
