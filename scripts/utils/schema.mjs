@@ -169,6 +169,7 @@ export function normalizeScene(raw = {}) {
     layout: normalizeLayout(raw.layout ?? {}),
     cast: uniqueIds((Array.isArray(raw.cast) ? raw.cast : []).map(normalizeCastEntry).filter(e => e.characterId)),
     shots: uniqueIds((Array.isArray(raw.shots) ? raw.shots : []).map(normalizeShot)),
+    letterbox: clamp(raw.letterbox, 0, 0.25, 0),
     transition: normalizeTransition(raw.transition ?? {}, "fade", 1000),
     entrance: {
       type: oneOf(raw.entrance?.type, ENTRANCES, "fade"),

@@ -56,6 +56,7 @@ export default class StageDirector {
     });
     window.addEventListener("resize", foundry.utils.debounce(() => {
       if ( StageRenderer.view?.mode === "cast" ) this.refresh({ animate: false });
+      StageRenderer.relayoutScreen();
     }, 150));
     if ( canvas?.ready ) this.#onCanvasReady();
   }

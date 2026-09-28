@@ -10,14 +10,14 @@ const POSITION_KEYS = ["x", "y", "size", "z"];
  * @param {object|null} next   Next view
  * @returns {{
  *   kind: "none"|"start"|"stop"|"scene"|"update",
- *   modeChanged: boolean, backgroundChanged: boolean,
+ *   modeChanged: boolean, backgroundChanged: boolean, letterboxChanged: boolean,
  *   added: object[], removed: object[],
  *   moved: object[], looks: object[], restyled: object[]
  * }}
  */
 export function diffViews(prev, next) {
   const result = {
-    kind: "none", modeChanged: false, backgroundChanged: false,
+    kind: "none", modeChanged: false, backgroundChanged: false, letterboxChanged: false,
     added: [], removed: [], moved: [], looks: [], restyled: []
   };
   if ( !prev && !next ) return result;
@@ -28,6 +28,7 @@ export function diffViews(prev, next) {
   result.kind = "update";
   result.modeChanged = (prev.mode !== next.mode) || (prev.style !== next.style);
   result.backgroundChanged = !jsonEquals(prev.background, next.background);
+  result.letterboxChanged = (prev.letterbox ?? 0) !== (next.letterbox ?? 0);
 
   const before = new Map(prev.items.map(i => [i.id, i]));
   const after = new Map(next.items.map(i => [i.id, i]));
@@ -43,7 +44,7 @@ export function diffViews(prev, next) {
     if ( (old.name !== item.name) || (old.showName !== item.showName) || (old.nameColor !== item.nameColor)
       || !jsonEquals(old.border, item.border) ) result.restyled.push(item);
   }
-  const changed = result.modeChanged || result.backgroundChanged || result.added.length || result.removed.length
+  const changed = result.modeChanged || result.backgroundChanged || result.letterboxChanged || result.added.length || result.removed.length
     || result.moved.length || result.looks.length || result.restyled.length;
   if ( !changed ) result.kind = "none";
   return result;

@@ -227,6 +227,7 @@ export default class SceneEditor extends HandlebarsApplicationMixin(ApplicationV
       castStyle: data.castStyle ?? scene.castStyle,
       thumb: data.thumb ?? scene.thumb,
       notes: data.notes ?? scene.notes,
+      letterbox: data.letterbox ?? scene.letterbox,
       backgrounds: data.backgrounds
         ? indexedToArray(data.backgrounds).map(b => ({ ...byId(scene.backgrounds, b.id), ...b }))
         : scene.backgrounds,

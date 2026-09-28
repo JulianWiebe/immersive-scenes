@@ -25,6 +25,9 @@ export default class StageRenderer {
 
   static #running = false;
 
+  /** Current letterbox amount (fraction of the screen height per bar). */
+  static #letterbox = { amount: 0 };
+
   /** @type {{view: object|null, options: object}|null} */
   static #pending = null;
 
@@ -128,9 +131,11 @@ export default class StageRenderer {
         else if ( camera === "restore" ) await Camera.restore();
       }, motion ? settings : null);
       if ( motion && next ) this.#playEntrances(next);
+      this.#setLetterbox(next?.letterbox ?? 0, motion);
       return;
     }
     if ( diff.kind === "none" ) return;
+    if ( diff.letterboxChanged ) this.#setLetterbox(next.letterbox, motion);
 
     // Background change (sequence step or edit)
     if ( diff.backgroundChanged && next.mode !== "cast" ) {
@@ -164,6 +169,7 @@ export default class StageRenderer {
   static async redraw(view = this.view) {
     this.#forgetObjects();
     this.view = null;
+    this.#letterbox.amount = 0;
     return this.request(view, { animate: false });
   }
 
@@ -171,6 +177,7 @@ export default class StageRenderer {
   static onTearDown() {
     this.#forgetObjects();
     this.view = null;
+    this.#letterbox.amount = 0;
     SceneMask.reset();
   }
 
@@ -264,11 +271,44 @@ export default class StageRenderer {
     await Camera.showShot(this.stageFrame(), { x: 0.5, y: 0.5, zoom: 1 }, { duration });
   }
 
-  /** Re-layout cast-only sprites after the screen was resized. */
+  /** Redraw screen-space elements after the window was resized. */
   static relayoutScreen() {
+    this.#drawLetterbox();
     if ( this.view?.mode !== "cast" ) return;
     const frame = this.screenFrame();
     for ( const item of this.view.items ) this.#sprites.get(item.id)?.place(item, frame, { animate: false });
+  }
+
+  /* -------------------------------------------- */
+  /*  Letterbox                                   */
+  /* -------------------------------------------- */
+
+  /** Animate the cinematic bars to a new height (fraction of the screen height per bar). */
+  static async #setLetterbox(amount, animate) {
+    const state = this.#letterbox;
+    if ( state.amount === amount ) return this.#drawLetterbox();
+    if ( !animate ) {
+      state.amount = amount;
+      return this.#drawLetterbox();
+    }
+    await foundry.canvas.animation.CanvasAnimation.animate([{ parent: state, attribute: "amount", to: amount }], {
+      name: "immersive-scenes.letterbox",
+      duration: 700,
+      easing: "easeInOutCosine",
+      ontick: () => this.#drawLetterbox()
+    });
+    this.#drawLetterbox();
+  }
+
+  static #drawLetterbox() {
+    const bars = canvas?.immersiveOverlay?.bars;
+    if ( !bars || bars.destroyed ) return;
+    bars.clear();
+    const amount = this.#letterbox.amount;
+    if ( amount <= 0 ) return;
+    const { width, height } = this.screenFrame();
+    const h = Math.round(height * amount);
+    bars.beginFill(0x000000, 1).drawRect(0, 0, width, h).drawRect(0, height - h, width, h).endFill();
   }
 
   /** Update video volume after a client setting change. */

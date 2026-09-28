@@ -73,3 +73,14 @@ test("cast mode uses the scene's cast style", () => {
   const hero = buildView({ scene: { ...castScene, castStyle: "hero" }, characters: { aria } });
   assert.equal(diffViews(view, hero).modeChanged, true);
 });
+
+test("letterbox is part of the view and diff, but never in cast mode", () => {
+  const boxed = { ...scene, letterbox: 0.1 };
+  const a = buildView({ scene, characters: { aria } });
+  const b = buildView({ scene: boxed, characters: { aria } });
+  assert.equal(b.letterbox, 0.1);
+  const d = diffViews(a, b);
+  assert.equal(d.kind, "update");
+  assert.equal(d.letterboxChanged, true);
+  assert.equal(buildView({ scene: boxed, characters: { aria }, mode: "cast" }).letterbox, 0);
+});

@@ -18,15 +18,22 @@ export default class ImmersiveOverlayLayer extends foundry.canvas.layers.CanvasL
   /** Container for cast members, sorted by z. */
   cast;
 
+  /** Cinematic letterbox bars (Theater). */
+  bars;
+
   async _draw(options) {
     await super._draw(options);
     this.cast = this.addChild(new PIXI.Container());
     this.cast.sortableChildren = true;
     this.cast.eventMode = "passive";
+    this.cast.zIndex = 1;
+    this.bars = this.addChild(new PIXI.Graphics());
+    this.bars.eventMode = "none";
+    this.bars.zIndex = 2;
   }
 
   async _tearDown(options) {
-    this.cast = undefined;
+    this.cast = this.bars = undefined;
     return super._tearDown(options);
   }
 }

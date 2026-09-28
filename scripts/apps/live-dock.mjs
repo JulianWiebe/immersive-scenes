@@ -40,6 +40,7 @@ export default class LiveDock extends HandlebarsApplicationMixin(ApplicationV2) 
       addCast: LiveDock.#onAddCast,
       toggleEdit: LiveDock.#onToggleEdit,
       cut: LiveDock.#onCut,
+      nextShot: LiveDock.#onNextShot,
       captureShot: LiveDock.#onCaptureShot,
       editScene: LiveDock.#onEditScene,
       deckPlay: LiveDock.#onDeckPlay,
@@ -120,7 +121,8 @@ export default class LiveDock extends HandlebarsApplicationMixin(ApplicationV2) 
       };
     });
     context.addableCharacters = Object.fromEntries(LibraryStore.list("characters").map(c => [c.id, c.name]));
-    context.shots = scene.shots.map(s => ({ id: s.id, name: s.name }));
+    const currentShot = target.kind === "live" ? StageDirector.live.shot?.id : null;
+    context.shots = scene.shots.map(s => ({ id: s.id, name: s.name, active: s.id === currentShot }));
     context.showShots = mode !== "cast";
 
     const deck = target.deck ? LibraryStore.getDeck(target.deck.id) : null;
@@ -293,6 +295,20 @@ export default class LiveDock extends HandlebarsApplicationMixin(ApplicationV2) 
     const shot = findShot(target.sceneId, shotId);
     if ( shot ) await Camera.showShot(StageRenderer.stageFrame(), shot, { duration: shot.duration, easing: shot.easing });
   }
+
+  /** Cut to the shot after the current one (wrapping around). */
+  static async #onNextShot() {
+    const target = this.target;
+    const shots = LibraryStore.getScene(target?.sceneId)?.shots ?? [];
+    if ( !shots.length ) return;
+    const currentId = target.kind === "live" ? StageDirector.live.shot?.id : this.#previewShot;
+    const index = (shots.findIndex(s => s.id === currentId) + 1) % shots.length;
+    this.#previewShot = shots[index].id;
+    return LiveDock.#onCut.call(this, null, { dataset: { shotId: shots[index].id } });
+  }
+
+  /** Last shot cut to during a local preview. */
+  #previewShot = null;
 
   static async #onCaptureShot() {
     const target = this.target;

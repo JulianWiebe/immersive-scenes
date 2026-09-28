@@ -91,6 +91,7 @@ export function buildView({ scene, characters, step = 0, mode = null, aspect = 1
     step: stepIndex,
     stepCount: backgrounds.length,
     background: background ? { ...background } : null,
+    letterbox: displayMode === "cast" ? 0 : scene.letterbox,
     transition: { ...scene.transition },
     entrance: { ...scene.entrance },
     items

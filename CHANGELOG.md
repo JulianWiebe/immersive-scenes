@@ -13,3 +13,4 @@
 - Animated portrait borders rendered by a custom shader: solid, double, gradient, spinning, pulse glow, rainbow and flame, in circle, rounded or square shapes. Frozen under reduced motion or photosensitive mode; static fallback if shaders are unavailable.
 - Player border designer and a Token HUD look switcher for characters linked to the token's actor.
 - Slideshows: decks of scenes (and background steps) with per-slide durations, looping and an optional transition override. The active GM drives the timer; another GM takes over if they leave. Play, pause, next, previous and stop from the dock, sidebar or API.
+- Theater Mode: the theater layout (freeform with depth scaling), camera shots captured from your view, cuts that pull every client (players can pan away afterwards), a "Full stage" shot, next-shot cycling, and animated cinematic letterbox bars drawn in the canvas overlay.

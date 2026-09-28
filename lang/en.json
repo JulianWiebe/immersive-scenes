@@ -178,7 +178,8 @@
       "Volume": "Volume",
       "Width": "Width",
       "Z": "Order",
-      "Zoom": "Zoom"
+      "Zoom": "Zoom",
+      "Letterbox": "Letterbox"
     },
     "Library": {
       "Tabs": {
@@ -246,7 +247,8 @@
       "Shot": "Shot",
       "SceneTransition": "Scene transition",
       "TransitionHint": "Used when this scene starts, ends, changes display mode, or changes background.",
-      "CastEntrance": "Cast entrance"
+      "CastEntrance": "Cast entrance",
+      "LetterboxHint": "Cinematic black bars at the top and bottom of every screen while this scene is shown (fraction of the screen height). 0 = off."
     },
     "CharacterEditor": {
       "Title": "Immersive Character",
@@ -292,7 +294,8 @@
       "Camera": "Camera",
       "CaptureShot": "Save current view as a shot",
       "FullStage": "Full stage",
-      "Slideshow": "Slideshow"
+      "Slideshow": "Slideshow",
+      "NextShot": "Next shot"
     },
     "Integrations": {
       "MakeCharacter": "Immersive character"

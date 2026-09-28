@@ -1,5 +1,10 @@
 <section class="tab {{tab.cssClass}}" data-tab="camera" data-group="primary">
   <p class="hint">{{localize "IMMERSIVE_SCENES.SceneEditor.CameraHint"}}</p>
+  <div class="form-group">
+    <label>{{localize "IMMERSIVE_SCENES.Fields.Letterbox"}}</label>
+    <div class="form-fields"><range-picker name="letterbox" value="{{scene.letterbox}}" min="0" max="0.25" step="0.01"></range-picker></div>
+    <p class="hint">{{localize "IMMERSIVE_SCENES.SceneEditor.LetterboxHint"}}</p>
+  </div>
   <ol class="row-list shots">
     {{#each shots}}
     <li class="row-item" data-index="{{index}}" data-shot-id="{{id}}">
