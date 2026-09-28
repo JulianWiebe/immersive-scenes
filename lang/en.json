@@ -308,6 +308,40 @@
       "NoSlides": "No slides yet. Add scenes below.",
       "AddSlide": "Add slide",
       "Play": "Play slideshow"
+    },
+    "Keybindings": {
+      "toggleDock": {
+        "Name": "Toggle Live Dock",
+        "Hint": "GM: open or close the Immersive Scenes Live Dock."
+      },
+      "stopBroadcast": {
+        "Name": "Stop broadcast",
+        "Hint": "GM: end the immersive scene for everyone."
+      },
+      "nextStep": {
+        "Name": "Next background",
+        "Hint": "GM: advance the live scene's background sequence."
+      },
+      "prevStep": {
+        "Name": "Previous background",
+        "Hint": "GM: go back in the live scene's background sequence."
+      },
+      "nextSlide": {
+        "Name": "Next slide",
+        "Hint": "GM: skip to the next slide of the running slideshow."
+      },
+      "nextShot": {
+        "Name": "Next camera shot",
+        "Hint": "GM: cut everyone's camera to the next shot of the live scene."
+      },
+      "toggleCanvasEditing": {
+        "Name": "Edit cast on canvas",
+        "Hint": "GM: toggle dragging and scaling cast members directly on the canvas."
+      },
+      "cycleLook": {
+        "Name": "Next look",
+        "Hint": "Switch your character to their next look (the one on stage, else the one linked to your assigned actor)."
+      }
     }
   }
 }

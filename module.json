@@ -3,12 +3,33 @@
   "title": "Immersive Scenes",
   "description": "Cinematic, visual-novel style scenes drawn right into the Foundry canvas: backdrops, cast layouts, characters with multiple looks and animated borders, a GM live dock, slideshows, sequences and theater camera shots.",
   "version": "0.1.0",
-  "authors": [{ "name": "Julian Wiebe", "url": "https://github.com/JulianWiebe" }],
-  "compatibility": { "minimum": "14", "verified": "14.368" },
-  "esmodules": ["scripts/module.mjs"],
-  "styles": ["styles/immersive-scenes.css"],
+  "authors": [
+    {
+      "name": "Julian Wiebe",
+      "url": "https://github.com/JulianWiebe"
+    }
+  ],
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14.368"
+  },
+  "esmodules": [
+    "scripts/module.mjs"
+  ],
+  "styles": [
+    "styles/immersive-scenes.css"
+  ],
   "languages": [
-    { "lang": "en", "name": "English", "path": "lang/en.json" }
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "de",
+      "name": "Deutsch",
+      "path": "lang/de.json"
+    }
   ],
   "socket": true,
   "url": "https://github.com/JulianWiebe/immersive-scenes",

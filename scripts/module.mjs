@@ -10,6 +10,7 @@ import { registerSidebarTab } from "./apps/sidebar-tab.mjs";
 import { registerQueries } from "./queries.mjs";
 import { registerIntegrations } from "./integrations.mjs";
 import { registerTokenHud } from "./token-hud.mjs";
+import { registerKeybindings } from "./keybindings.mjs";
 import CanvasEditing from "./canvas/canvas-editing.mjs";
 import SlideshowDriver from "./live/slideshow-driver.mjs";
 import { openDock } from "./apps/live-dock.mjs";
@@ -35,6 +36,7 @@ Hooks.once("init", () => {
   registerQueries();
   registerIntegrations();
   registerTokenHud();
+  registerKeybindings();
   foundry.applications.handlebars.loadTemplates([
     template("sidebar/folder.hbs"),
     template("sidebar/card.hbs")
